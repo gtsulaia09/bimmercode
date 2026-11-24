@@ -49,6 +49,8 @@ const rebase = (text) =>
     .replace(/<a\b[^>]*>/g, (tag) => tag.split(`href="${SITE}`).join(`href="${BASE}/`));
 
 const SHIM = `<script src="${BASE}/js/demo-shim.js"></script>`;
+// Files that already build their URLs from their own location (document.currentScript): left as they are.
+const AS_IS = new Set([join(OUT, 'js', 'ai-chat-loader.js')]);
 function walk(dir) {
   for (const name of readdirSync(dir)) {
     const p = join(dir, name);
@@ -57,7 +59,7 @@ function walk(dir) {
       continue;
     }
     const ext = extname(name);
-    if (!['.html', '.js', '.css', '.webmanifest'].includes(ext)) continue;
+    if (!['.html', '.js', '.css', '.webmanifest'].includes(ext) || AS_IS.has(p)) continue;
     let text = rebase(readFileSync(p, 'utf8'));
     if (ext === '.webmanifest') text = text.replace(/(":\s*")\/(?!\/)/g, `$1${BASE}/`);
     if (ext === '.html') text = text.replace(/<head[^>]*>/i, (m) => `${m}\n  ${SHIM}`);
