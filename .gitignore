@@ -27,3 +27,6 @@ fix_role_id.sql
 generate_parts.js
 setup_parts_finder.sh
 reload_parts.sh
+
+# GitHub Pages demo build (scripts/build-pages.mjs)
+_site/
