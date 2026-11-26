@@ -1,85 +1,96 @@
 <!DOCTYPE html>
-<html lang="en" class="index-bento-page bcx-page">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <base href="https://bimmercodes.net/" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>User Profile — BimmerCodes</title>
+    <title>Specialist Profile &amp; Garage — BimmerCodes</title>
 
-    <!-- Content-Writer + SEO: semantic meta + social + schema.org -->
-    <meta name="description" id="meta-description" content="BMW enthusiast profile on BimmerCodes — fault codes discussed, replies contributed, reputation earned." />
+    <meta name="description" id="meta-description" content="BMW enthusiast profile and personal garage on BimmerCodes — fault codes discussed, replies contributed, reputation earned." />
     <meta name="robots" content="index, follow" />
     <meta property="og:type" content="profile" />
-    <meta property="og:title" id="og-title" content="User Profile — BimmerCodes" />
+    <meta property="og:title" id="og-title" content="Specialist Profile — BimmerCodes" />
     <meta property="og:description" id="og-description" content="BMW enthusiast profile on BimmerCodes." />
-    <meta property="og:image" id="og-image" content="./assets/icons/ico.svg" />
+    <meta property="og:image" id="og-image" content="/assets/icons/ico.svg" />
     <meta name="twitter:card" content="summary" />
     <link rel="canonical" id="canonical-link" href="" />
+    <meta name="theme-color" content="#0A0C10" />
 
-    <link rel="stylesheet" href="https://bimmercodes.net/css/tokens.css?v=3.0" />
-    <link rel="stylesheet" href="https://bimmercodes.net/css/ui-buttons.css?v=1" />
-    <link rel="stylesheet" href="https://bimmercodes.net/css/style.css?v=3.0" />
-    <link rel="stylesheet" href="https://bimmercodes.net/css/forum.css?v=3.14" />
-    <link rel="stylesheet" href="https://bimmercodes.net/css/index-bento.css?v=6" />
-    <link rel="stylesheet" href="https://bimmercodes.net/css/responsive.css?v=4" />
-    <link rel="stylesheet" href="https://bimmercodes.net/css/notifications.css?v=3.6" />
-    <link rel="stylesheet" href="https://bimmercodes.net/css/site-premium.css?v=5" />
-    <link rel="stylesheet" href="https://bimmercodes.net/css/forum-premium.css?v=5" />
-    <link rel="stylesheet" href="https://bimmercodes.net/css/page-premium.css?v=1" />
-    <link rel="stylesheet" href="https://bimmercodes.net/css/site-responsive.css?v=3" />
-    <link rel="shortcut icon" href="https://bimmercodes.net/assets/icons/ico.svg" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Noto+Sans+Georgian:wght@400;500;600;700&display=swap"
+    />
+
+    <link rel="stylesheet" href="/css/tokens.css?v=4.0" />
+    <link rel="stylesheet" href="/css/style.css?v=4.0" />
+    <link rel="stylesheet" href="/css/parts-finder.css?v=4.0" />
+    <link rel="stylesheet" href="/css/forum.css?v=4.0" />
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/ico.svg" />
+    <link rel="shortcut icon" href="/assets/icons/ico.svg" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Google AdSense (script at end of body) -->
-    <meta name="google-adsense-account" content="ca-pub-6807738591111613">
+    <meta name="google-adsense-account" content="ca-pub-6807738591111613" />
   </head>
 
-  <body class="profile-body index-bento-page bcx">
-    <div id="webgl-container" class="index-bento-bg" aria-hidden="true"></div>
+  <body class="profile-body">
+    <div id="webgl-container" aria-hidden="true"></div>
 
     <!-- ============================================================ HEADER -->
-    <header class="forum-header index-bento">
-      <div class="logo-container index-header-brand">
-        <a class="main_logo_refr" href="/" aria-label="BimmerCodes home">
-          <div class="logo" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r="48" stroke="white" stroke-width="4" fill="black" />
-              <circle cx="50" cy="50" r="35" fill="white" />
-              <path d="M 50,15 A 35,35 0 0,1 85,50 H 50 Z" fill="#1A6FB0" />
-              <path d="M 50,50 H 85 A 35,35 0 0,1 50,85 Z" fill="white" />
-              <path d="M 50,50 V 15 A 35,35 0 0,0 15,50 Z" fill="white" />
-              <path d="M 50,50 H 15 A 35,35 0 0,0 50,85 Z" fill="#1A6FB0" />
+    <header class="bc-header forum-header" role="banner">
+      <div class="bc-header__inner">
+        <a href="/" class="bc-brand" aria-label="BimmerCodes Home">
+          <span class="bc-brand__mark" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+              <rect x="3" y="3" width="58" height="58" rx="12" fill="#0E1218" stroke="#283244" stroke-width="2" />
+              <rect x="7" y="7" width="50" height="50" rx="8.5" fill="#131923" stroke="#1E2736" stroke-width="1" />
+              <path d="M16 18H31.5C36.2 18 39.5 20.5 39.5 24.6C39.5 27.4 37.9 29.5 35.2 30.4C38.5 31.2 40.5 33.6 40.5 37C40.5 41.6 36.9 44.5 31.4 44.5H16V18ZM22.2 28.4H29.9C32.2 28.4 33.5 27.3 33.5 25.4C33.5 23.5 32.2 22.5 29.9 22.5H22.2V28.4ZM22.2 40H30.4C33 40 34.4 38.8 34.4 36.7C34.4 34.6 32.9 33.4 30.3 33.4H22.2V40Z" fill="#E8EEF6" />
+              <path d="M43.5 18H49.5L43.5 44.5H37.5L43.5 18Z" fill="#2877EE" />
+              <rect x="46.5" y="18" width="3.5" height="7" rx="1" fill="#6EA8FF" />
             </svg>
-          </div>
-          <h1 class="index-header-title">
-            BMW Diagnostic Codes <span class="index-header-title-muted">· Profile</span>
-          </h1>
+          </span>
+          <span class="bc-brand__text">
+            <span class="bc-brand__name">BimmerCodes</span>
+            <span class="bc-brand__sub" data-i18n="brandSub">Diagnostic &amp; Engineering</span>
+          </span>
         </a>
+
+        <nav class="bc-nav" aria-label="Primary Navigation">
+          <a href="/" class="bc-nav__link"><i class="fas fa-microchip"></i> <span data-i18n="navCodes">Diagnostic Codes</span></a>
+          <a href="/all.html" class="bc-nav__link"><i class="fas fa-list-ul"></i> <span data-i18n="navCodeIndex">Code Index</span></a>
+          <a href="/vin.html" class="bc-nav__link"><i class="fas fa-barcode"></i> <span data-i18n="vinBtn">VIN Decoder</span></a>
+          <a href="/parts.html" class="bc-nav__link"><i class="fas fa-cogs"></i> <span data-i18n="navParts">Parts Finder</span></a>
+          <a href="/forum.html" class="bc-nav__link"><i class="fas fa-comments"></i> <span data-i18n="navForum">Forum</span></a>
+          <button type="button" class="bc-nav__link" data-open-ai-chat><i class="fas fa-sparkles"></i> <span data-i18n="navAi">AI Assistant</span></button>
+        </nav>
+
+        <div class="bc-header-tools controls">
+          <button type="button" class="bc-tool-btn bc-tool-btn--lang" id="forum-language-toggle" onclick="switchForumLanguage()" title="Language">
+            <i class="fas fa-globe" aria-hidden="true"></i>
+            <span id="forum-lang-display">EN</span>
+          </button>
+          <a href="#" class="bc-tool-btn bc-tool-btn--primary" id="auth-btn">
+            <i class="fas fa-user-circle" aria-hidden="true"></i>
+            <span data-i18n="loginBtn">Sign In</span>
+          </a>
+          <button class="bc-burger" type="button" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+            <i class="fas fa-bars" aria-hidden="true"></i>
+          </button>
+        </div>
       </div>
-      <nav class="controls" aria-label="Primary">
-        <a href="/" class="index-header-btn btn" title="Home">
-          <i class="fas fa-home" aria-hidden="true"></i>
-          <span data-i18n="homeBtn">Home</span>
-        </a>
-        <a href="/vin.html" class="index-header-btn btn" title="VIN Check">
-          <i class="fas fa-fingerprint" aria-hidden="true"></i>
-          <span data-i18n="vinBtn">VIN</span>
-        </a>
-        <a href="/forum" class="index-header-btn btn">
-          <i class="fas fa-arrow-left" aria-hidden="true"></i>
-          <span data-i18n="backToForum">Back to Forum</span>
-        </a>
-        <button type="button" class="index-header-btn btn" id="forum-language-toggle" onclick="switchForumLanguage()" title="Language">
-          <i class="fas fa-globe" aria-hidden="true"></i>
-          <span id="forum-lang-display">EN</span>
-        </button>
-        <a href="#" class="index-header-btn btn" id="auth-btn">
-          <i class="fas fa-user" aria-hidden="true"></i>
-          <span data-i18n="loginBtn">Login</span>
-        </a>
-      </nav>
     </header>
+
+    <div class="mobile-menu-overlay" onclick="toggleMobileMenu()"></div>
+    <aside class="mobile-offcanvas" aria-label="Mobile navigation">
+      <div class="offcanvas-header">
+        <h2 data-i18n="menu">Navigation</h2>
+        <button class="btn btn-icon btn-ghost" onclick="toggleMobileMenu()" aria-label="Close menu">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="offcanvas-content" id="mobile-menu-content"></div>
+    </aside>
 
     <!-- ============================================================ MAIN -->
     <main class="profile-shell">
@@ -100,9 +111,9 @@
       <div id="profile-error" class="profile-error" hidden>
         <div class="profile-error-card">
           <i class="fas fa-user-slash" aria-hidden="true"></i>
-          <h2 data-i18n="profileNotFoundTitle">User not found</h2>
-          <p data-i18n="profileNotFoundText">This profile doesn't exist or has been removed.</p>
-          <a class="btn btn-primary" href="/forum" data-i18n="backToForum">Back to Forum</a>
+          <h2 data-i18n="profileNotFoundTitle">Profile Not Found</h2>
+          <p data-i18n="profileNotFoundText">This member profile does not exist or has been deactivated.</p>
+          <a class="btn btn-primary" href="/forum.html" data-i18n="backToForum">Return to Forum</a>
         </div>
       </div>
 
@@ -110,12 +121,12 @@
       <section id="profile-hero" class="profile-hero" hidden>
         <div class="profile-cover" aria-hidden="true">
           <div class="profile-cover-grid"></div>
-          <div class="profile-cover-glow"></div>
         </div>
 
         <div class="profile-hero-body">
           <div id="profile-block-banner" class="topic-notif-muted-banner profile-user-block-banner" hidden></div>
           <div id="profile-user-mute-banner" class="profile-user-mute-banner" hidden></div>
+
           <div class="profile-avatar-wrap">
             <div class="profile-avatar-ring" id="profile-avatar-ring" style="--progress: 0deg;">
               <div class="profile-avatar-inner" id="profile-avatar">
@@ -130,50 +141,51 @@
 
           <div class="profile-identity">
             <div class="profile-name-row">
-              <h2 id="profile-username" class="profile-username">Loading…</h2>
+              <h1 id="profile-username" class="profile-username">Loading…</h1>
               <span id="profile-role-badge" class="role-badge" hidden></span>
               <span id="profile-verified" class="verified-tick" hidden title="Verified"><i class="fas fa-check-circle"></i></span>
             </div>
 
-            <p id="profile-bio" class="profile-bio" data-i18n="noBioYet">This user hasn't written a bio yet.</p>
+            <p id="profile-bio" class="profile-bio" data-i18n="noBioYet">No technical bio specified yet.</p>
 
-            <div class="profile-chips" id="profile-chips">
-              <!-- populated by JS: car, year, engine, city, lang, joined -->
-            </div>
+            <div class="profile-chips" id="profile-chips"></div>
 
             <div class="profile-actions">
-              <button id="btn-share-profile" class="btn btn-ghost" type="button">
+              <button id="btn-share-profile" class="btn btn-secondary btn-sm" type="button">
                 <i class="fas fa-share-nodes" aria-hidden="true"></i>
-                <span data-i18n="shareProfile">Share profile</span>
+                <span data-i18n="shareProfile">Share Profile</span>
               </button>
-              <button id="btn-edit-profile" class="btn btn-primary" type="button" hidden onclick="openEditProfileModal()">
-                <i class="fas fa-pen-to-square" aria-hidden="true"></i>
-                <span data-i18n="editProfile">Edit profile</span>
+              <button id="btn-edit-profile" class="btn btn-primary btn-sm" type="button" hidden onclick="openEditProfileModal()">
+                <i class="fas fa-sliders" aria-hidden="true"></i>
+                <span data-i18n="editProfile">Edit Profile &amp; Garage</span>
               </button>
-              <button id="btn-report-profile" class="btn btn-danger-ghost" type="button" hidden onclick="triggerUserReport()">
+              <button id="btn-report-profile" class="btn btn-danger btn-sm" type="button" hidden onclick="triggerUserReport()">
                 <i class="fas fa-flag" aria-hidden="true"></i>
-                <span data-i18n="reportUser">Report user</span>
+                <span data-i18n="reportUser">Report</span>
               </button>
-              <button id="btn-block-user" class="btn btn-danger-ghost" type="button" hidden>
+              <button id="btn-block-user" class="btn btn-danger btn-sm" type="button" hidden>
                 <i class="fas fa-user-slash" aria-hidden="true"></i>
-                <span data-i18n="blockUser">Block user</span>
+                <span data-i18n="blockUser">Block</span>
               </button>
-              <button id="btn-unblock-user" class="btn btn-ghost" type="button" hidden>
+              <button id="btn-unblock-user" class="btn btn-secondary btn-sm" type="button" hidden>
                 <i class="fas fa-user-check" aria-hidden="true"></i>
-                <span data-i18n="unblockUser">Unblock user</span>
+                <span data-i18n="unblockUser">Unblock</span>
               </button>
-              <button id="btn-profile-mute-notifs" class="btn btn-ghost" type="button" hidden>
+              <button id="btn-profile-mute-notifs" class="btn btn-ghost btn-sm" type="button" hidden>
                 <i class="fas fa-bell-slash" aria-hidden="true"></i>
-                <span data-i18n="muteUserNotifsBtn">Mute notifications</span>
+                <span data-i18n="muteUserNotifsBtn">Mute</span>
               </button>
-              <button id="btn-profile-unmute-notifs" class="btn btn-ghost" type="button" hidden>
+              <button id="btn-profile-unmute-notifs" class="btn btn-ghost btn-sm" type="button" hidden>
                 <i class="fas fa-bell" aria-hidden="true"></i>
-                <span data-i18n="unmuteUserNotifsShort">Unmute notifications</span>
+                <span data-i18n="unmuteUserNotifsShort">Unmute</span>
               </button>
             </div>
           </div>
         </div>
       </section>
+
+      <!-- PERSONAL GARAGE SPECIFICATION SHEET -->
+      <section id="profile-garage-card" class="profile-garage-card" hidden></section>
 
       <!-- STATS -->
       <section id="profile-stats" class="profile-stats" hidden>
@@ -209,7 +221,7 @@
           <div class="stat-icon"><i class="fas fa-calendar-days" aria-hidden="true"></i></div>
           <div class="stat-body">
             <div class="stat-value" id="stat-joined">—</div>
-            <div class="stat-label" data-i18n="memberSince">Member since</div>
+            <div class="stat-label" data-i18n="memberSince">Joined</div>
           </div>
         </article>
       </section>
@@ -217,7 +229,7 @@
       <!-- ACHIEVEMENTS -->
       <section id="profile-achievements" class="profile-achievements" hidden>
         <header class="section-head">
-          <h3><i class="fas fa-medal" aria-hidden="true"></i> <span data-i18n="achievements">Achievements</span></h3>
+          <h3><i class="fas fa-medal" aria-hidden="true"></i> <span data-i18n="achievements">Service Milestones</span></h3>
         </header>
         <div class="achievements-grid" id="achievements-grid"></div>
       </section>
@@ -227,16 +239,21 @@
         <div class="profile-tabs" role="tablist" aria-label="Profile activity">
           <button class="profile-tab active" data-tab="topics" role="tab" aria-selected="true">
             <i class="fas fa-comments" aria-hidden="true"></i>
-            <span data-i18n="tabTopics">Topics</span>
+            <span data-i18n="tabTopics">Threads</span>
             <span class="tab-count" id="tab-count-topics">0</span>
           </button>
           <button class="profile-tab" data-tab="recent" role="tab" aria-selected="false">
             <i class="fas fa-clock-rotate-left" aria-hidden="true"></i>
             <span data-i18n="tabRecent">Recent</span>
           </button>
+          <button class="profile-tab" data-tab="saved" id="profile-tab-saved" role="tab" aria-selected="false" hidden>
+            <i class="far fa-bookmark" aria-hidden="true"></i>
+            <span data-i18n="savedTitle">Saved Codes</span>
+            <span class="tab-count" id="tab-count-saved">0</span>
+          </button>
           <button class="profile-tab" data-tab="about" role="tab" aria-selected="false">
-            <i class="fas fa-circle-info" aria-hidden="true"></i>
-            <span data-i18n="tabAbout">About</span>
+            <i class="fas fa-id-card" aria-hidden="true"></i>
+            <span data-i18n="tabAbout">Specifications</span>
           </button>
         </div>
 
@@ -247,6 +264,10 @@
 
           <div class="profile-panel" data-panel="recent" role="tabpanel">
             <div id="profile-recent-container" class="recent-list"></div>
+          </div>
+
+          <div class="profile-panel" data-panel="saved" role="tabpanel">
+            <div id="profile-saved-container" class="topic-list"></div>
           </div>
 
           <div class="profile-panel" data-panel="about" role="tabpanel">
@@ -264,65 +285,90 @@
         </button>
 
         <div class="auth-header topic-modal-header">
-          <div class="auth-brand">
-            <div class="auth-brand-logo"><i class="fas fa-user-pen" aria-hidden="true"></i></div>
-          </div>
-          <h2 id="edit-profile-title" data-i18n="editProfile">Edit profile</h2>
-          <p class="auth-subtitle" data-i18n="editProfileSubtitle">Update your account, security, and public profile in one place.</p>
+          <h2 id="edit-profile-title" data-i18n="editProfile">Profile, Garage &amp; Security</h2>
+          <p class="auth-subtitle" data-i18n="editProfileSubtitle">Manage your BMW vehicle specification, account security, and public profile.</p>
         </div>
 
         <form id="edit-profile-form" class="auth-body topic-form" onsubmit="handleProfileUpdate(event)">
           <div class="edit-profile-section">
-            <h3 class="edit-profile-section__title" data-i18n="accountSecurityTitle">Account</h3>
-            <p class="edit-profile-hint" data-i18n="accountSecurityHint">3–20 characters: letters, numbers, underscore. Email and password are updated in the sections below.</p>
+            <h3 class="edit-profile-section__title" data-i18n="bmwDetailsTitle">Personal BMW Garage</h3>
+            <div class="field-row">
+              <div class="field">
+                <label for="edit-car" data-i18n="carModelLabel">Vehicle Model</label>
+                <div class="input-with-icon">
+                  <i class="fas fa-car input-icon" aria-hidden="true"></i>
+                  <input type="text" id="edit-car" placeholder="e.g. BMW G20 M340i" />
+                </div>
+              </div>
+              <div class="field">
+                <label for="edit-bmw-year" data-i18n="aboutYear">Model Year</label>
+                <input type="number" id="edit-bmw-year" class="form-input" min="1970" max="2030" placeholder="2021" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="edit-bmw-body" data-i18n="aboutBody">Chassis Code</label>
+                <input type="text" id="edit-bmw-body" class="form-input" maxlength="40" placeholder="e.g. G20 / F30 / E92" />
+              </div>
+              <div class="field">
+                <label for="edit-bmw-engine" data-i18n="aboutEngine">Engine Code</label>
+                <input type="text" id="edit-bmw-engine" class="form-input" maxlength="40" placeholder="e.g. B58 / N55 / M54" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="edit-city" data-i18n="cityLabel">City</label>
+              <div class="input-with-icon">
+                <i class="fas fa-location-dot input-icon" aria-hidden="true"></i>
+                <input type="text" id="edit-city" placeholder="Munich / Tbilisi" />
+              </div>
+            </div>
+          </div>
+
+          <div class="edit-profile-section">
+            <h3 class="edit-profile-section__title" data-i18n="bioAndAvatarTitle">Bio &amp; Avatar</h3>
+            <div class="field">
+              <label for="edit-bio" data-i18n="bioLabel">Technical Bio</label>
+              <textarea id="edit-bio" class="topic-textarea" rows="3" maxlength="300" placeholder="Your BMW build, diagnostic tools (ISTA/INPA), or workshop focus…"></textarea>
+            </div>
+
+            <div class="field">
+              <label data-i18n="avatarLabel">Avatar</label>
+              <div class="avatar-upload-card">
+                <div class="avatar-preview-edit" id="avatar-preview-edit">
+                  <i class="fas fa-user" aria-hidden="true"></i>
+                </div>
+                <div class="avatar-actions">
+                  <button type="button" class="btn btn-secondary btn-sm btn-upload-avatar" onclick="triggerAvatarUpload()">
+                    <i class="fas fa-upload" aria-hidden="true"></i>
+                    <span data-i18n="uploadImage">Upload image</span>
+                  </button>
+                  <button type="button" class="btn btn-danger btn-sm btn-delete-avatar" id="btn-delete-avatar" style="display:none;" onclick="deleteAvatar()">
+                    <i class="fas fa-trash" aria-hidden="true"></i>
+                    <span data-i18n="remove">Remove</span>
+                  </button>
+                </div>
+                <input type="file" id="avatar-file-input" accept="image/*" hidden onchange="handleAvatarUpload(event)" />
+                <input type="hidden" id="edit-avatar" value="" />
+                <p class="avatar-hint" data-i18n="avatarHint">PNG, JPG or WebP — up to 5 MB. Converted to WebP automatically.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="edit-profile-section">
+            <h3 class="edit-profile-section__title" data-i18n="accountSecurityTitle">Account Identity</h3>
+            <p class="edit-profile-hint" data-i18n="accountSecurityHint">3–20 characters: letters, numbers, underscore.</p>
             <div class="field">
               <label for="edit-username" data-i18n="usernameLabel">Username</label>
               <input type="text" id="edit-username" class="form-input" maxlength="20" pattern="[a-zA-Z0-9_]{3,20}" autocomplete="username" required />
             </div>
             <div class="field">
-              <label for="edit-email-current" data-i18n="emailLabel">Email</label>
+              <label for="edit-email-current" data-i18n="emailLabel">Current Email</label>
               <input type="email" id="edit-email-current" class="input-readonly" readonly autocomplete="email" />
             </div>
           </div>
 
           <div class="edit-profile-section">
-            <h3 class="edit-profile-section__title" data-i18n="changeEmailTitle">Change email</h3>
-            <div class="field">
-              <label for="edit-email-new" data-i18n="newEmailLabel">New email</label>
-              <input type="email" id="edit-email-new" class="form-input" autocomplete="off" placeholder="name@example.com" />
-            </div>
-            <div class="field">
-              <label for="edit-email-confirm-pw" data-i18n="currentPasswordForEmail">Current password</label>
-              <input type="password" id="edit-email-confirm-pw" class="form-input" autocomplete="current-password" />
-            </div>
-            <button type="button" class="btn btn-ghost" id="btn-change-email" onclick="handleChangeEmailClick(event)">
-              <i class="fas fa-envelope" aria-hidden="true"></i>
-              <span data-i18n="updateEmailBtn">Update email</span>
-            </button>
-          </div>
-
-          <div class="edit-profile-section">
-            <h3 class="edit-profile-section__title" data-i18n="changePasswordTitle">Change password</h3>
-            <div class="field">
-              <label for="edit-pw-current" data-i18n="currentPasswordLabel">Current password</label>
-              <input type="password" id="edit-pw-current" class="form-input" autocomplete="current-password" />
-            </div>
-            <div class="field">
-              <label for="edit-pw-new" data-i18n="newPasswordLabel">New password</label>
-              <input type="password" id="edit-pw-new" class="form-input" autocomplete="new-password" />
-            </div>
-            <div class="field">
-              <label for="edit-pw-confirm" data-i18n="confirmNewPasswordLabel">Confirm new password</label>
-              <input type="password" id="edit-pw-confirm" class="form-input" autocomplete="new-password" />
-            </div>
-            <button type="button" class="btn btn-ghost" id="btn-change-password" onclick="handleChangePasswordClick(event)">
-              <i class="fas fa-key" aria-hidden="true"></i>
-              <span data-i18n="updatePasswordBtn">Update password</span>
-            </button>
-          </div>
-
-          <div class="edit-profile-section">
-            <h3 class="edit-profile-section__title" data-i18n="personalDetailsTitle">Personal &amp; location</h3>
+            <h3 class="edit-profile-section__title" data-i18n="personalDetailsTitle">Personal &amp; Interface Preferences</h3>
             <div class="field-row">
               <div class="field">
                 <label for="edit-first-name" data-i18n="firstNameLabel">First name</label>
@@ -344,7 +390,7 @@
               </div>
             </div>
             <div class="field">
-              <label for="edit-preferred-lang" data-i18n="profileUiLangLabel">Interface language</label>
+              <label for="edit-preferred-lang" data-i18n="profileUiLangLabel">Preferred Language</label>
               <select id="edit-preferred-lang" class="form-input">
                 <option value="en">English</option>
                 <option value="ru">Русский</option>
@@ -354,67 +400,39 @@
           </div>
 
           <div class="edit-profile-section">
-            <h3 class="edit-profile-section__title" data-i18n="bmwDetailsTitle">BMW &amp; ride</h3>
-            <div class="field-row">
-              <div class="field">
-                <label for="edit-car" data-i18n="carModelLabel">Car model</label>
-                <div class="input-with-icon">
-                  <i class="fas fa-car input-icon" aria-hidden="true"></i>
-                  <input type="text" id="edit-car" placeholder="e.g. BMW G20 330i" />
-                </div>
-              </div>
-              <div class="field">
-                <label for="edit-bmw-year" data-i18n="aboutYear">Year</label>
-                <input type="number" id="edit-bmw-year" class="form-input" min="1970" max="2030" />
-              </div>
-            </div>
-            <div class="field-row">
-              <div class="field">
-                <label for="edit-bmw-body" data-i18n="aboutBody">Body</label>
-                <input type="text" id="edit-bmw-body" class="form-input" maxlength="40" />
-              </div>
-              <div class="field">
-                <label for="edit-bmw-engine" data-i18n="aboutEngine">Engine</label>
-                <input type="text" id="edit-bmw-engine" class="form-input" maxlength="40" />
-              </div>
+            <h3 class="edit-profile-section__title" data-i18n="changeEmailTitle">Change Email</h3>
+            <div class="field">
+              <label for="edit-email-new" data-i18n="newEmailLabel">New email</label>
+              <input type="email" id="edit-email-new" class="form-input" autocomplete="off" placeholder="name@example.com" />
             </div>
             <div class="field">
-              <label for="edit-city" data-i18n="cityLabel">City</label>
-              <div class="input-with-icon">
-                <i class="fas fa-location-dot input-icon" aria-hidden="true"></i>
-                <input type="text" id="edit-city" placeholder="Berlin" />
-              </div>
+              <label for="edit-email-confirm-pw" data-i18n="currentPasswordForEmail">Current password</label>
+              <input type="password" id="edit-email-confirm-pw" class="form-input" autocomplete="current-password" />
             </div>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-change-email" onclick="handleChangeEmailClick(event)">
+              <i class="fas fa-envelope" aria-hidden="true"></i>
+              <span data-i18n="updateEmailBtn">Update email</span>
+            </button>
           </div>
 
           <div class="edit-profile-section">
-            <h3 class="edit-profile-section__title" data-i18n="bioAndAvatarTitle">Bio &amp; avatar</h3>
+            <h3 class="edit-profile-section__title" data-i18n="changePasswordTitle">Change Password</h3>
             <div class="field">
-            <label for="edit-bio" data-i18n="bioLabel">Bio</label>
-            <textarea id="edit-bio" class="topic-textarea" rows="3" maxlength="300" placeholder="Tell the community about yourself — what you drive, what you love…"></textarea>
-          </div>
-
-          <div class="field">
-            <label data-i18n="avatarLabel">Avatar</label>
-            <div class="avatar-upload-card">
-              <div class="avatar-preview-edit" id="avatar-preview-edit">
-                <i class="fas fa-user" aria-hidden="true"></i>
-              </div>
-              <div class="avatar-actions">
-                <button type="button" class="btn btn-ghost btn-upload-avatar" onclick="triggerAvatarUpload()">
-                  <i class="fas fa-upload" aria-hidden="true"></i>
-                  <span data-i18n="uploadImage">Upload image</span>
-                </button>
-                <button type="button" class="btn btn-danger-ghost btn-delete-avatar" id="btn-delete-avatar" style="display:none;" onclick="deleteAvatar()">
-                  <i class="fas fa-trash" aria-hidden="true"></i>
-                  <span data-i18n="remove">Remove</span>
-                </button>
-              </div>
-              <input type="file" id="avatar-file-input" accept="image/*" hidden onchange="handleAvatarUpload(event)">
-              <input type="hidden" id="edit-avatar" value="">
-              <p class="avatar-hint" data-i18n="avatarHint">PNG, JPG or WebP — up to 5 MB. Converted to WebP automatically.</p>
+              <label for="edit-pw-current" data-i18n="currentPasswordLabel">Current password</label>
+              <input type="password" id="edit-pw-current" class="form-input" autocomplete="current-password" />
             </div>
-          </div>
+            <div class="field">
+              <label for="edit-pw-new" data-i18n="newPasswordLabel">New password</label>
+              <input type="password" id="edit-pw-new" class="form-input" autocomplete="new-password" />
+            </div>
+            <div class="field">
+              <label for="edit-pw-confirm" data-i18n="confirmNewPasswordLabel">Confirm new password</label>
+              <input type="password" id="edit-pw-confirm" class="form-input" autocomplete="new-password" />
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-change-password" onclick="handleChangePasswordClick(event)">
+              <i class="fas fa-key" aria-hidden="true"></i>
+              <span data-i18n="updatePasswordBtn">Update password</span>
+            </button>
           </div>
         </form>
 
@@ -422,28 +440,28 @@
           <button type="button" class="btn btn-ghost" onclick="closeEditProfileModal()" data-i18n="cancel">Cancel</button>
           <button type="submit" form="edit-profile-form" class="btn btn-primary" id="btn-save-profile">
             <i class="fas fa-check" aria-hidden="true"></i>
-            <span data-i18n="saveProfileDetails">Save profile</span>
+            <span data-i18n="saveProfileDetails">Save Profile</span>
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Favorites Modal (kept minimal, used by header) -->
+    <!-- Favorites Modal -->
     <div id="favorites-modal" class="favorites-modal">
       <div class="favorites-content">
         <div class="favorites-header">
-          <h3><i class="fas fa-star" style="color:#f1c40f"></i> <span data-i18n="savedTitle">Saved Codes</span></h3>
+          <h3><i class="fas fa-bookmark" style="color:var(--accent-light)"></i> <span data-i18n="savedTitle">Saved Codes</span></h3>
           <button class="close-button" onclick="toggleFavoritesModal()"><i class="fas fa-times"></i></button>
         </div>
         <div class="favorites-body" id="favorites-list"></div>
       </div>
     </div>
 
-    <!-- Code detail (for legacy compatibility) -->
+    <!-- Code detail modal -->
     <div id="code-detail-modal" class="modal">
-      <div class="modal-content" style="max-width: 600px; width: 90%;">
-        <span class="close-btn" onclick="document.getElementById('code-detail-modal').classList.remove('active')">&times;</span>
+      <div class="modal-content">
         <div id="code-detail" class="hidden"></div>
+        <div id="parts-finder-container" class="hidden"></div>
       </div>
     </div>
 
@@ -455,21 +473,20 @@
       <span data-i18n="linkCopied">Profile link copied</span>
     </div>
 
-    <!-- schema.org Person -->
     <script type="application/ld+json" id="schema-person">{}</script>
 
-    <footer><!-- footer injected by js/footer.js --></footer>
-    <script src="./js/footer.js?v=2" data-cfasync="false"></script>
-    <script src="./js/ai-chat-loader.js?v=5" defer data-cfasync="false"></script>
+    <footer></footer>
 
-    <script src="./js/translations.js?v=5" data-cfasync="false"></script>
-    <script src="./js/script.js?v=3.1" data-cfasync="false"></script>
-    <script src="https://bimmercodes.net/js/forum.js?v=3.3" data-cfasync="false"></script>
-    <script src="https://bimmercodes.net/js/report.js" data-cfasync="false"></script>
-    <script src="https://bimmercodes.net/js/image-to-webp.js?v=3.0" data-cfasync="false"></script>
-    <script src="https://bimmercodes.net/js/profile.js?v=3.3" data-cfasync="false"></script>
-    <script src="https://bimmercodes.net/js/live.js?v=3.5" data-cfasync="false"></script>
-    <script src="https://bimmercodes.net/js/modal-escape.js?v=3.0" data-cfasync="false"></script>
+    <script src="/js/footer.js?v=4.0" data-cfasync="false"></script>
+    <script src="/js/translations.js?v=6" data-cfasync="false"></script>
+    <script src="/js/parts-finder.js?v=6" data-cfasync="false"></script>
+    <script src="/js/script.js?v=4.0" data-cfasync="false"></script>
+    <script src="/js/forum.js?v=4.0" data-cfasync="false"></script>
+    <script src="/js/report.js?v=4.0" data-cfasync="false"></script>
+    <script src="/js/image-to-webp.js?v=3.0" data-cfasync="false"></script>
+    <script src="/js/profile.js?v=4.0" data-cfasync="false"></script>
+    <script src="/js/live.js?v=4.0" data-cfasync="false"></script>
+    <script src="/js/modal-escape.js?v=4.0" data-cfasync="false"></script>
 
     <script
       async

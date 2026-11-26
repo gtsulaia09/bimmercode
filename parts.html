@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>BMW OEM Parts Finder &amp; DTC Component Cross-Reference | BimmerCodes</title>
+    <meta
+      name="description"
+      content="Research Genuine BMW OEM part numbers, replacement components by diagnostic trouble code (DTC), installation difficulty, labor estimates, and ETK catalog cross-references."
+    />
+    <link rel="canonical" href="https://bimmercodes.net/parts.html" />
+    <meta name="robots" content="index, follow" />
+    <meta name="google-adsense-account" content="ca-pub-6807738591111613" />
+    <meta name="theme-color" content="#0A0C10" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Noto+Sans+Georgian:wght@400;500;600;700&display=swap"
+    />
+    <link rel="stylesheet" href="/css/tokens.css?v=4.0" />
+    <link rel="stylesheet" href="/css/style.css?v=4.0" />
+    <link rel="stylesheet" href="/css/parts-finder.css?v=4.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/ico.svg" />
+  </head>
+
+  <body>
+    <!-- ============================== HEADER ============================== -->
+    <header class="bc-header" role="banner">
+      <div class="bc-header__inner">
+        <a href="/" class="bc-brand" aria-label="BimmerCodes Home">
+          <span class="bc-brand__mark" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+              <rect x="3" y="3" width="58" height="58" rx="12" fill="#0E1218" stroke="#283244" stroke-width="2" />
+              <rect x="7" y="7" width="50" height="50" rx="8.5" fill="#131923" stroke="#1E2736" stroke-width="1" />
+              <path d="M16 18H31.5C36.2 18 39.5 20.5 39.5 24.6C39.5 27.4 37.9 29.5 35.2 30.4C38.5 31.2 40.5 33.6 40.5 37C40.5 41.6 36.9 44.5 31.4 44.5H16V18ZM22.2 28.4H29.9C32.2 28.4 33.5 27.3 33.5 25.4C33.5 23.5 32.2 22.5 29.9 22.5H22.2V28.4ZM22.2 40H30.4C33 40 34.4 38.8 34.4 36.7C34.4 34.6 32.9 33.4 30.3 33.4H22.2V40Z" fill="#E8EEF6" />
+              <path d="M43.5 18H49.5L43.5 44.5H37.5L43.5 18Z" fill="#2877EE" />
+              <rect x="46.5" y="18" width="3.5" height="7" rx="1" fill="#6EA8FF" />
+            </svg>
+          </span>
+          <span class="bc-brand__text">
+            <span class="bc-brand__name">BimmerCodes</span>
+            <span class="bc-brand__sub" data-i18n="brandSub">Diagnostic &amp; Engineering</span>
+          </span>
+        </a>
+
+        <nav class="bc-nav" aria-label="Primary Navigation">
+          <a href="/" class="bc-nav__link">
+            <i class="fas fa-microchip" aria-hidden="true"></i>
+            <span data-i18n="navCodes">Diagnostic Codes</span>
+          </a>
+          <a href="/all.html" class="bc-nav__link">
+            <i class="fas fa-list-ul" aria-hidden="true"></i>
+            <span data-i18n="navCodeIndex">Code Index</span>
+          </a>
+          <a href="/vin.html" class="bc-nav__link">
+            <i class="fas fa-barcode" aria-hidden="true"></i>
+            <span data-i18n="vinBtn">VIN Decoder</span>
+          </a>
+          <a href="/parts.html" class="bc-nav__link is-active" aria-current="page">
+            <i class="fas fa-cogs" aria-hidden="true"></i>
+            <span data-i18n="navParts">Parts Finder</span>
+          </a>
+          <a href="/forum.html" class="bc-nav__link">
+            <i class="fas fa-comments" aria-hidden="true"></i>
+            <span data-i18n="navForum">Forum</span>
+          </a>
+          <button type="button" class="bc-nav__link" data-open-ai-chat>
+            <i class="fas fa-sparkles" aria-hidden="true"></i>
+            <span data-i18n="navAi">AI Assistant</span>
+          </button>
+        </nav>
+
+        <div class="bc-header-tools controls">
+          <button id="language-toggle" type="button" class="bc-tool-btn bc-tool-btn--lang" title="Switch Language">
+            <i class="fas fa-globe" aria-hidden="true"></i>
+            <span>EN</span>
+          </button>
+          <a href="/profile.html" class="bc-tool-btn" id="parts-account-link">
+            <i class="fas fa-user-circle" aria-hidden="true"></i>
+            <span data-i18n="profile">Account</span>
+          </a>
+          <button
+            type="button"
+            class="bc-burger"
+            id="bc-mobile-burger"
+            aria-label="Open menu"
+            aria-controls="bc-mobile-drawer"
+            aria-expanded="false"
+          >
+            <i class="fas fa-bars" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile Drawer -->
+    <div class="bc-drawer" id="bc-mobile-drawer" role="dialog" aria-modal="true" aria-label="Menu">
+      <div class="bc-drawer__panel">
+        <div class="bc-drawer__head">
+          <span class="bc-brand__name">BimmerCodes</span>
+          <button type="button" class="bc-drawer__close" aria-label="Close menu" data-drawer-close>
+            <i class="fas fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+        <a href="/" class="bc-drawer__link"><i class="fas fa-magnifying-glass"></i> <span data-i18n="navCodes">Diagnostic Codes</span></a>
+        <a href="/all.html" class="bc-drawer__link"><i class="fas fa-list-ul"></i> <span data-i18n="navCodeIndex">Code Index</span></a>
+        <a href="/vin.html" class="bc-drawer__link"><i class="fas fa-barcode"></i> <span data-i18n="vinBtn">VIN Decoder</span></a>
+        <a href="/parts.html" class="bc-drawer__link is-active"><i class="fas fa-cogs"></i> <span data-i18n="navParts">Parts Finder</span></a>
+        <a href="/forum.html" class="bc-drawer__link"><i class="fas fa-comments"></i> <span data-i18n="navForum">Forum</span></a>
+        <button type="button" class="bc-drawer__link" data-open-ai-chat data-drawer-close>
+          <i class="fas fa-robot"></i> <span data-i18n="navAi">AI Assistant</span>
+        </button>
+        <span class="bc-drawer__section-label" data-i18n="sheetLanguage">Language</span>
+        <div class="bc-drawer__lang-row">
+          <button type="button" class="bc-drawer__lang-btn" data-set-lang="en">EN</button>
+          <button type="button" class="bc-drawer__lang-btn" data-set-lang="ru">RU</button>
+          <button type="button" class="bc-drawer__lang-btn" data-set-lang="ka">KA</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================== MAIN ============================== -->
+    <main>
+      <section class="bc-page-hero">
+        <div class="bc-container">
+          <span class="bc-kicker" data-i18n="partsHeroKicker">OEM &amp; ETK Component Research</span>
+          <h1 class="bc-page-hero__title" data-i18n="partsHeroTitle">BMW Parts Finder &amp; DTC Component Cross-Reference</h1>
+          <p class="bc-page-hero__lead" data-i18n="partsHeroLead">
+            Look up replacement parts mapped to BMW diagnostic trouble codes, verify 11-digit OEM part numbers, and cross-check technical ETK diagrams before ordering hardware.
+          </p>
+
+          <!-- Interactive Parts Research Console -->
+          <div class="bc-parts-console">
+            <div class="bc-parts-tabs" role="tablist">
+              <button type="button" class="bc-parts-tab is-active" data-parts-mode="dtc" role="tab" aria-selected="true" data-i18n="partsModeDtc">
+                Lookup by Fault Code (DTC)
+              </button>
+              <button type="button" class="bc-parts-tab" data-parts-mode="oem" role="tab" aria-selected="false" data-i18n="partsModeOem">
+                11-Digit OEM Number / Component
+              </button>
+            </div>
+
+            <form id="parts-lookup-form" class="bc-search-bar">
+              <i class="fas fa-cogs bc-search-bar__icon" aria-hidden="true"></i>
+              <input
+                type="search"
+                id="parts-query-input"
+                class="bc-search-bar__input"
+                placeholder="Enter BMW DTC code (e.g. P0171, P0128, 2A82, 30FF, 118001)…"
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <button type="submit" class="bc-search-bar__submit">
+                <span data-i18n="partsSearchBtn">Find Parts</span>
+                <i class="fas fa-arrow-right" aria-hidden="true"></i>
+              </button>
+            </form>
+
+            <div class="bc-quick-row">
+              <div class="bc-quick-chips">
+                <span class="bc-quick-chips__label" data-i18n="partsQuickLabel">Common DTC lookups:</span>
+                <button type="button" class="bc-code-chip" data-parts-quick="P0171">P0171 <span class="bc-code-chip__sys">MAF / Intake</span></button>
+                <button type="button" class="bc-code-chip" data-parts-quick="P0128">P0128 <span class="bc-code-chip__sys">Thermostat</span></button>
+                <button type="button" class="bc-code-chip" data-parts-quick="2A82">2A82 <span class="bc-code-chip__sys">VANOS Solenoid</span></button>
+                <button type="button" class="bc-code-chip" data-parts-quick="2E81">2E81 <span class="bc-code-chip__sys">Water Pump</span></button>
+                <button type="button" class="bc-code-chip" data-parts-quick="30FF">30FF <span class="bc-code-chip__sys">Boost Control</span></button>
+                <button type="button" class="bc-code-chip" data-parts-quick="A0B4">A0B4 <span class="bc-code-chip__sys">Starter</span></button>
+              </div>
+              <div class="bc-console-links">
+                <a href="/vin.html"><i class="fas fa-barcode"></i> <span data-i18n="verifyVinFitment">Verify VIN Specs First</span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bc-section">
+        <div class="bc-container">
+          <!-- Dynamic DTC Context Summary + API Parts Finder Mount -->
+          <div id="parts-code-summary" class="hidden" style="margin-bottom: 20px;"></div>
+          <div id="parts-research-results"></div>
+
+          <!-- Reference Guide when idle -->
+          <div id="parts-reference-guide">
+            <div class="bc-section-head">
+              <span class="bc-kicker" data-i18n="partsGuideKicker">Parts Verification Protocol</span>
+              <h2 class="bc-section-title" data-i18n="partsGuideTitle">How specialists verify BMW replacement parts.</h2>
+              <p class="bc-section-lead" data-i18n="partsGuideLead">
+                BMW frequently revises part numbers mid-cycle (LCI updates, TU engine revisions, SULEV N51/N26 variants). Always cross-check the 11-digit ETK part number against your vehicle's build date.
+              </p>
+            </div>
+
+            <div class="bc-generations">
+              <div class="bc-gen-panel">
+                <div class="bc-gen-panel__head">
+                  <span class="bc-gen-panel__series">01 · Genuine BMW</span>
+                  <span class="bc-gen-panel__years">11-Digit ETK</span>
+                </div>
+                <p class="bc-gen-panel__subtitle" data-i18n="partsTierGenuine">
+                  Factory BMW boxed components required or strongly advised for piezoelectric/solenoid injectors (Index 12), NOx/Lambda sensors, IBS cables, and coded control modules.
+                </p>
+              </div>
+
+              <div class="bc-gen-panel">
+                <div class="bc-gen-panel__head">
+                  <span class="bc-gen-panel__series">02 · Original Equipment (OE)</span>
+                  <span class="bc-gen-panel__years">Tier-1 Supplier</span>
+                </div>
+                <p class="bc-gen-panel__subtitle" data-i18n="partsTierOe">
+                  Manufactured on the same line as Genuine BMW parts without the roundel stamp — e.g., Pierburg (water pumps/solenoids), Bosch (coils/MAF/HDP), BorgWarner, Mahle/Behr, ZF, and Lemförder.
+                </p>
+              </div>
+
+              <div class="bc-gen-panel">
+                <div class="bc-gen-panel__head">
+                  <span class="bc-gen-panel__series">03 · Hardware &amp; Seals</span>
+                  <span class="bc-gen-panel__years">One-Time-Use</span>
+                </div>
+                <p class="bc-gen-panel__subtitle" data-i18n="partsTierSeals">
+                  Aluminum torque-to-yield bolts (water pump, VANOS gear, oil pan), Viton O-rings, and PTFE injector decoupling elements must not be reused during repair.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer></footer>
+
+    <script src="/js/translations.js?v=6" data-cfasync="false"></script>
+    <script src="/js/i18n-init.js?v=4.0" data-cfasync="false"></script>
+    <script src="/js/parts-finder.js?v=6" data-cfasync="false"></script>
+    <script src="/js/footer.js?v=4.0" data-cfasync="false"></script>
+    <script src="/js/live.js?v=4.0" data-cfasync="false"></script>
+    <script src="/js/modal-escape.js?v=4.0" data-cfasync="false"></script>
+    <script data-cfasync="false">
+      (function () {
+        "use strict";
+        let allCodes = [];
+        let mode = "dtc";
+        const form = document.getElementById("parts-lookup-form");
+        const input = document.getElementById("parts-query-input");
+        const summaryEl = document.getElementById("parts-code-summary");
+        const resultsEl = document.getElementById("parts-research-results");
+        const guideEl = document.getElementById("parts-reference-guide");
+
+        function getLang() {
+          return localStorage.getItem("forumLanguage") || localStorage.getItem("language") || "en";
+        }
+
+        function esc(s) {
+          return String(s || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+        }
+
+        async function ensureCodesLoaded() {
+          if (allCodes.length) return allCodes;
+          try {
+            const [r1, r2] = await Promise.all([fetch("/data/codes.json"), fetch("/data/data.json")]);
+            const c1 = r1.ok ? (await r1.json()).codes || [] : [];
+            const c2 = r2.ok ? (await r2.json()).codes || [] : [];
+            const seen = new Set(c1.map((c) => String(c.code).toUpperCase()));
+            allCodes = [...c1, ...c2.filter((c) => !seen.has(String(c.code).toUpperCase()))];
+          } catch (_) {}
+          return allCodes;
+        }
+
+        function renderCatalogFallback(query, matchedCode) {
+          const lang = getLang();
+          const cleanQuery = query.trim();
+          const realOemUrl = /^[0-9]{7,11}$/.test(cleanQuery.replace(/\s+/g, ""))
+            ? `https://www.realoem.com/bmw/enUS/partxref?q=${encodeURIComponent(cleanQuery.replace(/\s+/g, ""))}`
+            : `https://www.google.com/search?q=${encodeURIComponent("site:realoem.com BMW " + cleanQuery)}`;
+          const fcpUrl = `https://www.fcpeuro.com/products?keywords=${encodeURIComponent("BMW " + cleanQuery)}`;
+          const autodocUrl = `https://www.google.com/search?q=${encodeURIComponent("site:autodoc.co.uk BMW " + cleanQuery)}`;
+          const ecsUrl = `https://www.ecstuning.com/Search/SiteSearch/${encodeURIComponent("BMW " + cleanQuery)}/`;
+
+          const labels = {
+            en: {
+              heading: matchedCode
+                ? `ETK & Specialist Catalog Cross-Reference for DTC ${matchedCode.code}`
+                : `BMW Catalog Cross-Reference for "${cleanQuery}"`,
+              note: matchedCode
+                ? "Direct database SKU rows are not yet curated for this specific code. Use the verified fault context above and inspect factory ETK diagrams or OE specialist catalogs below:"
+                : "Verify exact 11-digit OEM supersessions and chassis applicability across primary BMW parts catalogs:"
+            },
+            ru: {
+              heading: matchedCode
+                ? `Кросс-каталоги ETK для кода ${matchedCode.code}`
+                : `Поиск по каталогам BMW: «${cleanQuery}»`,
+              note: matchedCode
+                ? "Для данного кода прямые артикулы в локальной таблице не заполнены. Используйте описание неисправности выше и проверьте схемы ETK у профильных поставщиков:"
+                : "Проверьте актуальные 11-значные OEM-ревизии и применимость по кузову в каталогах:"
+            },
+            ka: {
+              heading: matchedCode
+                ? `ETK და სპეციალიზებული კატალოგები კოდისთვის ${matchedCode.code}`
+                : `BMW კატალოგებში ძიება: "${cleanQuery}"`,
+              note: matchedCode
+                ? "ამ კოდისთვის პირდაპირი SKU ჩანაწერები ბაზაში ჯერ არ არის დამატებული. გამოიყენეთ ზემოთ მოცემული დიაგნოსტიკური კონტექსტი და გადაამოწმეთ ETK სქემები:"
+                : "გადაამოწმეთ 11-ნიშნა OEM ნომრის რევიზიები და ძარის თავსებადობა BMW-ს კატალოგებში:"
+            }
+          }[lang] || { heading: "", note: "" };
+
+          resultsEl.innerHTML = `
+            <div class="parts-finder-container">
+              <div class="parts-header">
+                <h3><i class="fas fa-book-open" aria-hidden="true"></i> ${esc(labels.heading)}</h3>
+              </div>
+              <div class="parts-section">
+                <p style="font-size: var(--font-size-sm); color: var(--text-secondary); line-height: 1.6;">
+                  ${esc(labels.note)}
+                </p>
+                <div class="bc-catalog-vendors">
+                  <a href="${realOemUrl}" target="_blank" rel="noopener noreferrer" class="bc-vendor-card">
+                    <div class="bc-vendor-card__name"><span>RealOEM BMW ETK</span><i class="fas fa-arrow-up-right-from-square"></i></div>
+                    <p class="bc-vendor-card__desc">Exploded factory diagrams, 11-digit part numbers, production date supersessions.</p>
+                    <span class="bc-vendor-card__tag">ETK DIAGRAM LOOKUP →</span>
+                  </a>
+                  <a href="${fcpUrl}" target="_blank" rel="noopener noreferrer" class="bc-vendor-card">
+                    <div class="bc-vendor-card__name"><span>FCP Euro</span><i class="fas fa-arrow-up-right-from-square"></i></div>
+                    <p class="bc-vendor-card__desc">Genuine BMW vs OE supplier distinction (Bosch, Pierburg, Mahle, ZF, Lemförder).</p>
+                    <span class="bc-vendor-card__tag">OE / GENUINE CATALOG →</span>
+                  </a>
+                  <a href="${ecsUrl}" target="_blank" rel="noopener noreferrer" class="bc-vendor-card">
+                    <div class="bc-vendor-card__name"><span>ECS Tuning</span><i class="fas fa-arrow-up-right-from-square"></i></div>
+                    <p class="bc-vendor-card__desc">Service kits, one-time-use aluminum bolt sets, gaskets, and OEM hardware.</p>
+                    <span class="bc-vendor-card__tag">SERVICE KITS &amp; OEM →</span>
+                  </a>
+                  <a href="${autodocUrl}" target="_blank" rel="noopener noreferrer" class="bc-vendor-card">
+                    <div class="bc-vendor-card__name"><span>AUTODOC Europe</span><i class="fas fa-arrow-up-right-from-square"></i></div>
+                    <p class="bc-vendor-card__desc">European aftermarket &amp; OE cross-reference by BMW OEM number and engine code.</p>
+                    <span class="bc-vendor-card__tag">EU CROSS-REFERENCE →</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        async function executeLookup(rawQuery) {
+          const q = (rawQuery || "").trim();
+          if (!q) return;
+
+          const lang = getLang();
+          const codes = await ensureCodesLoaded();
+          const upper = q.toUpperCase();
+          const matchedCode = codes.find(
+            (c) =>
+              String(c.code).toUpperCase() === upper ||
+              (c.pCodes || []).some((p) => String(p).toUpperCase() === upper)
+          );
+
+          if (matchedCode) {
+            const title = matchedCode.title?.[lang] || matchedCode.title?.en || matchedCode.code;
+            const solutions = matchedCode.solutions?.[lang] || matchedCode.solutions?.en || [];
+            const engines = (matchedCode.engineCodes || []).slice(0, 8);
+            const models = (matchedCode.applicableModels || []).slice(0, 8);
+
+            summaryEl.classList.remove("hidden");
+            summaryEl.innerHTML = `
+              <div class="bc-datasheet">
+                <div class="bc-datasheet__topbar">
+                  <span class="bc-kicker">Matched Diagnostic Fault Context</span>
+                  <a href="/code/${encodeURIComponent(matchedCode.code)}?lang=${encodeURIComponent(lang)}" class="bc-datasheet__back">
+                    <span>Full Code Datasheet</span>
+                    <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                  </a>
+                </div>
+                <div class="bc-datasheet__hero" style="border-bottom:none;">
+                  <div class="bc-datasheet__id-row">
+                    <span class="bc-datasheet__code">${esc(matchedCode.code)}</span>
+                    ${matchedCode.category ? `<span class="bc-badge">${esc(matchedCode.category)}</span>` : ""}
+                  </div>
+                  <div class="bc-datasheet__title">${esc(title)}</div>
+                  ${solutions.length ? `
+                    <ul class="bc-steps-list" style="margin-top:8px;">
+                      ${solutions.slice(0, 3).map((s) => `<li>${esc(s)}</li>`).join("")}
+                    </ul>
+                  ` : ""}
+                  ${engines.length || models.length ? `
+                    <div class="bc-tag-cloud" style="margin-top:6px;">
+                      ${engines.map((e) => `<span class="bc-spec-tag bc-spec-tag--engine">${esc(e)}</span>`).join("")}
+                      ${models.map((m) => `<span class="bc-spec-tag">${esc(m)}</span>`).join("")}
+                    </div>
+                  ` : ""}
+                </div>
+              </div>
+            `;
+
+            const finder = new PartsFinderUI("parts-research-results", {
+              onEmptyFallback: () => {
+                const searchKey = `${matchedCode.code} ${(matchedCode.engineCodes || [])[0] || ""} ${matchedCode.category || ""}`.trim();
+                renderCatalogFallback(searchKey, matchedCode);
+              }
+            });
+            await finder.loadParts(matchedCode.code);
+          } else {
+            summaryEl.classList.add("hidden");
+            summaryEl.innerHTML = "";
+            renderCatalogFallback(q, null);
+          }
+        }
+
+        // Mode switcher
+        document.querySelectorAll("[data-parts-mode]").forEach((tab) => {
+          tab.addEventListener("click", () => {
+            mode = tab.getAttribute("data-parts-mode");
+            document.querySelectorAll("[data-parts-mode]").forEach((b) => {
+              const on = b === tab;
+              b.classList.toggle("is-active", on);
+              b.setAttribute("aria-selected", on ? "true" : "false");
+            });
+            const lang = getLang();
+            if (mode === "oem") {
+              input.placeholder =
+                lang === "ru"
+                  ? "Введите 11-значный OEM номер (напр. 11517586925) или узел (VANOS solenoid N55)…"
+                  : lang === "ka"
+                    ? "შეიყვანეთ 11-ნიშნა OEM ნომერი (მაგ. 11517586925) ან დეტალის დასახელება…"
+                    : "Enter 11-digit BMW OEM number (e.g. 11517586925) or component name (N55 water pump)…";
+            } else {
+              input.placeholder =
+                lang === "ru"
+                  ? "Введите код ошибки BMW (напр. P0171, P0128, 2A82, 30FF, 118001)…"
+                  : lang === "ka"
+                    ? "შეიყვანეთ BMW DTC კოდი (მაგ. P0171, P0128, 2A82, 30FF, 118001)…"
+                    : "Enter BMW DTC code (e.g. P0171, P0128, 2A82, 30FF, 118001)…";
+            }
+            input.focus();
+          });
+        });
+
+        // Quick chips
+        document.querySelectorAll("[data-parts-quick]").forEach((chip) => {
+          chip.addEventListener("click", () => {
+            const code = chip.getAttribute("data-parts-quick");
+            input.value = code;
+            executeLookup(code);
+          });
+        });
+
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          executeLookup(input.value);
+        });
+
+        window.addEventListener("languageChanged", () => {
+          if (input.value.trim()) executeLookup(input.value);
+        });
+
+        // Support ?code=... deep link
+        const initialCode = new URLSearchParams(window.location.search).get("code");
+        if (initialCode) {
+          input.value = initialCode;
+          executeLookup(initialCode);
+        }
+      })();
+    </script>
+  </body>
+</html>

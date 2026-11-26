@@ -262,14 +262,14 @@ function normalizeRoleIdForBadge(roleId) {
 
 function getRoleBadge(roleId) {
     roleId = normalizeRoleIdForBadge(roleId);
-    if (roleId === 'super_admin_role') return '<span class="role-badge" style="background:#8e44ad;">Super Admin</span>';
-    if (roleId === 'admin_role') return '<span class="role-badge" style="background:#c0392b;">Admin</span>';
-    if (roleId === 'senior_moderator_role') return '<span class="role-badge" style="background:#d35400;">Sr. Mod</span>';
-    if (roleId === 'moderator_role') return '<span class="role-badge" style="background:#27ae60;">Mod</span>';
-    if (roleId === 'verified_owner_role') return '<span class="role-badge" style="background:#2980b9;">Verified</span>';
-    if (roleId === 'bmw_technician_role') return '<span class="role-badge" style="background:#16a085;">Technician</span>';
-    if (roleId === 'vendor_role') return '<span class="role-badge" style="background:#8e44ad;">Vendor</span>';
-    return '<span class="role-badge" style="background:#7f8c8d;">User</span>';
+    if (roleId === 'super_admin_role') return '<span class="role-badge role-badge--super">Super Admin</span>';
+    if (roleId === 'admin_role') return '<span class="role-badge role-badge--admin">Admin</span>';
+    if (roleId === 'senior_moderator_role') return '<span class="role-badge role-badge--srmod">Sr. Mod</span>';
+    if (roleId === 'moderator_role') return '<span class="role-badge role-badge--mod">Mod</span>';
+    if (roleId === 'verified_owner_role') return '<span class="role-badge role-badge--verified">Verified</span>';
+    if (roleId === 'bmw_technician_role') return '<span class="role-badge role-badge--tech">Technician</span>';
+    if (roleId === 'vendor_role') return '<span class="role-badge role-badge--vendor">Vendor</span>';
+    return '<span class="role-badge">User</span>';
 }
 
 function calculateUserLevel(rep) {

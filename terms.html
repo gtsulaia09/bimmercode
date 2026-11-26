@@ -1,185 +1,215 @@
 <!DOCTYPE html>
-<html lang="en" class="index-bento-page bcx-page">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of Service - BimmerCodes</title>
-    <meta name="description" content="BimmerCodes Terms of Service">
-    <link rel="stylesheet" href="./css/style.css?v=2.94">
-    <link rel="stylesheet" href="./css/tokens.css?v=3.0" />
-    <link rel="stylesheet" href="./css/ui-buttons.css?v=1" />
-    <link rel="stylesheet" href="./css/forum.css?v=3.14" />
-    <link rel="stylesheet" href="./css/index-bento.css?v=6" />
-    <link rel="stylesheet" href="./css/notifications.css?v=2.93">
-    <link rel="stylesheet" href="./css/site-premium.css?v=5" />
-    <link rel="stylesheet" href="./css/responsive.css?v=4" />
-    <link rel="stylesheet" href="./css/page-premium.css?v=1" />
-    <link rel="stylesheet" href="./css/site-responsive.css?v=3" />
-    <link rel="shortcut icon" href="./assets/icons/ico.svg" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="./js/translations.js?v=4"></script>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Terms of Service — BimmerCodes</title>
+    <meta name="description" content="BimmerCodes Terms of Service and diagnostic disclaimer." />
+    <link rel="canonical" href="https://bimmercodes.net/terms" />
+    <meta name="theme-color" content="#0A0C10" />
 
-    <!-- Google AdSense -->
-    <meta name="google-adsense-account" content="ca-pub-6807738591111613">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6807738591111613"
-     crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Noto+Sans+Georgian:wght@400;500;600;700&display=swap"
+    />
+
+    <link rel="stylesheet" href="/css/tokens.css?v=4.0" />
+    <link rel="stylesheet" href="/css/style.css?v=4.0" />
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/ico.svg" />
+    <link rel="shortcut icon" href="/assets/icons/ico.svg" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <meta name="google-adsense-account" content="ca-pub-6807738591111613" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6807738591111613" crossorigin="anonymous"></script>
+
     <style>
-        :root { --page-accent: var(--color-primary, #1C69D4); --page-accent-light: var(--color-accent, #4DA8FF); --page-accent-alpha: var(--color-primary-alpha-10, rgba(28,105,212,0.10)); }
-        .legal-page { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
-        .legal-hero {
-            background: linear-gradient(135deg, var(--page-accent-alpha) 0%, transparent 70%);
-            border: 1px solid var(--color-border, rgba(255,255,255,0.10)); border-radius: var(--radius-xl, 20px);
-            padding: 48px 40px; margin-bottom: 40px; text-align: center; position: relative; overflow: hidden;
-        }
-        .legal-hero::before { content:''; position:absolute; top:-60px; left:-60px; width:200px; height:200px; background:radial-gradient(circle, var(--page-accent-alpha) 0%, transparent 70%); }
-        .legal-hero-icon { font-size: 2.5rem; color: var(--page-accent); margin-bottom: 16px; opacity: 0.8; }
-        .legal-hero h1 { font-size: clamp(1.75rem,4vw,2.4rem); font-weight: 700; color: var(--color-text-primary, #E4E4E7); margin-bottom: 12px; }
-        .legal-hero .updated { font-size: 13px; color: var(--color-text-muted, #71717A); }
-        .legal-hero .intro { color: var(--color-text-secondary, #A1A1AA); font-size: 1rem; line-height: 1.7; max-width: 560px; margin: 16px auto 0; }
-        .legal-toc { background: var(--color-surface, #151517); border:1px solid var(--color-border, rgba(255,255,255,0.10)); border-radius: var(--radius-lg, 14px); padding:24px 28px; margin-bottom:36px; }
-        .legal-toc h3 { color: var(--color-text-muted, #71717A); font-size:12px; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:16px; }
-        .legal-toc ol { list-style:decimal; padding-left:20px; display:grid; grid-template-columns:1fr 1fr; gap:8px 20px; }
-        @media(max-width:600px){.legal-toc ol{grid-template-columns:1fr;}}
-        .legal-toc li a { color: var(--page-accent); text-decoration:none; font-size:13.5px; transition:color 0.2s; }
-        .legal-toc li a:hover { color: var(--page-accent-light); }
-        .legal-section { background: var(--color-surface, #151517); border:1px solid var(--color-border, rgba(255,255,255,0.10)); border-radius: var(--radius-xl, 20px); padding:28px 32px; margin-bottom:20px; transition:border-color 0.2s; }
-        .legal-section:hover { border-color: var(--color-border-strong, rgba(255,255,255,0.18)); }
-        .legal-section-header { display:flex; align-items:center; gap:14px; margin-bottom:16px; }
-        .legal-section-icon { width:42px; height:42px; min-width:42px; border-radius: var(--radius-md, 10px); background: var(--page-accent-alpha); display:flex; align-items:center; justify-content:center; color: var(--page-accent); font-size:16px; }
-        .legal-section h2 { color: var(--color-text-primary, #E4E4E7); font-size:1.05rem; font-weight:600; margin:0; }
-        .legal-section p { color: var(--color-text-secondary, #A1A1AA); line-height:1.75; margin-bottom:12px; font-size:0.95rem; }
-        .legal-section p:last-child { margin-bottom:0; }
-        .legal-section ul { color: var(--color-text-secondary, #A1A1AA); line-height:1.8; padding-left:20px; font-size:0.95rem; }
-        .legal-section ul li { margin-bottom:5px; }
-        .highlight-box { background: var(--page-accent-alpha); border-left:3px solid var(--page-accent); border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; color: var(--page-accent-light); font-size:0.9rem; }
-        .legal-footer-links { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:48px; }
-        .legal-footer-links a { padding:10px 22px; border:1px solid var(--color-border, rgba(255,255,255,0.10)); border-radius: var(--radius-pill, 999px); color: var(--color-text-secondary, #A1A1AA); text-decoration:none; font-size:13px; transition: border-color 0.2s, color 0.2s; }
-        .legal-footer-links a:hover { border-color: var(--page-accent); color: var(--color-text-primary, #E4E4E7); }
-        .notification-btn { display: none!important; }
+      .highlight-box {
+        background-color: var(--accent-subtle);
+        border-left: 3px solid var(--accent);
+        border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+        padding: 12px 14px;
+        margin: 12px 0;
+        color: var(--text-primary);
+        font-size: var(--font-size-sm);
+      }
     </style>
-</head>
-<body class="bmw-pattern bcx">
-    <div id="webgl-container" class="index-bento-bg" aria-hidden="true"></div>
-    <header class="forum-header index-bento">
-        <div class="logo-container index-header-brand">
-            <a class="main_logo_refr" href="/" aria-label="BimmerCodes home">
-                <div class="logo" aria-hidden="true">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                        <circle cx="50" cy="50" r="48" stroke="white" stroke-width="4" fill="black" />
-                        <circle cx="50" cy="50" r="35" fill="white" />
-                        <path d="M 50,15 A 35,35 0 0,1 85,50 H 50 Z" fill="#1A6FB0" />
-                        <path d="M 50,50 H 85 A 35,35 0 0,1 50,85 Z" fill="white" />
-                        <path d="M 50,50 V 15 A 35,35 0 0,0 15,50 Z" fill="white" />
-                        <path d="M 50,50 H 15 A 35,35 0 0,0 50,85 Z" fill="#1A6FB0" />
-                    </svg>
-                </div>
-                <h1 class="index-header-title">
-                    BMW Diagnostic Codes <span class="index-header-title-muted">· Legal</span>
-                </h1>
-            </a>
+  </head>
+
+  <body>
+    <header class="bc-header" role="banner">
+      <div class="bc-header__inner">
+        <a href="/" class="bc-brand" aria-label="BimmerCodes Home">
+          <span class="bc-brand__mark" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+              <rect x="3" y="3" width="58" height="58" rx="12" fill="#0E1218" stroke="#283244" stroke-width="2" />
+              <rect x="7" y="7" width="50" height="50" rx="8.5" fill="#131923" stroke="#1E2736" stroke-width="1" />
+              <path d="M16 18H31.5C36.2 18 39.5 20.5 39.5 24.6C39.5 27.4 37.9 29.5 35.2 30.4C38.5 31.2 40.5 33.6 40.5 37C40.5 41.6 36.9 44.5 31.4 44.5H16V18ZM22.2 28.4H29.9C32.2 28.4 33.5 27.3 33.5 25.4C33.5 23.5 32.2 22.5 29.9 22.5H22.2V28.4ZM22.2 40H30.4C33 40 34.4 38.8 34.4 36.7C34.4 34.6 32.9 33.4 30.3 33.4H22.2V40Z" fill="#E8EEF6" />
+              <path d="M43.5 18H49.5L43.5 44.5H37.5L43.5 18Z" fill="#2877EE" />
+              <rect x="46.5" y="18" width="3.5" height="7" rx="1" fill="#6EA8FF" />
+            </svg>
+          </span>
+          <span class="bc-brand__text">
+            <span class="bc-brand__name">BimmerCodes</span>
+            <span class="bc-brand__sub" data-i18n="brandSub">Diagnostic &amp; Engineering</span>
+          </span>
+        </a>
+
+        <nav class="bc-nav" aria-label="Primary Navigation">
+          <a href="/" class="bc-nav__link"><i class="fas fa-microchip"></i> <span data-i18n="navCodes">Diagnostic Codes</span></a>
+          <a href="/all.html" class="bc-nav__link"><i class="fas fa-list-ul"></i> <span data-i18n="navCodeIndex">Code Index</span></a>
+          <a href="/vin.html" class="bc-nav__link"><i class="fas fa-barcode"></i> <span data-i18n="vinBtn">VIN Decoder</span></a>
+          <a href="/parts.html" class="bc-nav__link"><i class="fas fa-cogs"></i> <span data-i18n="navParts">Parts Finder</span></a>
+          <a href="/forum.html" class="bc-nav__link"><i class="fas fa-comments"></i> <span data-i18n="navForum">Forum</span></a>
+        </nav>
+
+        <div class="bc-header-tools controls">
+          <button type="button" class="bc-tool-btn bc-tool-btn--lang" id="language-toggle" title="Language">
+            <i class="fas fa-globe" aria-hidden="true"></i>
+            <span>EN</span>
+          </button>
+          <button type="button" class="bc-burger" id="bc-mobile-burger" aria-label="Open menu" aria-controls="bc-mobile-drawer" aria-expanded="false">
+            <i class="fas fa-bars" aria-hidden="true"></i>
+          </button>
         </div>
-        <div class="controls">
-            <a href="/" class="index-header-btn btn" title="Home">
-                <i class="fas fa-home" aria-hidden="true"></i> <span data-i18n="homeBtn">Home</span>
-            </a>
-            <a href="/vin.html" class="index-header-btn btn" title="VIN Check">
-                <i class="fas fa-fingerprint" aria-hidden="true"></i> <span data-i18n="vinBtn">VIN</span>
-            </a>
-            <a href="/forum" class="index-header-btn btn">
-                <i class="fas fa-comments" aria-hidden="true"></i> <span data-i18n="forumBtn">Forum</span>
-            </a>
-            <button type="button" class="index-header-btn btn" id="language-toggle" title="Language">
-                <i class="fas fa-globe" aria-hidden="true"></i> <span>EN</span>
-            </button>
-            <a href="/contact" class="index-header-btn btn"><i class="fas fa-envelope" aria-hidden="true"></i> Contact</a>
-        </div>
+      </div>
     </header>
 
-    <main>
-        <div class="legal-page">
-            <div class="legal-hero">
-                <div class="legal-hero-icon"><i class="fas fa-file-contract"></i></div>
-                <h1 data-i18n="termsTitle">Terms of Service</h1>
-                <div class="updated" data-i18n="termsUpdated">Last updated: February 2026</div>
-                <p class="intro" data-i18n="termsIntro">Please read these Terms of Service carefully before using BimmerCodes.</p>
-            </div>
-
-            <div class="legal-toc">
-                <h3><i class="fas fa-list"></i> <span data-i18n="termsTocTitle">Contents</span></h3>
-                <ol>
-                    <li><a href="#acceptance" data-i18n="termsToc1">Acceptance of Terms</a></li>
-                    <li><a href="#use" data-i18n="termsToc2">Use of Service</a></li>
-                    <li><a href="#accounts" data-i18n="termsToc3">User Accounts</a></li>
-                    <li class="hidden"><a href="#forum" data-i18n="termsToc4">Forum Rules</a></li>
-                    <li><a href="#ip" data-i18n="termsToc5">Intellectual Property</a></li>
-                    <li><a href="#disclaimer" data-i18n="termsToc6">Disclaimer</a></li>
-                    <li><a href="#liability" data-i18n="termsToc7">Limitation of Liability</a></li>
-                    <li><a href="#modifications" data-i18n="termsToc8">Modifications</a></li>
-                    <li><a href="#termination" data-i18n="termsToc9">Termination</a></li>
-                    <li><a href="#contact" data-i18n="termsToc10">Contact</a></li>
-                </ol>
-            </div>
-
-            <div class="legal-section" id="acceptance">
-                <div class="legal-section-header"><div class="legal-section-icon"><i class="fas fa-handshake"></i></div><h2 data-i18n="termsH1">1. Acceptance of Terms</h2></div>
-                <div data-i18n-html="termsSec1"><p>By accessing and using BimmerCodes.net ("the Service"), you accept and agree to be bound by the terms and provisions of this agreement. If you do not agree, please do not use the Service.</p><p>This agreement is effective as of the date you first access the Service. We reserve the right to update these terms at any time.</p></div>
-            </div>
-
-            <div class="legal-section" id="use">
-                <div class="legal-section-header"><div class="legal-section-icon"><i class="fas fa-tools"></i></div><h2 data-i18n="termsH2">2. Use of Service</h2></div>
-                <div data-i18n-html="termsSec2"><p>BimmerCodes provides a BMW diagnostic code database, community forum, VIN decoder, and related tools for informational and educational purposes. You agree to use the Service only for lawful purposes.</p><p>You agree <strong>not</strong> to:</p><ul><li>Duplicate, copy, sell, or exploit any portion of the Service without written permission</li><li>Use automated tools to scrape or harvest data from the Service</li><li>Attempt to gain unauthorized access to any part of the Service</li><li>Interfere with or disrupt the integrity or performance of the Service</li></ul></div>
-            </div>
-
-            <div class="legal-section" id="accounts">
-                <div class="legal-section-header"><div class="legal-section-icon"><i class="fas fa-user-circle"></i></div><h2 data-i18n="termsH3">3. User Accounts</h2></div>
-                <div data-i18n-html="termsSec3"><p>To access certain features like the forum, you must create an account. You are responsible for maintaining the confidentiality of your credentials and all activities under your account.</p><div class="highlight-box"><i class="fas fa-lock"></i> Your password is securely hashed and is never stored in plain text.</div><p>We reserve the right to suspend or terminate accounts that violate these Terms.</p></div>
-            </div>
-
-            <div class="legal-section hidden" id="forum">
-                <div class="legal-section-header"><div class="legal-section-icon"><i class="fas fa-comments"></i></div><h2 data-i18n="termsH4">4. Forum Rules &amp; Content</h2></div>
-                <div data-i18n-html="termsSec4"><p>By participating in our forum, you agree to follow our community guidelines:</p><ul><li>Be respectful — no harassment, hate speech, or personal attacks</li><li>Stay on topic — keep discussions relevant to BMW/MINI vehicles</li><li>No spam or commercial promotion without prior written approval</li><li>Provide accurate information — incorrect diagnostic advice can cause real damage</li></ul></div>
-            </div>
-
-            <div class="legal-section" id="ip">
-                <div class="legal-section-header"><div class="legal-section-icon"><i class="fas fa-copyright"></i></div><h2 data-i18n="termsH5">5. Intellectual Property</h2></div>
-                <div data-i18n-html="termsSec5"><p>All content on BimmerCodes is the property of BimmerCodes or its content creators and is protected by applicable copyright and intellectual property laws.</p><p>"BMW" and "MINI" are trademarks of Bayerische Motoren Werke AG. BimmerCodes is an independent platform not affiliated with or endorsed by BMW AG.</p></div>
-            </div>
-
-            <div class="legal-section" id="disclaimer">
-                <div class="legal-section-header"><div class="legal-section-icon"><i class="fas fa-exclamation-triangle"></i></div><h2 data-i18n="termsH6">6. Disclaimer</h2></div>
-                <div data-i18n-html="termsSec6"><p>All diagnostic information provided on BimmerCodes is for <strong>educational and informational purposes only</strong>. We make no warranties about the accuracy or suitability of this information for any purpose.</p><div class="highlight-box"><i class="fas fa-exclamation-circle"></i> Always consult a qualified BMW technician before performing repairs. Incorrect repairs can result in property damage or injury.</div></div>
-            </div>
-
-            <div class="legal-section" id="liability">
-                <div class="legal-section-header"><div class="legal-section-icon"><i class="fas fa-shield-alt"></i></div><h2 data-i18n="termsH7">7. Limitation of Liability</h2></div>
-                <div data-i18n-html="termsSec7"><p>To the fullest extent permitted by applicable law, BimmerCodes and its operators shall not be liable for any indirect, incidental, special, or consequential damages resulting from your use of the Service.</p></div>
-            </div>
-
-            <div class="legal-section" id="modifications">
-                <div class="legal-section-header"><div class="legal-section-icon"><i class="fas fa-edit"></i></div><h2 data-i18n="termsH8">8. Modifications to Terms</h2></div>
-                <div data-i18n-html="termsSec8"><p>We reserve the right to modify these Terms at any time. We will notify of significant changes by updating the "Last updated" date. Continued use of the Service constitutes your acceptance of the updated Terms.</p></div>
-            </div>
-
-            <div class="legal-section" id="termination">
-                <div class="legal-section-header"><div class="legal-section-icon"><i class="fas fa-user-slash"></i></div><h2 data-i18n="termsH9">9. Termination</h2></div>
-                <div data-i18n-html="termsSec9"><p>We reserve the right to suspend or terminate your access to the Service at any time, without notice, for conduct that we believe violates these Terms or is harmful to other users.</p></div>
-            </div>
-
-            <div class="legal-section" id="contact">
-                <div class="legal-section-header"><div class="legal-section-icon"><i class="fas fa-envelope"></i></div><h2 data-i18n="termsToc10">10. Contact</h2></div>
-                <div data-i18n-html="termsSec10"><p>Questions about these Terms? Contact us at <a href="mailto:codesbimmer@gmail.com" style="color:var(--bmw-blue,#0066b3);">codesbimmer@gmail.com</a> or via our <a href="/contact" style="color:var(--bmw-blue,#0066b3);">Contact Page</a>.</p></div>
-            </div>
-
-            <div class="legal-footer-links">
-                <a href="/privacy"><i class="fas fa-user-shield"></i> <span data-i18n="termsFooterPrivacy">Privacy Policy</span></a>
-                <a href="/contact"><i class="fas fa-envelope"></i> <span data-i18n="termsFooterContact">Contact Us</span></a>
-                <a href="/"><i class="fas fa-home"></i> <span data-i18n="homeBtn">Home</span></a>
-            </div>
+    <div class="bc-drawer" id="bc-mobile-drawer" role="dialog" aria-modal="true" aria-label="Menu">
+      <div class="bc-drawer__panel">
+        <div class="bc-drawer__head">
+          <span class="bc-brand__name">BimmerCodes</span>
+          <button type="button" class="bc-drawer__close" aria-label="Close menu" data-drawer-close><i class="fas fa-times"></i></button>
         </div>
+        <a href="/" class="bc-drawer__link"><i class="fas fa-magnifying-glass"></i> <span data-i18n="navCodes">Diagnostic Codes</span></a>
+        <a href="/vin.html" class="bc-drawer__link"><i class="fas fa-barcode"></i> <span data-i18n="vinBtn">VIN Decoder</span></a>
+        <a href="/parts.html" class="bc-drawer__link"><i class="fas fa-cogs"></i> <span data-i18n="navParts">Parts Finder</span></a>
+        <a href="/forum.html" class="bc-drawer__link"><i class="fas fa-comments"></i> <span data-i18n="navForum">Forum</span></a>
+        <a href="/contact.html" class="bc-drawer__link"><i class="fas fa-envelope"></i> <span data-i18n="termsFooterContact">Contact</span></a>
+      </div>
+    </div>
+
+    <main>
+      <section class="bc-page-hero">
+        <div class="bc-container">
+          <span class="bc-kicker" data-i18n="termsUpdated">Last updated: February 2026</span>
+          <h1 class="bc-page-hero__title" data-i18n="termsTitle">Terms of Service</h1>
+          <p class="bc-page-hero__lead" data-i18n="termsIntro">
+            Platform usage guidelines, community conduct, and automotive diagnostic disclaimers for BimmerCodes.
+          </p>
+        </div>
+      </section>
+
+      <div class="bc-container">
+        <div class="bc-editorial-layout">
+          <aside class="bc-editorial-toc" aria-label="Contents">
+            <h2 class="bc-editorial-toc__title" data-i18n="termsTocTitle">Contents</h2>
+            <ul class="bc-editorial-toc__list">
+              <li><a href="#acceptance" data-i18n="termsToc1">1. Acceptance of Terms</a></li>
+              <li><a href="#use" data-i18n="termsToc2">2. Use of Service</a></li>
+              <li><a href="#accounts" data-i18n="termsToc3">3. User Accounts</a></li>
+              <li><a href="#forum" data-i18n="termsToc4">4. Forum Conduct</a></li>
+              <li><a href="#ip" data-i18n="termsToc5">5. Intellectual Property</a></li>
+              <li><a href="#disclaimer" data-i18n="termsToc6">6. Diagnostic Disclaimer</a></li>
+              <li><a href="#liability" data-i18n="termsToc7">7. Limitation of Liability</a></li>
+              <li><a href="#modifications" data-i18n="termsToc8">8. Modifications</a></li>
+              <li><a href="#termination" data-i18n="termsToc9">9. Termination</a></li>
+              <li><a href="#contact" data-i18n="termsToc10">10. Contact</a></li>
+            </ul>
+          </aside>
+
+          <div class="bc-prose-card">
+            <section class="bc-prose-section" id="acceptance">
+              <h2 data-i18n="termsH1">1. Acceptance of Terms</h2>
+              <div data-i18n-html="termsSec1">
+                <p>By accessing and using BimmerCodes.net ("the Service"), you accept and agree to be bound by these Terms of Service.</p>
+              </div>
+            </section>
+
+            <section class="bc-prose-section" id="use">
+              <h2 data-i18n="termsH2">2. Use of Service</h2>
+              <div data-i18n-html="termsSec2">
+                <p>BimmerCodes provides a BMW diagnostic code reference, community forum, VIN decoder, and OEM parts research tools for informational and educational use.</p>
+                <ul>
+                  <li>Do not scrape, mirror, or commercially resell database records without written permission</li>
+                  <li>Do not attempt unauthorized access or disrupt service availability</li>
+                </ul>
+              </div>
+            </section>
+
+            <section class="bc-prose-section" id="accounts">
+              <h2 data-i18n="termsH3">3. User Accounts</h2>
+              <div data-i18n-html="termsSec3">
+                <p>You are responsible for safeguarding your account credentials and all actions performed under your profile.</p>
+                <div class="highlight-box"><i class="fas fa-lock"></i> Passwords are cryptographically hashed and never stored in plain text.</div>
+              </div>
+            </section>
+
+            <section class="bc-prose-section" id="forum">
+              <h2 data-i18n="termsH4">4. Forum Conduct &amp; Technical Accuracy</h2>
+              <div data-i18n-html="termsSec4">
+                <p>When contributing to the technical forum:</p>
+                <ul>
+                  <li>Maintain professional, respectful communication</li>
+                  <li>Keep threads focused on BMW/MINI diagnostics, electronics, and mechanical engineering</li>
+                  <li>Avoid unverified or hazardous repair instructions on safety-critical systems (SRS, DSC, brakes, high-voltage PHEV/BEV)</li>
+                </ul>
+              </div>
+            </section>
+
+            <section class="bc-prose-section" id="ip">
+              <h2 data-i18n="termsH5">5. Intellectual Property &amp; Trademarks</h2>
+              <div data-i18n-html="termsSec5">
+                <p>Original platform software, design, and curated guides belong to BimmerCodes.</p>
+                <p>"BMW" and "MINI" are registered trademarks of Bayerische Motoren Werke AG. BimmerCodes is an independent technical resource not affiliated with or endorsed by BMW AG.</p>
+              </div>
+            </section>
+
+            <section class="bc-prose-section" id="disclaimer">
+              <h2 data-i18n="termsH6">6. Automotive Diagnostic Disclaimer</h2>
+              <div data-i18n-html="termsSec6">
+                <p>Diagnostic descriptions, repair procedures, and AI-assisted suggestions are provided strictly for <strong>informational and educational reference</strong>.</p>
+                <div class="highlight-box"><i class="fas fa-triangle-exclamation"></i> Always verify factory torque specs, wiring diagrams, and safety procedures, or consult a qualified BMW specialist before performing vehicle repairs.</div>
+              </div>
+            </section>
+
+            <section class="bc-prose-section" id="liability">
+              <h2 data-i18n="termsH7">7. Limitation of Liability</h2>
+              <div data-i18n-html="termsSec7">
+                <p>To the maximum extent permitted by law, BimmerCodes and its operators shall not be liable for any direct, indirect, or consequential vehicle or property damage arising from reliance on reference materials.</p>
+              </div>
+            </section>
+
+            <section class="bc-prose-section" id="modifications">
+              <h2 data-i18n="termsH8">8. Modifications to Terms</h2>
+              <div data-i18n-html="termsSec8">
+                <p>We may update these Terms periodically; continued use constitutes acceptance of the revised Terms.</p>
+              </div>
+            </section>
+
+            <section class="bc-prose-section" id="termination">
+              <h2 data-i18n="termsH9">9. Termination</h2>
+              <div data-i18n-html="termsSec9">
+                <p>Accounts violating community safety or anti-spam rules may be suspended or terminated.</p>
+              </div>
+            </section>
+
+            <section class="bc-prose-section" id="contact">
+              <h2 data-i18n="termsToc10">10. Contact</h2>
+              <div data-i18n-html="termsSec10">
+                <p>Questions about these Terms? Email <a href="mailto:codesbimmer@gmail.com">codesbimmer@gmail.com</a> or visit our <a href="/contact.html">Contact Page</a>.</p>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
     </main>
 
-    <footer><!-- Content injected by js/footer.js --></footer>
-    <script src="./js/footer.js"></script>
-    <script src="./js/i18n-init.js"></script>
-</body>
+    <footer></footer>
+
+    <script src="/js/translations.js?v=6"></script>
+    <script src="/js/i18n-init.js?v=4.0"></script>
+    <script src="/js/footer.js?v=4.0"></script>
+  </body>
 </html>

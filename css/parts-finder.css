@@ -1,351 +1,459 @@
-/* =====================================================
-   PARTS FINDER STYLES
-   ===================================================== */
+/* =============================================================================
+   BimmerCodes — OEM Parts Finder Stylesheet
+   Credible, technical automotive parts specification & vendor cross-reference.
+   ========================================================================== */
 
 .parts-finder-container {
-  margin: 30px 0;
-  padding: 20px;
-  background: var(--card-bg, rgba(255, 255, 255, 0.05));
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
+  background-color: var(--surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
 .parts-header {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
-  margin-bottom: 25px;
-  padding-bottom: 15px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 24px;
+  background-color: var(--bg-subtle);
+  border-bottom: 1px solid var(--border-default);
 }
 
 .parts-header h3 {
-  font-size: 1.5rem;
-  color: var(--primary-color, #1e90ff);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
   margin: 0;
+}
+.parts-header h3 i {
+  color: var(--accent-light);
+  font-size: 15px;
 }
 
 .estimated-cost {
-  text-align: right;
-}
-
-.estimated-cost span {
-  display: block;
-  font-size: 0.9rem;
-  color: var(--text-muted, #999);
-}
-
-.estimated-cost strong {
-  font-size: 1.3rem;
-  color: var(--success-color, #4caf50);
-}
-
-/* Parts Sections */
-.parts-section {
-  margin-bottom: 30px;
-}
-
-.parts-section h4 {
-  font-size: 1.2rem;
-  margin-bottom: 15px;
-  color: var(--text-color, #fff);
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  padding: 6px 12px;
+  background-color: var(--surface-2);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+}
+.estimated-cost strong {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
 }
 
-.primary-parts h4 { color: #ff5252; }
-.secondary-parts h4 { color: #ffa726; }
-.optional-parts h4 { color: #42a5f5; }
+.parts-section {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.parts-section:last-child {
+  border-bottom: none;
+}
 
-/* Part Card */
+.parts-section > h4 {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--metal-mid);
+  margin-bottom: 14px;
+}
+.primary-parts > h4 i {
+  color: var(--sev-high);
+}
+.secondary-parts > h4 i {
+  color: var(--accent-light);
+}
+.optional-parts > h4 i {
+  color: var(--text-tertiary);
+}
+
+.parts-grid-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .part-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 15px;
-  transition: all 0.3s ease;
+  background-color: var(--surface-2);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: border-color var(--transition-fast);
 }
-
 .part-card:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: var(--primary-color, #1e90ff);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  border-color: var(--border-strong);
 }
 
 .part-header {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   align-items: flex-start;
-  margin-bottom: 15px;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .part-title {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 10px;
-  flex: 1;
 }
-
 .part-title h5 {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
   margin: 0;
-  font-size: 1.1rem;
-  color: var(--text-color, #fff);
 }
 
-/* Badges */
-.badge {
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.badge-oem {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
+.badge-oem,
 .badge-aftermarket {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.badge-oem {
+  background-color: var(--accent-subtle);
+  border: 1px solid rgba(40, 119, 238, 0.32);
+  color: var(--accent-light);
+}
+.badge-aftermarket {
+  background-color: var(--surface-3);
+  border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
+}
+
+.part-rating {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+}
+.part-rating .stars i {
+  color: #EAB308;
+  font-size: 11px;
+}
+
+/* Technical Spec Strip inside Part Card */
+.part-spec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+  gap: 10px;
+  padding: 12px 14px;
+  background-color: var(--surface-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.part-spec-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.part-spec-cell__label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+}
+.part-spec-cell__value {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.part-spec-cell__value code {
+  font-family: var(--font-mono);
+  color: var(--accent-light);
+  font-size: 13px;
+}
+
+.part-copy-oem {
+  background: transparent;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xs);
+  color: var(--text-tertiary);
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  cursor: pointer;
+}
+.part-copy-oem:hover {
+  color: var(--text-primary);
+  background-color: var(--surface-2);
+}
+
+.part-meta-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
 }
 
 .difficulty-badge {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 5px 12px;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  margin-top: 10px;
+  gap: 6px;
+  padding: 3px 9px;
+  border-radius: var(--radius-xs);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  border: 1px solid var(--border-default);
+  background-color: var(--surface-3);
+  color: var(--text-secondary);
 }
-
 .difficulty-easy {
-  background: rgba(76, 175, 80, 0.2);
-  color: #4caf50;
-  border: 1px solid rgba(76, 175, 80, 0.3);
+  border-color: var(--sev-low-border);
+  color: #34D399;
+  background-color: var(--sev-low-bg);
 }
-
 .difficulty-medium {
-  background: rgba(255, 167, 38, 0.2);
-  color: #ffa726;
-  border: 1px solid rgba(255, 167, 38, 0.3);
+  border-color: var(--sev-medium-border);
+  color: #FACC15;
+  background-color: var(--sev-medium-bg);
 }
-
-.difficulty-hard {
-  background: rgba(244, 67, 54, 0.2);
-  color: #f44336;
-  border: 1px solid rgba(244, 67, 54, 0.3);
-}
-
+.difficulty-hard,
 .difficulty-professional {
-  background: rgba(156, 39, 176, 0.2);
-  color: #9c27b0;
-  border: 1px solid rgba(156, 39, 176, 0.3);
+  border-color: var(--sev-high-border);
+  color: #FB923C;
+  background-color: var(--sev-high-bg);
 }
 
-/* Part Details */
-.part-details {
-  margin-bottom: 15px;
-}
-
-.part-info {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.info-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.info-row .label {
-  color: var(--text-muted, #999);
-  font-size: 0.9rem;
-}
-
-.info-row .value {
-  color: var(--text-color, #fff);
-  font-weight: 500;
-}
-
-.info-row .value code {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-family: 'Courier New', monospace;
-  color: var(--primary-color, #1e90ff);
-}
-
-.info-row .price {
-  color: var(--success-color, #4caf50);
-  font-weight: 600;
-}
-
-/* Rating */
-.part-rating {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 0.9rem;
-}
-
-.stars {
-  color: #ffc107;
-}
-
-.stars i {
-  margin-right: 2px;
-}
-
-/* Compatibility */
-.compatibility-info {
-  background: rgba(66, 165, 245, 0.1);
-  border-left: 3px solid #42a5f5;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  color: #42a5f5;
-}
-
+.compatibility-info,
 .part-notes {
-  background: rgba(255, 193, 7, 0.1);
-  border-left: 3px solid #ffc107;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  color: #ffc107;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.compatibility-info i {
+  color: var(--status-success);
+  margin-top: 2px;
+}
+.part-notes i {
+  color: var(--accent-light);
+  margin-top: 2px;
 }
 
-/* Buy Links */
+/* Purchase / Supplier Rows */
 .buy-links {
-  margin-top: 20px;
-  padding-top: 15px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 12px;
 }
-
 .buy-links-header {
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: var(--text-color, #fff);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+  margin-bottom: 8px;
 }
 
 .marketplace-links {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 8px;
 }
 
 .marketplace-link {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 12px;
+  background-color: var(--surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
   text-decoration: none;
-  color: inherit;
-  transition: all 0.3s ease;
+  color: var(--text-primary);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
 }
-
 .marketplace-link:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: var(--primary-color, #1e90ff);
-  transform: translateY(-2px);
+  background-color: var(--surface-3);
+  border-color: var(--border-accent);
+  color: var(--text-primary);
 }
-
 .marketplace-link.disabled {
-  opacity: 0.5;
-  pointer-events: none;
+  opacity: 0.52;
 }
 
 .marketplace-info {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-weight: 600;
-  color: var(--text-color, #fff);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
 }
-
 .marketplace-info i {
-  font-size: 1.2rem;
+  color: var(--text-tertiary);
+  font-size: 13px;
 }
 
 .price-info {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.2;
 }
-
 .price-info .price {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--success-color, #4caf50);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
 }
-
-.free-shipping {
-  font-size: 0.75rem;
-  color: #4caf50;
-}
-
-.shipping {
-  font-size: 0.75rem;
-  color: var(--text-muted, #999);
-}
-
+.price-info .shipping,
+.price-info .free-shipping,
 .out-of-stock {
-  font-size: 0.8rem;
-  color: #f44336;
+  font-size: 10.5px;
+  color: var(--text-tertiary);
+}
+.price-info .free-shipping {
+  color: #34D399;
+}
+.out-of-stock {
+  color: #F87171;
 }
 
-/* Loading & Error States */
+.no-links {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+}
+
 .parts-loading,
 .parts-error {
-  text-align: center;
-  padding: 40px;
-  color: var(--text-muted, #999);
+  padding: 28px 20px;
+  background-color: var(--surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
 }
-
-.parts-loading i {
-  font-size: 2rem;
-  margin-bottom: 15px;
-  color: var(--primary-color, #1e90ff);
-}
-
 .parts-error i {
-  font-size: 2rem;
-  margin-bottom: 15px;
-  color: #f44336;
+  color: var(--status-warning);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .parts-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
+/* Standalone Parts Research Page (parts.html) */
+.bc-parts-console {
+  background-color: var(--surface-1);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-top: 24px;
+  box-shadow: var(--shadow-md);
+}
+
+.bc-parts-tabs {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  background-color: var(--surface-inset);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  margin-bottom: 14px;
+}
+
+.bc-parts-tab {
+  height: 32px;
+  padding: 0 14px;
+  border: none;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+}
+.bc-parts-tab.is-active {
+  background-color: var(--surface-2);
+  color: var(--text-primary);
+}
+
+.bc-catalog-vendors {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.bc-vendor-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 16px;
+  background-color: var(--surface-2);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+.bc-vendor-card:hover {
+  background-color: var(--surface-3);
+  border-color: var(--border-accent);
+  color: var(--text-primary);
+}
+.bc-vendor-card__name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+}
+.bc-vendor-card__desc {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.bc-vendor-card__tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-light);
+}
+
+@media (max-width: 640px) {
+  .parts-header,
+  .parts-section {
+    padding: 16px;
   }
-  
-  .estimated-cost {
-    text-align: left;
-  }
-  
-  .part-info {
-    grid-template-columns: 1fr;
-  }
-  
-  .marketplace-links {
-    grid-template-columns: 1fr;
+  .part-card {
+    padding: 14px;
   }
 }

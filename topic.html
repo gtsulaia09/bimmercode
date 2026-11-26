@@ -1,29 +1,31 @@
 <!doctype html>
-<html lang="en" class="index-bento-page bcx-page">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>Discussion — BimmerCodes Forum</title>
-    <meta name="description" content="BMW enthusiast discussion on BimmerCodes forum." />
-    <meta name="theme-color" content="#050507" />
+    <title>Discussion — BimmerCodes Technical Forum</title>
+    <meta name="description" content="BMW diagnostic and repair thread on BimmerCodes forum." />
+    <meta name="theme-color" content="#0A0C10" />
 
-    <link rel="stylesheet" href="./css/tokens.css?v=3.0" />
-    <link rel="stylesheet" href="./css/ui-buttons.css?v=1" />
-    <link rel="stylesheet" href="./css/forum.css?v=3.15" />
-    <link rel="stylesheet" href="./css/index-bento.css?v=6" />
-    <link rel="stylesheet" href="./css/notifications.css?v=3.6" />
-    <link rel="stylesheet" href="./css/parts-finder.css?v=3.0" />
-    <link rel="stylesheet" href="./css/site-premium.css?v=5" />
-    <link rel="stylesheet" href="./css/forum-premium.css?v=6" />
-    <link rel="stylesheet" href="./css/responsive.css?v=5" />
-    <link rel="stylesheet" href="./css/site-responsive.css?v=3" />
-    <link rel="shortcut icon" href="./assets/icons/ico.svg" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Noto+Sans+Georgian:wght@400;500;600;700&display=swap"
     />
+
+    <link rel="stylesheet" href="/css/tokens.css?v=4.0" />
+    <link rel="stylesheet" href="/css/style.css?v=4.0" />
+    <link rel="stylesheet" href="/css/parts-finder.css?v=4.0" />
+    <link rel="stylesheet" href="/css/forum.css?v=4.0" />
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/ico.svg" />
+    <link rel="shortcut icon" href="/assets/icons/ico.svg" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
-    <!-- Cloudflare Turnstile (register on topic page — same as forum). -->
     <script>
       window.TURNSTILE_SITE_KEY = window.TURNSTILE_SITE_KEY || "";
       window.onTurnstileReady = function () {
@@ -37,13 +39,14 @@
               appearance: "interaction-only",
             });
             el.dataset.rendered = "1";
-          } catch (e) { console.warn("turnstile.render failed:", e); }
+          } catch (e) {
+            console.warn("turnstile.render failed:", e);
+          }
         });
       };
     </script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileReady&render=explicit" async defer></script>
 
-    <!-- JSON-LD: topic-level schema — populated at runtime -->
     <script id="topic-jsonld" type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -53,51 +56,61 @@
     }
     </script>
   </head>
-  <body class="forum-page bcx">
-    <div id="webgl-container" class="index-bento-bg" aria-hidden="true"></div>
 
-    <header class="forum-header index-bento">
-      <button class="btn btn-icon index-header-btn mobile-only" type="button" onclick="toggleMobileMenu()" aria-label="Toggle menu">
-        <i class="fas fa-bars" aria-hidden="true"></i>
-      </button>
-      <div class="logo-container index-header-brand">
-        <a class="main_logo_refr" href="/forum" aria-label="BimmerCodes Forum home">
-          <div class="logo" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r="48" stroke="white" stroke-width="4" fill="black" />
-              <circle cx="50" cy="50" r="35" fill="white" />
-              <path d="M 50,15 A 35,35 0 0,1 85,50 H 50 Z" fill="#1A6FB0" />
-              <path d="M 50,50 H 85 A 35,35 0 0,1 50,85 Z" fill="white" />
-              <path d="M 50,50 V 15 A 35,35 0 0,0 15,50 Z" fill="white" />
-              <path d="M 50,50 H 15 A 35,35 0 0,0 50,85 Z" fill="#1A6FB0" />
+  <body class="forum-page">
+    <div id="webgl-container" aria-hidden="true"></div>
+
+    <header class="bc-header forum-header" role="banner">
+      <div class="bc-header__inner">
+        <a href="/" class="bc-brand" aria-label="BimmerCodes Home">
+          <span class="bc-brand__mark" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+              <rect x="3" y="3" width="58" height="58" rx="12" fill="#0E1218" stroke="#283244" stroke-width="2" />
+              <rect x="7" y="7" width="50" height="50" rx="8.5" fill="#131923" stroke="#1E2736" stroke-width="1" />
+              <path d="M16 18H31.5C36.2 18 39.5 20.5 39.5 24.6C39.5 27.4 37.9 29.5 35.2 30.4C38.5 31.2 40.5 33.6 40.5 37C40.5 41.6 36.9 44.5 31.4 44.5H16V18ZM22.2 28.4H29.9C32.2 28.4 33.5 27.3 33.5 25.4C33.5 23.5 32.2 22.5 29.9 22.5H22.2V28.4ZM22.2 40H30.4C33 40 34.4 38.8 34.4 36.7C34.4 34.6 32.9 33.4 30.3 33.4H22.2V40Z" fill="#E8EEF6" />
+              <path d="M43.5 18H49.5L43.5 44.5H37.5L43.5 18Z" fill="#2877EE" />
+              <rect x="46.5" y="18" width="3.5" height="7" rx="1" fill="#6EA8FF" />
             </svg>
-          </div>
-          <h1 class="index-header-title">BMW Diagnostic Codes <span class="index-header-title-muted">· Forum</span></h1>
+          </span>
+          <span class="bc-brand__text">
+            <span class="bc-brand__name">BimmerCodes</span>
+            <span class="bc-brand__sub" data-i18n="brandSub">Diagnostic &amp; Engineering</span>
+          </span>
         </a>
-      </div>
-      <div class="controls">
-        <a href="/" class="index-header-btn btn" title="Home">
-          <i class="fas fa-home" aria-hidden="true"></i>
-          <span data-i18n="homeBtn">Home</span>
-        </a>
-        <a href="/vin.html" class="index-header-btn btn" title="VIN Check">
-          <i class="fas fa-fingerprint" aria-hidden="true"></i>
-          <span data-i18n="vinBtn">VIN</span>
-        </a>
-        <a href="/forum" class="index-header-btn btn"><i class="fas fa-arrow-left" aria-hidden="true"></i> <span data-i18n="backToTopics">Back</span></a>
-        <button type="button" class="index-header-btn btn" id="forum-language-toggle" onclick="switchForumLanguage()" title="Language">
-          <i class="fas fa-globe" aria-hidden="true"></i> <span id="forum-lang-display">EN</span>
-        </button>
-        <a href="#" class="index-header-btn btn" id="auth-btn">
-          <i class="fas fa-user" aria-hidden="true"></i> <span data-i18n="loginBtn">Login</span>
-        </a>
+
+        <nav class="bc-nav" aria-label="Primary Navigation">
+          <a href="/" class="bc-nav__link"><i class="fas fa-microchip"></i> <span data-i18n="navCodes">Diagnostic Codes</span></a>
+          <a href="/all.html" class="bc-nav__link"><i class="fas fa-list-ul"></i> <span data-i18n="navCodeIndex">Code Index</span></a>
+          <a href="/vin.html" class="bc-nav__link"><i class="fas fa-barcode"></i> <span data-i18n="vinBtn">VIN Decoder</span></a>
+          <a href="/parts.html" class="bc-nav__link"><i class="fas fa-cogs"></i> <span data-i18n="navParts">Parts Finder</span></a>
+          <a href="/forum.html" class="bc-nav__link is-active"><i class="fas fa-comments"></i> <span data-i18n="navForum">Forum</span></a>
+          <button type="button" class="bc-nav__link" data-open-ai-chat><i class="fas fa-sparkles"></i> <span data-i18n="navAi">AI Assistant</span></button>
+        </nav>
+
+        <div class="bc-header-tools controls">
+          <a href="/forum.html" class="bc-tool-btn">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>
+            <span data-i18n="backToTopics">Threads</span>
+          </a>
+          <button type="button" class="bc-tool-btn bc-tool-btn--lang" id="forum-language-toggle" onclick="switchForumLanguage()" title="Language">
+            <i class="fas fa-globe" aria-hidden="true"></i>
+            <span id="forum-lang-display">EN</span>
+          </button>
+          <a href="#" class="bc-tool-btn bc-tool-btn--primary" id="auth-btn">
+            <i class="fas fa-user-circle" aria-hidden="true"></i>
+            <span data-i18n="loginBtn">Sign In</span>
+          </a>
+          <button class="bc-burger" type="button" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+            <i class="fas fa-bars" aria-hidden="true"></i>
+          </button>
+        </div>
       </div>
     </header>
 
     <div class="mobile-menu-overlay" onclick="toggleMobileMenu()"></div>
     <aside class="mobile-offcanvas" aria-label="Mobile navigation">
       <div class="offcanvas-header">
-        <h2 data-i18n="menu">Menu</h2>
+        <h2 data-i18n="menu">Navigation</h2>
         <button class="btn btn-icon btn-ghost" onclick="toggleMobileMenu()" aria-label="Close menu">
           <i class="fas fa-times" aria-hidden="true"></i>
         </button>
@@ -108,7 +121,6 @@
     <main class="forum-container">
       <section class="topic-view">
         <div class="topic-content" id="topic-content">
-          <!-- Skeleton while loading -->
           <div class="topic-header-card" id="topic-skeleton">
             <div class="skeleton skeleton-line long" style="height:26px; margin-bottom:12px;"></div>
             <div class="skeleton skeleton-line medium" style="height:14px;"></div>
@@ -124,14 +136,14 @@
 
         <aside class="sidebar" aria-label="Topic info">
           <div class="sidebar-card" id="topic-info-card" hidden>
-            <h3 class="sidebar-title" data-i18n="topicInfo">Topic info</h3>
+            <h3 class="sidebar-title" data-i18n="topicInfo">Thread Telemetry</h3>
             <div id="topic-info-body"></div>
           </div>
         </aside>
       </section>
     </main>
 
-    <!-- ==================================================== AUTH MODAL (same markup as forum.html) -->
+    <!-- ==================================================== AUTH MODAL -->
     <div id="auth-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
       <div class="modal-card auth-card">
         <button class="modal-close auth-close" onclick="toggleAuthModal()" aria-label="Close">
@@ -139,23 +151,18 @@
         </button>
 
         <div class="auth-header">
-          <div class="auth-brand">
-            <div class="auth-brand-logo"><i class="fas fa-comments" aria-hidden="true"></i></div>
-          </div>
-          <h2 id="auth-title" data-i18n="welcomeBack">Welcome back</h2>
+          <h2 id="auth-title" data-i18n="welcomeBack">Sign in to BimmerCodes</h2>
           <p class="auth-subtitle" id="auth-subtitle" data-i18n="authSubtitleLogin">
-            Sign in to post, react, and save answers.
+            Sign in to reply, react, and mark solutions.
           </p>
         </div>
 
         <div class="modal-body auth-body">
           <div class="auth-tabs" role="tablist" data-active="login">
-            <button class="auth-tab active" id="tab-login" type="button" role="tab"
-                    aria-selected="true" onclick="switchAuthTab('login')" data-i18n="loginTab">
-              Login
+            <button class="auth-tab active" id="tab-login" type="button" role="tab" aria-selected="true" onclick="switchAuthTab('login')" data-i18n="loginTab">
+              Sign In
             </button>
-            <button class="auth-tab" id="tab-register" type="button" role="tab"
-                    aria-selected="false" onclick="switchAuthTab('register')" data-i18n="registerTab">
+            <button class="auth-tab" id="tab-register" type="button" role="tab" aria-selected="false" onclick="switchAuthTab('register')" data-i18n="registerTab">
               Register
             </button>
             <span class="auth-tabs-thumb" aria-hidden="true"></span>
@@ -166,25 +173,21 @@
               <label for="login-email" data-i18n="emailUsernameLabel">Email or username</label>
               <div class="input-with-icon">
                 <i class="fas fa-envelope input-icon" aria-hidden="true"></i>
-                <input type="text" id="login-email" required autocomplete="username"
-                       placeholder="you@example.com" />
+                <input type="text" id="login-email" required autocomplete="username" placeholder="you@example.com" />
               </div>
             </div>
             <div class="field">
               <label for="login-password" data-i18n="passwordLabel">Password</label>
               <div class="input-with-icon input-with-action">
                 <i class="fas fa-lock input-icon" aria-hidden="true"></i>
-                <input type="password" id="login-password" required
-                       autocomplete="current-password" placeholder="••••••••" />
-                <button type="button" class="input-eye" data-target="login-password"
-                        aria-label="Show password" tabindex="-1">
+                <input type="password" id="login-password" required autocomplete="current-password" placeholder="••••••••" />
+                <button type="button" class="input-eye" data-target="login-password" aria-label="Show password" tabindex="-1">
                   <i class="fas fa-eye" aria-hidden="true"></i>
                 </button>
               </div>
             </div>
             <div class="auth-extra">
-              <a href="#" class="auth-link" onclick="showRecoveryModal(); return false;"
-                 data-i18n="forgotPasswordLink">Forgot password?</a>
+              <a href="#" class="auth-link" onclick="showRecoveryModal(); return false;" data-i18n="forgotPasswordLink">Forgot password?</a>
             </div>
             <button type="submit" class="btn btn-primary btn-block" data-i18n="signInBtn">
               <i class="fas fa-arrow-right-to-bracket" aria-hidden="true"></i>
@@ -198,26 +201,22 @@
               <label for="reg-username" data-i18n="usernameLabel">Username</label>
               <div class="input-with-icon">
                 <i class="fas fa-user input-icon" aria-hidden="true"></i>
-                <input type="text" id="reg-username" required minlength="3" maxlength="24"
-                       autocomplete="username" placeholder="e30_enjoyer" />
+                <input type="text" id="reg-username" required minlength="3" maxlength="24" autocomplete="username" placeholder="b58_specialist" />
               </div>
             </div>
             <div class="field">
               <label for="reg-email" data-i18n="emailLabel">Email</label>
               <div class="input-with-icon">
                 <i class="fas fa-envelope input-icon" aria-hidden="true"></i>
-                <input type="email" id="reg-email" required autocomplete="email"
-                       placeholder="you@example.com" />
+                <input type="email" id="reg-email" required autocomplete="email" placeholder="you@example.com" />
               </div>
             </div>
             <div class="field">
               <label for="reg-password" data-i18n="passwordLabel">Password</label>
               <div class="input-with-icon input-with-action">
                 <i class="fas fa-lock input-icon" aria-hidden="true"></i>
-                <input type="password" id="reg-password" required minlength="8"
-                       autocomplete="new-password" placeholder="Min 8 characters" />
-                <button type="button" class="input-eye" data-target="reg-password"
-                        aria-label="Show password" tabindex="-1">
+                <input type="password" id="reg-password" required minlength="8" autocomplete="new-password" placeholder="Min 8 characters" />
+                <button type="button" class="input-eye" data-target="reg-password" aria-label="Show password" tabindex="-1">
                   <i class="fas fa-eye" aria-hidden="true"></i>
                 </button>
               </div>
@@ -249,7 +248,7 @@
             <div id="turnstile-register" class="cf-turnstile" data-theme="dark"></div>
             <button type="submit" class="btn btn-primary btn-block" data-i18n="createAccountBtn">
               <i class="fas fa-user-plus" aria-hidden="true"></i>
-              <span>Create account</span>
+              <span>Create Account</span>
             </button>
             <p id="reg-msg" class="auth-msg"></p>
           </form>
@@ -270,12 +269,9 @@
         </button>
 
         <div class="auth-header">
-          <div class="auth-brand">
-            <div class="auth-brand-logo"><i class="fas fa-unlock-keyhole" aria-hidden="true"></i></div>
-          </div>
-          <h2 id="recovery-title" data-i18n="resetPassword">Reset password</h2>
+          <h2 id="recovery-title" data-i18n="resetPassword">Account Recovery</h2>
           <p class="auth-subtitle" data-i18n="recoverySubtitle">
-            We'll ask you one security question, then let you set a new password.
+            Verify your security question to set a new password.
           </p>
         </div>
 
@@ -291,9 +287,7 @@
           </div>
 
           <form id="recovery-step-1" class="auth-form active">
-            <p class="auth-hint" data-i18n="recoveryStep1Hint">
-              Enter your email to find your account.
-            </p>
+            <p class="auth-hint" data-i18n="recoveryStep1Hint">Enter your email to locate your account.</p>
             <div class="field">
               <label for="rec-email" data-i18n="emailLabel">Email</label>
               <div class="input-with-icon">
@@ -321,10 +315,8 @@
               <label for="rec-new-password" data-i18n="newPassword">New password</label>
               <div class="input-with-icon input-with-action">
                 <i class="fas fa-lock input-icon" aria-hidden="true"></i>
-                <input type="password" id="rec-new-password" required minlength="8"
-                       autocomplete="new-password" placeholder="Min 8 characters" />
-                <button type="button" class="input-eye" data-target="rec-new-password"
-                        aria-label="Show password" tabindex="-1">
+                <input type="password" id="rec-new-password" required minlength="8" autocomplete="new-password" placeholder="Min 8 characters" />
+                <button type="button" class="input-eye" data-target="rec-new-password" aria-label="Show password" tabindex="-1">
                   <i class="fas fa-eye" aria-hidden="true"></i>
                 </button>
               </div>
@@ -347,24 +339,23 @@
     <!-- ============================= CODE DETAIL MODAL (shared) ============================= -->
     <div id="code-detail-modal" class="modal">
       <div class="modal-content">
-        <span class="close-btn" onclick="hideDetail && hideDetail()" aria-label="Close">&times;</span>
         <div id="code-detail" class="hidden"></div>
         <div id="parts-finder-container" class="hidden"></div>
       </div>
     </div>
     <div id="search-container" style="display:none;"></div>
 
-    <footer><!-- injected by js/footer.js --></footer>
+    <footer></footer>
 
-    <script src="./js/footer.js" defer></script>
-    <script src="./js/translations.js?v=4" defer></script>
-    <script src="./js/parts-finder.js?v=3.0" defer></script>
-    <script src="./js/script.js?v=3.0" defer></script>
-    <script src="./js/forum.js?v=3.5" defer></script>
-    <script src="./js/image-to-webp.js?v=3.0" defer></script>
-    <script src="./js/forum-image-lightbox.js?v=3.0" defer></script>
-    <script src="./js/topic.js?v=3.17" defer></script>
-    <script src="./js/live.js?v=3.5" defer></script>
-    <script src="./js/modal-escape.js?v=3.0" defer></script>
+    <script src="/js/footer.js?v=4.0" defer></script>
+    <script src="/js/translations.js?v=6" defer></script>
+    <script src="/js/parts-finder.js?v=6" defer></script>
+    <script src="/js/script.js?v=4.0" defer></script>
+    <script src="/js/forum.js?v=4.0" defer></script>
+    <script src="/js/image-to-webp.js?v=3.0" defer></script>
+    <script src="/js/forum-image-lightbox.js?v=3.0" defer></script>
+    <script src="/js/topic.js?v=4.0" defer></script>
+    <script src="/js/live.js?v=4.0" defer></script>
+    <script src="/js/modal-escape.js?v=4.0" defer></script>
   </body>
 </html>

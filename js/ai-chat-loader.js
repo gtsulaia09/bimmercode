@@ -1,5 +1,5 @@
 /**
- * Loads AI chat assets once per page (CSS + widget). Include before </body> on every page.
+ * Loads AI Diagnostic Companion assets once per page (CSS + widget).
  */
 (function () {
   "use strict";
@@ -16,13 +16,13 @@
   if (!document.querySelector('link[href*="ai-chat.css"]')) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = asset("/css/ai-chat.css?v=5");
+    link.href = asset("/css/ai-chat.css?v=6");
     document.head.appendChild(link);
   }
 
   if (!document.querySelector('script[src*="ai-chat.js"]')) {
     const s = document.createElement("script");
-    s.src = asset("/js/ai-chat.js?v=5");
+    s.src = asset("/js/ai-chat.js?v=6");
     s.defer = true;
     s.setAttribute("data-cfasync", "false");
     document.body.appendChild(s);

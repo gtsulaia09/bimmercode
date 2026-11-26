@@ -410,10 +410,12 @@
       $("#profile-activity")?.removeAttribute("hidden");
 
       renderHero(user);
+      renderGarage(user);
       renderStats(user);
       renderAchievements(user);
       renderAbout(user);
       renderRecent(user);
+      renderSavedCodes(user);
       updateSeo(user);
       bindShare(user);
       bindTabs();
@@ -499,6 +501,169 @@
     chipsHost.innerHTML = chips.map(({ i, t }) =>
       `<span class="p-chip"><i class="fas ${i}" aria-hidden="true"></i> ${escapeHtml(t)}</span>`).join("");
   }
+
+  // -------- PERSONAL GARAGE & SAVED CODES --------------------------------
+  function isViewerOwner(user) {
+    try {
+      const me = JSON.parse(localStorage.getItem("user_data") || "null");
+      return !!(me && user && String(me.id) === String(user.id));
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function renderGarage(user) {
+    const card = $("#profile-garage-card");
+    if (!card) return;
+    const owner = isViewerOwner(user);
+    const hasVehicle = !!(user.car_model || user.bmw_body || user.bmw_engine || user.bmw_year);
+
+    if (!hasVehicle && !owner) {
+      card.hidden = true;
+      return;
+    }
+
+    card.hidden = false;
+    if (!hasVehicle && owner) {
+      card.innerHTML = `
+        <div class="garage-head">
+          <div>
+            <span class="bc-kicker">${escapeHtml(tr("bmwDetailsTitle", "Personal BMW Garage"))}</span>
+            <h3 class="garage-title">${escapeHtml(tr("garageEmptyTitle", "Register your BMW chassis & engine"))}</h3>
+            <p class="garage-sub">${escapeHtml(tr("garageEmptySub", "Add your model, chassis code, year, and engine family for faster fault lookup and AI context."))}</p>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="openEditProfileModal()">
+            <i class="fas fa-plus" aria-hidden="true"></i>
+            <span>${escapeHtml(tr("addVehicleBtn", "Configure Vehicle"))}</span>
+          </button>
+        </div>
+      `;
+      return;
+    }
+
+    const searchHint = user.bmw_engine || user.bmw_body || user.car_model || "DME";
+    card.innerHTML = `
+      <div class="garage-head">
+        <div>
+          <span class="bc-kicker">${escapeHtml(tr("bmwDetailsTitle", "Personal BMW Garage"))}</span>
+          <h3 class="garage-title">${escapeHtml([user.bmw_year, user.car_model || "BMW"].filter(Boolean).join(" "))}</h3>
+        </div>
+        <div class="garage-actions">
+          <a href="/?code=${encodeURIComponent(searchHint)}" class="btn btn-secondary btn-sm">
+            <i class="fas fa-microchip" aria-hidden="true"></i>
+            <span>${escapeHtml(tr("searchModelCodes", "Vehicle Fault Codes"))}</span>
+          </a>
+          <a href="/vin.html" class="btn btn-ghost btn-sm">
+            <i class="fas fa-barcode" aria-hidden="true"></i>
+            <span>VIN</span>
+          </a>
+        </div>
+      </div>
+      <div class="garage-specs">
+        <div class="garage-spec">
+          <span class="garage-spec__label">${escapeHtml(tr("aboutCar", "Model"))}</span>
+          <strong class="garage-spec__val">${escapeHtml(user.car_model || "—")}</strong>
+        </div>
+        <div class="garage-spec">
+          <span class="garage-spec__label">${escapeHtml(tr("aboutBody", "Chassis"))}</span>
+          <strong class="garage-spec__val">${escapeHtml(user.bmw_body || "—")}</strong>
+        </div>
+        <div class="garage-spec">
+          <span class="garage-spec__label">${escapeHtml(tr("aboutEngine", "Engine"))}</span>
+          <strong class="garage-spec__val">${escapeHtml(user.bmw_engine || "—")}</strong>
+        </div>
+        <div class="garage-spec">
+          <span class="garage-spec__label">${escapeHtml(tr("aboutYear", "Model Year"))}</span>
+          <strong class="garage-spec__val">${escapeHtml(user.bmw_year || "—")}</strong>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderSavedCodes(user) {
+    const tabBtn = $("#profile-tab-saved");
+    const host = $("#profile-saved-container");
+    const countEl = $("#tab-count-saved");
+    if (!tabBtn || !host) return;
+
+    if (!isViewerOwner(user)) {
+      tabBtn.hidden = true;
+      return;
+    }
+
+    tabBtn.hidden = false;
+    let favs = [];
+    try {
+      favs = JSON.parse(localStorage.getItem("bmwFavorites") || "[]");
+    } catch (_) {}
+    if (!Array.isArray(favs)) favs = [];
+    if (countEl) countEl.textContent = String(favs.length);
+
+    if (!favs.length) {
+      host.innerHTML = emptyHtml("fa-bookmark", tr("emptySaved", "No saved diagnostic codes yet."));
+      return;
+    }
+
+    const lang = localStorage.getItem("forumLanguage") || "en";
+    const codes = window.bmwCodes || [];
+    host.innerHTML = favs
+      .map((codeId) => {
+        const match = codes.find((c) => String(c.code).toUpperCase() === String(codeId).toUpperCase());
+        const title = match ? (match.title?.[lang] || match.title?.en || codeId) : tr("viewCodeDetails", "Inspect fault datasheet");
+        const cat = match?.category || "BMW DTC";
+        return `
+          <div class="topic-row" data-saved-code="${escapeHtml(codeId)}">
+            <div class="topic-status-icon" aria-hidden="true" style="font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--accent-light);">
+              DTC
+            </div>
+            <div class="topic-main-content">
+              <h3><span style="font-family:var(--font-mono);color:var(--accent-light);margin-right:8px;">${escapeHtml(codeId)}</span>${escapeHtml(title)}</h3>
+              <div class="topic-meta-line">
+                <span><i class="fas fa-microchip"></i> ${escapeHtml(cat)}</span>
+              </div>
+            </div>
+            <div class="topic-trailing">
+              <button type="button" class="btn btn-ghost btn-sm" data-remove-saved="${escapeHtml(codeId)}" title="Remove">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
+          </div>`;
+      })
+      .join("");
+
+    $$("[data-saved-code]", host).forEach((row) => {
+      row.addEventListener("click", (ev) => {
+        const rm = ev.target.closest("[data-remove-saved]");
+        if (rm) {
+          ev.stopPropagation();
+          const id = rm.getAttribute("data-remove-saved");
+          if (typeof window.toggleFavorite === "function") {
+            window.toggleFavorite(ev, id);
+          }
+          renderSavedCodes(user);
+          return;
+        }
+        const id = row.getAttribute("data-saved-code");
+        if (id && typeof window.openCodeModal === "function") {
+          window.openCodeModal(id);
+        }
+      });
+    });
+  }
+
+  window.addEventListener("bmwCodes:ready", () => {
+    if (currentProfileUser) renderSavedCodes(currentProfileUser);
+  });
+
+  window.addEventListener("languageChanged", () => {
+    if (currentProfileUser) {
+      renderHero(currentProfileUser);
+      renderGarage(currentProfileUser);
+      renderAchievements(currentProfileUser);
+      renderAbout(currentProfileUser);
+      renderSavedCodes(currentProfileUser);
+    }
+  });
 
   // -------- STATS --------------------------------------------------------
   function renderStats(user) {

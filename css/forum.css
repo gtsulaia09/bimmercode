@@ -19,13 +19,13 @@
 
 /* ------------------------------------------------------------- Base layout */
 body.forum-page {
-  background: var(--color-bg-deep);
-  color: var(--color-text-primary);
+  background: var(--bg-canvas);
+  color: var(--text-primary);
   font-family: var(--font-sans);
   font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
   min-height: 100vh;
-  min-height: 100dvh; /* prefer dynamic viewport on mobile */
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
@@ -34,73 +34,11 @@ body.forum-page {
   position: fixed;
   inset: 0;
   z-index: -1;
+  pointer-events: none;
   background:
-    radial-gradient(circle at 20% 0%, rgba(28, 105, 212, 0.18) 0%, transparent 45%),
-    radial-gradient(circle at 85% 95%, rgba(77, 168, 255, 0.08) 0%, transparent 45%),
-    radial-gradient(circle at 50% 50%, #0a1628 0%, var(--color-bg-deep) 70%);
+    radial-gradient(900px 420px at 50% -120px, rgba(40, 119, 238, 0.07), transparent 65%),
+    var(--bg-canvas);
 }
-
-/* ---------------------------------------------------------------- Header */
-header.forum-header {
-  position: sticky;
-  top: 0;
-  z-index: var(--z-header);
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-  padding: var(--space-sm) var(--container-padding);
-  padding-top: calc(var(--space-sm) + var(--sat));
-  height: calc(var(--header-height) + var(--sat));
-  background: var(--color-surface-glass);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
-  border-bottom: 1px solid var(--color-border);
-}
-
-header.forum-header .logo-container {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  text-decoration: none;
-  color: var(--color-text-primary);
-}
-
-header.forum-header .logo {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-700));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-text-on-primary);
-  box-shadow: var(--shadow-glow-soft);
-}
-
-header.forum-header h1 {
-  font-family: var(--font-display);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.2px;
-  margin: 0;
-}
-header.forum-header h1 .accent { color: var(--color-accent); }
-
-header.forum-header .controls {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-}
-
-/* Notification bell (injected by js/live.js) — same .btn + .index-header-btn as the rest of the toolbar */
-header.forum-header #notif-btn-wrapper {
-  position: relative;
-  flex: 0 0 auto;
-}
-
-/* ---------------------------------------------------------------- Buttons
-   Base .btn / .btn-primary / .btn-ghost — see css/ui-buttons.css (load before this file) */
 
 /* ---------------------------------------------------------------- Container */
 main.forum-container {
@@ -112,69 +50,10 @@ main.forum-container {
   padding-bottom: calc(var(--space-2xl) + var(--sab));
 }
 
-/* ---------------------------------------------------------------- Footer (footer.js markup — was styled only in style.css) */
+body.forum-page > .bc-footer,
 body.forum-page > footer {
   margin-top: auto;
   flex-shrink: 0;
-  width: 100%;
-  background: var(--color-surface-glass, rgba(12, 14, 18, 0.92));
-  border-top: 1px solid var(--color-border);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
-}
-
-body.forum-page .footer-container {
-  max-width: var(--container-max);
-  margin: 0 auto;
-  padding: var(--space-lg) var(--container-padding);
-  padding-bottom: calc(var(--space-md) + var(--sab));
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-md);
-}
-
-body.forum-page .footer-text {
-  margin: 0;
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
-}
-
-body.forum-page .footer-subtext {
-  margin: var(--space-xs) 0 0;
-  font-size: var(--font-size-xs);
-  color: var(--color-text-disabled, #6b7280);
-}
-
-body.forum-page .footer-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-md);
-  align-items: center;
-}
-
-body.forum-page .footer-links a {
-  color: var(--color-text-secondary);
-  text-decoration: none;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  transition: color var(--duration-fast);
-}
-
-body.forum-page .footer-links a:hover {
-  color: var(--color-accent);
-}
-
-@media (max-width: 640px) {
-  body.forum-page .footer-container {
-    flex-direction: column;
-    text-align: center;
-    justify-content: center;
-  }
-  body.forum-page .footer-links {
-    justify-content: center;
-  }
 }
 
 /* ----------------------------------------------------------- Ad placements */
@@ -454,9 +333,9 @@ header.forum-header a#auth-btn.auth-btn--logged:active {
 .rep-regular  { color: var(--color-rep-regular);  border-color: rgba(76,175,80,.3);   background: rgba(76,175,80,.08); }
 .rep-expert   { color: var(--color-rep-expert);   border-color: rgba(239,159,39,.3);  background: rgba(239,159,39,.08); }
 .rep-master   { color: var(--color-rep-master);   border-color: rgba(226,75,74,.3);   background: rgba(226,75,74,.08); }
-.rep-super    { color: #fff; background: linear-gradient(135deg, #7c3aed, #5b21b6); border-color: transparent; }
-.rep-admin    { color: #fff; background: linear-gradient(135deg, #C70039, #8B0029); border-color: transparent; }
-.rep-mod      { color: #fff; background: linear-gradient(135deg, var(--color-primary), var(--color-primary-700)); border-color: transparent; }
+.rep-super    { color: #E2ECFF; background: #16294A; border-color: rgba(110, 168, 255, 0.42); }
+.rep-admin    { color: #FFD8DC; background: #3A161E; border-color: rgba(232, 93, 108, 0.45); }
+.rep-mod      { color: #DCEAFF; background: rgba(40, 119, 238, 0.18); border-color: rgba(40, 119, 238, 0.42); }
 
 /* -------------------------------------------------------------- Topic list */
 .topics-list {
@@ -1662,11 +1541,10 @@ a.post-author-link:focus-visible {
 .composer-reply-bar {
   margin-bottom: var(--space-sm);
   padding: 0;
-  background: var(--color-primary-alpha-8, rgba(99, 102, 241, 0.08));
-  border: 1px solid var(--color-primary-alpha-25, rgba(99, 102, 241, 0.25));
-  border-left: 4px solid var(--color-primary, #6366f1);
+  background: var(--accent-subtle);
+  border: 1px solid var(--accent-border);
+  border-left: 3px solid var(--accent);
   border-radius: var(--radius-md);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
 }
 .composer-reply-bar[hidden] {
   display: none !important;
@@ -1682,7 +1560,7 @@ a.post-author-link:focus-visible {
 .composer-reply-bar__icon {
   flex: 0 0 auto;
   padding-top: 2px;
-  color: var(--color-primary, #6366f1);
+  color: var(--accent-text);
 }
 .composer-reply-bar__icon i {
   font-size: 1rem;
@@ -1702,7 +1580,7 @@ a.post-author-link:focus-visible {
   font-size: var(--font-size-xs);
   line-height: 1.4;
   color: var(--color-text-muted);
-  background: var(--color-surface, #fff);
+  background: var(--surface-inset);
   border-radius: var(--radius-sm, 6px);
   border: 1px solid var(--color-border);
   max-height: 4.2em;
@@ -1726,15 +1604,14 @@ a.post-author-link:focus-visible {
   color: inherit;
   background: var(--color-surface-2);
   border: 1px solid var(--color-border);
-  border-left: 4px solid var(--color-primary, #6366f1);
+  border-left: 3px solid var(--accent);
   border-radius: var(--radius-md);
   padding: 10px 12px;
-  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease;
 }
 .post-reply-context__link:hover {
-  background: var(--color-primary-alpha-10, rgba(99, 102, 241, 0.1));
-  border-color: var(--color-primary-alpha-35, rgba(99, 102, 241, 0.35));
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  background: var(--accent-subtle);
+  border-color: var(--accent-border);
 }
 .post-reply-context__head {
   display: flex;
@@ -1743,7 +1620,7 @@ a.post-author-link:focus-visible {
 }
 .post-reply-context__icon {
   flex: 0 0 auto;
-  color: var(--color-primary, #6366f1);
+  color: var(--accent-text);
   padding-top: 1px;
 }
 .post-reply-context__meta {
@@ -1971,14 +1848,10 @@ a.post-author-link:focus-visible {
   padding: 0;
   overflow: hidden !important;
   min-width: 0;
-  background:
-    radial-gradient(120% 80% at 50% -10%, rgba(28, 105, 212, 0.22), transparent 55%),
-    linear-gradient(180deg, #181A20 0%, #121318 100%) !important;
-  border: 1px solid var(--color-border-strong) !important;
-  box-shadow:
-    var(--shadow-xl),
-    0 0 60px rgba(28, 105, 212, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+  background: var(--surface-2) !important;
+  border: 1px solid var(--border-strong) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
 }
 
 .auth-close {
@@ -1988,10 +1861,10 @@ a.post-author-link:focus-visible {
   z-index: 2;
   width: 34px;
   height: 34px;
-  border-radius: 50%;
-  background: var(--color-surface-3);
-  border: 1px solid var(--color-border);
-  color: var(--color-text-secondary);
+  border-radius: var(--radius-md);
+  background: var(--surface-3);
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -1999,26 +1872,22 @@ a.post-author-link:focus-visible {
   transition: var(--transition-fast);
 }
 .auth-close:hover {
-  background: var(--color-surface-4);
-  color: var(--color-text-primary);
-  transform: scale(1.05);
+  background: var(--surface-4);
+  color: var(--text-primary);
 }
 
 .auth-header {
   position: relative;
-  padding: 28px 28px 20px;
+  padding: 24px 28px 18px;
   text-align: center;
-  border-bottom: 1px solid var(--color-divider);
+  border-bottom: 1px solid var(--border-subtle);
 }
 .auth-header h2 {
   margin: 8px 0 6px;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: var(--font-weight-bold);
-  background: linear-gradient(135deg, #ffffff, #a9c8f1 65%, #4DA8FF);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: -0.2px;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
 }
 .auth-subtitle {
   margin: 0;
@@ -2551,37 +2420,33 @@ a.post-author-link:focus-visible {
 /* ---------- HERO --------------------------------------------------------- */
 .profile-hero {
   position: relative;
-  background:
-    radial-gradient(120% 80% at 50% -20%, rgba(28,105,212,0.22), transparent 55%),
-    linear-gradient(180deg, #181A20 0%, #121318 100%);
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-xl);
-  box-shadow:
-    var(--shadow-xl),
-    0 0 60px rgba(28,105,212,0.10),
-    inset 0 1px 0 rgba(255,255,255,0.05);
+  background: var(--surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
   overflow: hidden;
 }
 .profile-cover {
   position: relative;
-  height: 180px;
+  height: 148px;
   background:
-    linear-gradient(135deg, rgba(28,105,212,0.35), rgba(77,168,255,0.2) 50%, rgba(121,77,255,0.25));
+    linear-gradient(125deg, #111722 0%, #172234 52%, #0E131C 100%);
+  border-bottom: 1px solid var(--border-subtle);
 }
 .profile-cover-grid {
   position: absolute; inset: 0;
   background-image:
-    linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
-  background-size: 32px 32px;
-  mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 85%);
-  -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.7), transparent 85%);
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.75), transparent 90%);
+  -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.75), transparent 90%);
 }
 .profile-cover-glow {
-  position: absolute; width: 420px; height: 420px;
-  left: 50%; top: -200px; transform: translateX(-50%);
-  background: radial-gradient(circle, rgba(77,168,255,0.35), transparent 60%);
-  filter: blur(30px);
+  position: absolute; width: 420px; height: 220px;
+  left: 24%; top: -110px;
+  background: radial-gradient(circle, rgba(40, 119, 238, 0.18), transparent 68%);
+  pointer-events: none;
 }
 
 .profile-hero-body {
@@ -2595,27 +2460,27 @@ a.post-author-link:focus-visible {
 
 /* Avatar with conic progress ring --------------------------------------- */
 .profile-avatar-wrap {
-  margin-top: -66px;
+  margin-top: -58px;
   position: relative;
 }
 .profile-avatar-ring {
   --progress: 0deg;
-  width: 136px; height: 136px;
+  width: 124px; height: 124px;
   border-radius: 50%;
   padding: 4px;
   background:
-    conic-gradient(var(--color-primary, #1C69D4) var(--progress), rgba(255,255,255,0.08) 0deg);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    conic-gradient(var(--accent) var(--progress), rgba(255,255,255,0.08) 0deg);
+  box-shadow: var(--shadow-md);
   position: relative;
   transition: --progress 800ms var(--ease-out, ease-out);
 }
 .profile-avatar-inner {
   width: 100%; height: 100%; border-radius: 50%;
-  background: var(--color-surface-3);
-  border: 3px solid var(--color-surface);
+  background: var(--surface-3);
+  border: 3px solid var(--surface-1);
   display: flex; align-items: center; justify-content: center;
-  color: var(--color-text-muted);
-  font-size: 52px;
+  color: var(--text-muted);
+  font-size: 46px;
   overflow: hidden;
 }
 .profile-avatar-inner img { width: 100%; height: 100%; object-fit: cover; }
@@ -2624,47 +2489,113 @@ a.post-author-link:focus-visible {
   position: absolute;
   bottom: -6px; left: 50%; transform: translateX(-50%);
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 5px 12px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, var(--color-primary, #1C69D4), var(--color-primary-700, #0F4A9E));
+  padding: 4px 11px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
   color: #fff;
-  font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase;
-  border: 2px solid var(--color-surface);
-  box-shadow: 0 4px 14px rgba(28,105,212,0.4);
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+  border: 2px solid var(--surface-1);
+  box-shadow: var(--shadow-sm);
   white-space: nowrap;
 }
 .profile-level-chip i { font-size: 10px; }
 /* Match forum rep badge colors for site roles on the avatar chip */
-.profile-level-chip.chip-super { background: linear-gradient(135deg, #7c3aed, #5b21b6); box-shadow: 0 4px 14px rgba(91, 33, 182, 0.45); }
-.profile-level-chip.chip-admin { background: linear-gradient(135deg, #C70039, #8B0029); box-shadow: 0 4px 14px rgba(199, 0, 57, 0.4); }
-.profile-level-chip.chip-mod   { background: linear-gradient(135deg, var(--color-primary, #1C69D4), var(--color-primary-700, #0F4A9E)); }
+.profile-level-chip.chip-super { background: #1B3560; border-color: rgba(110, 168, 255, 0.4); }
+.profile-level-chip.chip-admin { background: #7F1D2A; border-color: rgba(232, 93, 108, 0.4); }
+.profile-level-chip.chip-mod   { background: var(--accent-hover); }
 
 /* Identity block --------------------------------------------------------- */
-.profile-identity { padding-top: 18px; display: flex; flex-direction: column; gap: 12px; }
+.profile-identity { padding-top: 16px; display: flex; flex-direction: column; gap: 12px; }
 .profile-name-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .profile-username {
   margin: 0;
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
-  letter-spacing: -0.3px;
-  background: linear-gradient(135deg, #fff 0%, #a9c8f1 70%, #4DA8FF 100%);
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.025em;
+  color: var(--text-primary);
 }
 .role-badge {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 3px 9px;
-  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
-  border-radius: var(--radius-pill);
-  background: var(--color-surface-3);
-  border: 1px solid var(--color-border);
-  color: var(--color-text-secondary);
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+  border-radius: var(--radius-sm);
+  background: var(--surface-3);
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
 }
-.role-badge.admin    { background: linear-gradient(135deg, #b91c1c, #7f1d1d); color: #fff; border-color: transparent; }
-.role-badge.super    { background: linear-gradient(135deg, #7c3aed, #5b21b6); color: #fff; border-color: transparent; }
-.role-badge.mod      { background: linear-gradient(135deg, #7c3aed, #4c1d95); color: #fff; border-color: transparent; }
-.role-badge.verified { background: linear-gradient(135deg, #059669, #065f46); color: #fff; border-color: transparent; }
-.verified-tick { color: var(--color-accent, #4DA8FF); font-size: 18px; }
+.role-badge.admin    { background: rgba(232, 93, 108, 0.16); color: #FCA5A5; border-color: rgba(232, 93, 108, 0.38); }
+.role-badge.super    { background: rgba(40, 119, 238, 0.20); color: #BFDBFE; border-color: rgba(110, 168, 255, 0.42); }
+.role-badge.mod      { background: rgba(40, 119, 238, 0.14); color: var(--accent-text); border-color: var(--accent-border); }
+.role-badge.verified { background: rgba(43, 196, 138, 0.14); color: #6EE7B7; border-color: rgba(43, 196, 138, 0.35); }
+.verified-tick { color: var(--accent-text); font-size: 18px; }
+
+/* ---------- PERSONAL BMW GARAGE CARD ------------------------------------- */
+.profile-garage-card {
+  background: var(--surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.profile-garage-card .garage-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.profile-garage-card .garage-title {
+  margin: 4px 0 2px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+.profile-garage-card .garage-sub {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+.profile-garage-card .garage-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.profile-garage-card .garage-specs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+.profile-garage-card .garage-spec {
+  background: var(--surface-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.profile-garage-card .garage-spec span {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+.profile-garage-card .garage-spec strong {
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+@media (max-width: 768px) {
+  .profile-garage-card .garage-specs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 
 .profile-bio {
   margin: 0;
@@ -3036,14 +2967,11 @@ a.post-author-link:focus-visible {
   align-items: center;
   justify-content: space-between;
   gap: var(--space-md);
-  padding: clamp(20px, 3vw, 32px);
+  padding: clamp(20px, 2.6vw, 28px);
   margin-bottom: var(--space-lg);
-  background:
-    radial-gradient(140% 120% at 0% 0%, rgba(28, 105, 212, 0.28) 0%, transparent 55%),
-    radial-gradient(120% 120% at 100% 100%, rgba(77, 168, 255, 0.16) 0%, transparent 55%),
-    linear-gradient(135deg, rgba(28, 32, 40, 0.9), rgba(10, 22, 40, 0.85));
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
+  background: linear-gradient(180deg, var(--surface-2) 0%, var(--surface-1) 100%);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   isolation: isolate;
 }
@@ -3052,58 +2980,55 @@ a.post-author-link:focus-visible {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
   background-size: 28px 28px;
-  mask-image: radial-gradient(70% 70% at 50% 30%, #000 0%, transparent 75%);
-  -webkit-mask-image: radial-gradient(70% 70% at 50% 30%, #000 0%, transparent 75%);
+  mask-image: linear-gradient(90deg, rgba(0,0,0,0.65) 0%, transparent 75%);
+  -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0.65) 0%, transparent 75%);
   pointer-events: none;
   z-index: -1;
 }
+.forum-hero h1.forum-hero__title,
 .forum-hero h2 {
-  margin: 0 0 6px;
+  margin: 6px 0 8px;
   font-family: var(--font-display);
-  font-size: clamp(20px, 3vw, 28px);
+  font-size: clamp(1.35rem, 2.4vw, 1.85rem);
   font-weight: var(--font-weight-bold);
-  letter-spacing: -0.2px;
-  line-height: 1.25;
-  background: linear-gradient(135deg, #fff, #a9c8f1 60%, #4DA8FF);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.025em;
+  line-height: 1.22;
+  color: var(--text-primary);
 }
 .forum-hero p {
   margin: 0;
-  color: var(--color-text-secondary);
+  color: var(--text-secondary);
   font-size: var(--font-size-md);
-  max-width: 60ch;
+  max-width: 62ch;
 }
 .forum-hero .hero-stats {
   display: flex;
-  gap: var(--space-md);
+  gap: 10px;
   flex-wrap: wrap;
 }
 .forum-hero .stat-chip {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 12px 18px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  backdrop-filter: blur(6px);
-  min-width: 110px;
+  padding: 12px 16px;
+  background: var(--surface-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  min-width: 112px;
 }
 .forum-hero .stat-chip .stat-value {
   font-family: var(--font-mono);
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
+  color: var(--text-primary);
 }
 .forum-hero .stat-chip .stat-label {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
-  letter-spacing: 0.5px;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
@@ -3183,34 +3108,31 @@ a.post-author-link:focus-visible {
 
 /* ==================== SIDEBAR CARDS — modern ============================ */
 .sidebar-card {
-  background: linear-gradient(160deg, var(--color-surface), rgba(30, 30, 30, 0.6));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--surface-1);
+  border: 1px solid var(--border-default);
   transition: border-color var(--duration-fast) var(--ease-out);
 }
 .sidebar-card:hover {
-  border-color: var(--color-border-strong);
+  border-color: var(--border-strong);
 }
 
 .nav-item .nav-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--cat-color, var(--color-primary));
-  box-shadow: 0 0 8px var(--cat-color, var(--color-primary));
+  background: var(--cat-color, var(--accent));
   flex: 0 0 8px;
 }
 
 .guest-card {
   padding: var(--space-lg) var(--space-md);
-  background:
-    radial-gradient(120% 120% at 0% 0%, rgba(28, 105, 212, 0.18) 0%, transparent 60%),
-    var(--color-surface-2);
-  border-radius: var(--radius-lg);
+  background: var(--surface-2);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
   text-align: center;
 }
 .guest-card p {
-  color: var(--color-text-secondary);
+  color: var(--text-secondary);
   font-size: var(--font-size-md);
   margin: 0 0 var(--space-md);
   font-weight: var(--font-weight-medium);
@@ -3230,27 +3152,28 @@ a.post-author-link:focus-visible {
 /* ==================== FLOATING SCROLL-TOP =============================== */
 .fab-top {
   position: fixed;
-  right: clamp(16px, 3vw, 32px);
-  bottom: calc(24px + var(--sab));
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-pill);
-  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-700));
-  color: var(--color-text-on-primary);
-  border: 1px solid var(--color-border-strong);
+  left: clamp(16px, 2.5vw, 28px);
+  right: auto;
+  bottom: calc(20px + var(--sab));
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: var(--shadow-md), var(--shadow-glow-soft);
+  box-shadow: var(--shadow-md);
   opacity: 0;
-  transform: translateY(20px) scale(.9);
+  transform: translateY(14px);
   pointer-events: none;
-  transition: all var(--duration-normal) var(--ease-spring);
+  transition: opacity 0.18s ease, transform 0.18s ease, background 0.15s ease;
   z-index: 80;
 }
 .fab-top.visible { opacity: 1; transform: none; pointer-events: auto; }
-.fab-top:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg), var(--shadow-glow); }
+.fab-top:hover { background: var(--surface-3); border-color: var(--accent-border); color: var(--accent-text); }
 
 /* ==================== RESPONSIVE ============================================ */
 
@@ -3344,18 +3267,16 @@ a.post-author-link:focus-visible {
    ================================================================ */
 
 #code-detail-modal {
-  padding: clamp(12px, 3vw, 32px);
+  padding: clamp(12px, 3vw, 28px);
 }
 #code-detail-modal .modal-content {
   width: 100%;
-  max-width: 760px;
+  max-width: 920px;
   max-height: calc(100vh - var(--space-xl));
-  background: linear-gradient(180deg, rgba(30, 30, 30, 0.98), rgba(18, 20, 24, 0.98));
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-xl);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background: var(--surface-1);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
   overflow: hidden auto;
   position: relative;
   animation: scale-in var(--duration-normal) var(--ease-spring);

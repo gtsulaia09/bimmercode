@@ -1,62 +1,57 @@
 /**
- * i18n-init.js — Lightweight language initializer for static pages
- * (contact, privacy, terms). Reads forumLanguage from localStorage
+ * i18n-init.js — Lightweight language initializer for static/utility pages
+ * (all, parts, contact, privacy, terms). Reads forumLanguage from localStorage
  * and applies translations from APP_TRANSLATIONS.
- *
- * Pages that have their own full script.js (index, vin) or forum.js
- * do NOT need this file — they handle language internally.
  */
 (function () {
   "use strict";
 
   const STORAGE_KEY = "forumLanguage";
   const LANGS = ["en", "ru", "ka"];
-  const LANG_LABELS = { en: "EN", ru: "RU", ka: "GE" };
+  const LANG_LABELS = { en: "EN", ru: "RU", ka: "KA" };
 
-  let currentLang = localStorage.getItem(STORAGE_KEY) || "en";
+  let currentLang = localStorage.getItem(STORAGE_KEY) || localStorage.getItem("language") || "en";
   if (!LANGS.includes(currentLang)) currentLang = "en";
 
-  /* ── Apply translations to DOM ── */
   function applyTranslations() {
     const T =
       (window.APP_TRANSLATIONS && window.APP_TRANSLATIONS[currentLang]) ||
-      (window.APP_TRANSLATIONS && window.APP_TRANSLATIONS["en"]) ||
+      (window.APP_TRANSLATIONS && window.APP_TRANSLATIONS.en) ||
       {};
 
-    // Set <html lang>
     document.documentElement.setAttribute("lang", currentLang);
 
-    // data-i18n  → textContent
     document.querySelectorAll("[data-i18n]").forEach(function (el) {
       var key = el.getAttribute("data-i18n");
       if (T[key] != null) el.textContent = T[key];
     });
 
-    // data-i18n-html  → innerHTML (for rich legal sections)
     document.querySelectorAll("[data-i18n-html]").forEach(function (el) {
       var key = el.getAttribute("data-i18n-html");
       if (T[key] != null) el.innerHTML = T[key];
     });
 
-    // data-i18n-placeholder  → placeholder
     document.querySelectorAll("[data-i18n-placeholder]").forEach(function (el) {
       var key = el.getAttribute("data-i18n-placeholder");
       if (T[key] != null) el.placeholder = T[key];
     });
 
-    // Update language toggle button label
     var btn = document.getElementById("language-toggle");
     if (btn) {
       var span = btn.querySelector("span");
       if (span) span.textContent = LANG_LABELS[currentLang] || "EN";
     }
+
+    document.querySelectorAll("[data-set-lang]").forEach(function (b) {
+      b.classList.toggle("is-active", b.getAttribute("data-set-lang") === currentLang);
+    });
   }
 
-  /* ── Toggle language (cycles en → ru → ka → en) ── */
-  function toggleLanguage() {
-    var idx = LANGS.indexOf(currentLang);
-    currentLang = LANGS[(idx + 1) % LANGS.length];
+  function setPageLanguage(lang) {
+    if (!LANGS.includes(lang)) return;
+    currentLang = lang;
     localStorage.setItem(STORAGE_KEY, currentLang);
+    localStorage.setItem("language", currentLang);
     applyTranslations();
     window.dispatchEvent(
       new CustomEvent("languageChanged", { detail: { lang: currentLang } })
@@ -66,20 +61,25 @@
     }
   }
 
-  // Expose for inline onclick or external use
+  function toggleLanguage() {
+    var idx = LANGS.indexOf(currentLang);
+    setPageLanguage(LANGS[(idx + 1) % LANGS.length]);
+  }
+
   window.togglePageLanguage = toggleLanguage;
-  window.t = function(key) {
-    const T = (window.APP_TRANSLATIONS && window.APP_TRANSLATIONS[currentLang]) ||
-              (window.APP_TRANSLATIONS && window.APP_TRANSLATIONS["en"]) || {};
+  window.setPageLanguage = setPageLanguage;
+  window.t = function (key) {
+    const T =
+      (window.APP_TRANSLATIONS && window.APP_TRANSLATIONS[currentLang]) ||
+      (window.APP_TRANSLATIONS && window.APP_TRANSLATIONS.en) ||
+      {};
     return T[key] || key;
   };
 
-  /* ── Wire up language button ── */
   var langBtn = document.getElementById("language-toggle");
   if (langBtn) {
     langBtn.addEventListener("click", toggleLanguage);
   }
 
-  /* ── Apply on load ── */
   applyTranslations();
 })();

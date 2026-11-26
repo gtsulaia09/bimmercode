@@ -1,159 +1,227 @@
 /* =============================================================================
-   BimmerCodes — Design Tokens (Forum v2)
-   Single source of truth for colors, spacing, typography, radii, motion.
-   Used by forum.html, topic.html and (progressively) the rest of the app.
-   Backward-compatible aliases for legacy --bmw-* variables are kept at the
-   bottom so existing CSS keeps working while we migrate components.
+   BimmerCodes — Unified Design System Tokens (2026 Engineering Edition)
+   Single source of truth for surfaces, typography, spacing, borders, severity,
+   and interaction states across every page and module.
    ========================================================================== */
 
 :root {
-  /* ---------- Brand ------------------------------------------------------- */
-  --color-primary:        #1C69D4;   /* BMW Blue */
-  --color-primary-600:    #155BB8;
-  --color-primary-700:    #0F4A9E;
-  --color-primary-200:    #6FA4E8;
-  --color-primary-100:    #A9C8F1;
-  --color-primary-alpha-10: rgba(28, 105, 212, 0.10);
-  --color-primary-alpha-20: rgba(28, 105, 212, 0.20);
-  --color-primary-alpha-30: rgba(28, 105, 212, 0.30);
+  /* ---------- 1. Surface Hierarchy (Deep Graphite & Machined Charcoal) ---- */
+  --bg-canvas:            #0A0C10;   /* Primary application canvas */
+  --bg-subtle:            #0E1117;   /* Secondary section band / rail */
+  --surface-1:            #131720;   /* Base technical panel / card */
+  --surface-2:            #181E29;   /* Elevated module / modal / menu */
+  --surface-3:            #1F2735;   /* Interactive control / hover / table head */
+  --surface-4:            #283244;   /* Active / pressed surface */
+  --surface-inset:        #080A0E;   /* Input well / code block / console */
+  --surface-header:       rgba(10, 12, 16, 0.92);
+  --surface-overlay:      rgba(5, 7, 10, 0.78);
 
-  /* Accent (sky) — used for logo highlight, gradient pairs */
-  --color-accent:         #4DA8FF;
-  --color-accent-dark:    #2B7BC4;
+  /* ---------- 2. Restrained Automotive Blue & Metallic Accents ------------ */
+  --accent:               #2877EE;   /* Primary precision automotive blue */
+  --accent-hover:         #3B86F7;
+  --accent-active:        #1D62CC;
+  --accent-light:         #6EA8FF;   /* High-contrast technical link / code ID */
+  --accent-subtle:        rgba(40, 119, 238, 0.10);
+  --accent-muted:         rgba(40, 119, 238, 0.18);
+  --accent-ring:          rgba(40, 119, 238, 0.38);
 
-  /* ---------- Surfaces (dark by default) --------------------------------- */
-  --color-bg-deep:        #0A0A0C;   /* page background — softened from pure black */
-  --color-surface:        #151517;   /* base card / nav background */
-  --color-surface-2:      #1E1E1E;   /* elevated card, modal */
-  --color-surface-3:      #2A2A2A;   /* input, hover, code block */
-  --color-surface-4:      #353535;   /* pressed / active state */
-  --color-surface-glass:  rgba(18, 20, 24, 0.72);
-  --color-surface-glass-2: rgba(28, 32, 40, 0.65);
+  /* Brushed titanium & neutral metallic tones */
+  --metal-bright:         #EAEFF7;
+  --metal-mid:            #94A3B8;
+  --metal-dim:            #64748B;
 
-  /* ---------- Text ------------------------------------------------------- */
-  --color-text-primary:   #E4E4E7;   /* warm off-white — easier on eyes */
-  --color-text-secondary: #A1A1AA;   /* zinc-400, warmer */
-  --color-text-muted:     #71717A;   /* zinc-500, better contrast */
-  --color-text-disabled:  #52525B;   /* zinc-600 */
-  --color-text-inverse:   #0A0A0A;
-  --color-text-on-primary: #FFFFFF;
+  /* ---------- 3. Text Hierarchy ------------------------------------------- */
+  --text-primary:         #EDF1F7;   /* Crisp off-white technical copy */
+  --text-secondary:       #A3B0C2;   /* Balanced slate secondary copy */
+  --text-tertiary:        #6E7C91;   /* Muted captions, timestamps, labels */
+  --text-disabled:        #4B5668;
+  --text-on-accent:       #FFFFFF;
 
-  /* ---------- Borders / dividers ---------------------------------------- */
-  --color-border:         rgba(255, 255, 255, 0.10);
-  --color-border-strong:  rgba(255, 255, 255, 0.18);
-  --color-border-focus:   var(--color-primary);
-  --color-divider:        rgba(255, 255, 255, 0.06);
+  /* ---------- 4. Structured Hairline Borders ------------------------------ */
+  --border-subtle:        rgba(226, 232, 240, 0.06);
+  --border-default:       rgba(226, 232, 240, 0.10);
+  --border-strong:        rgba(226, 232, 240, 0.17);
+  --border-accent:        rgba(40, 119, 238, 0.45);
 
-  /* ---------- Semantic --------------------------------------------------- */
-  --color-success:        #4CAF50;
-  --color-success-bg:     rgba(76, 175, 80, 0.14);
-  --color-warning:        #EF9F27;
-  --color-warning-bg:     rgba(239, 159, 39, 0.14);
-  --color-danger:         #E24B4A;
-  --color-danger-bg:      rgba(226, 75, 74, 0.14);
-  --color-info:           #3B9DF8;
-  --color-info-bg:        rgba(59, 157, 248, 0.14);
+  /* ---------- 5. Diagnostic Severity & Engineering Status ----------------- */
+  --sev-critical:         #EF4444;
+  --sev-critical-bg:      rgba(239, 68, 68, 0.11);
+  --sev-critical-border:  rgba(239, 68, 68, 0.30);
 
-  /* Reputation tiers — used for user badges */
-  --color-rep-newcomer:   #8A8A8A;
-  --color-rep-member:     #4DA8FF;
-  --color-rep-regular:    #4CAF50;
-  --color-rep-expert:     #EF9F27;
-  --color-rep-master:     #E24B4A;
-  --color-rep-admin:      #C70039;
+  --sev-high:             #F97316;
+  --sev-high-bg:          rgba(249, 115, 22, 0.11);
+  --sev-high-border:      rgba(249, 115, 22, 0.30);
 
-  /* ---------- Typography ------------------------------------------------ */
-  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-display: 'Exo 2', 'Inter', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+  --sev-medium:           #EAB308;
+  --sev-medium-bg:        rgba(234, 179, 8, 0.11);
+  --sev-medium-border:    rgba(234, 179, 8, 0.28);
 
-  --font-size-xs:   12px;
-  --font-size-sm:   13px;
-  --font-size-md:   14px;
-  --font-size-base: 15px;
-  --font-size-lg:   17px;
-  --font-size-xl:   20px;
-  --font-size-2xl:  24px;
-  --font-size-3xl:  32px;
-  --font-size-display: clamp(28px, 5vw, 44px);
+  --sev-low:              #10B981;
+  --sev-low-bg:           rgba(16, 185, 129, 0.11);
+  --sev-low-border:       rgba(16, 185, 129, 0.28);
 
-  --font-weight-regular: 400;
-  --font-weight-medium:  500;
+  --status-success:       #10B981;
+  --status-success-bg:    rgba(16, 185, 129, 0.12);
+  --status-warning:       #F59E0B;
+  --status-warning-bg:    rgba(245, 158, 11, 0.12);
+  --status-danger:        #EF4444;
+  --status-danger-bg:     rgba(239, 68, 68, 0.12);
+  --status-info:          #2877EE;
+  --status-info-bg:       rgba(40, 119, 238, 0.12);
+
+  /* Reputation tiers */
+  --color-rep-newcomer:   #7E8B9F;
+  --color-rep-member:     #589BFF;
+  --color-rep-regular:    #10B981;
+  --color-rep-expert:     #F59E0B;
+  --color-rep-master:     #F97316;
+  --color-rep-admin:      #EF4444;
+
+  /* ---------- 6. Typography & Multilingual Support ------------------------ */
+  --font-sans:            'Inter', 'Noto Sans Georgian', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display:         'Inter', 'Noto Sans Georgian', system-ui, -apple-system, sans-serif;
+  --font-mono:            'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --font-size-2xs:        11px;
+  --font-size-xs:         12px;
+  --font-size-sm:         13px;
+  --font-size-md:         14px;
+  --font-size-base:       15px;
+  --font-size-lg:         17px;
+  --font-size-xl:         20px;
+  --font-size-2xl:        24px;
+  --font-size-3xl:        30px;
+  --font-size-display:    clamp(1.85rem, 3.2vw, 2.75rem);
+
+  --font-weight-regular:  400;
+  --font-weight-medium:   500;
   --font-weight-semibold: 600;
-  --font-weight-bold:    700;
+  --font-weight-bold:     700;
 
-  --line-height-tight:   1.2;
-  --line-height-normal:  1.5;
-  --line-height-loose:   1.7;
+  --line-height-tight:    1.22;
+  --line-height-snug:     1.35;
+  --line-height-normal:   1.55;
+  --line-height-loose:    1.7;
 
-  /* ---------- Spacing (4px grid) ---------------------------------------- */
-  --space-0:   0;
-  --space-xs:  4px;
-  --space-sm:  8px;
-  --space-md:  16px;
-  --space-lg:  24px;
-  --space-xl:  40px;
-  --space-2xl: 64px;
-  --space-3xl: 96px;
+  /* ---------- 7. Spacing Scale (4px Engineering Grid) --------------------- */
+  --space-0:              0;
+  --space-1:              4px;
+  --space-2:              8px;
+  --space-3:              12px;
+  --space-4:              16px;
+  --space-5:              20px;
+  --space-6:              24px;
+  --space-8:              32px;
+  --space-10:             40px;
+  --space-12:             48px;
+  --space-16:             64px;
+  --space-20:             80px;
 
-  /* ---------- Radius ---------------------------------------------------- */
-  --radius-xs:   3px;
-  --radius-sm:   6px;
-  --radius-md:   10px;
-  --radius-lg:   14px;
-  --radius-xl:   20px;
-  --radius-2xl:  28px;
-  --radius-pill: 999px;
+  --space-xs:             4px;
+  --space-sm:             8px;
+  --space-md:             16px;
+  --space-lg:             24px;
+  --space-xl:             40px;
+  --space-2xl:            64px;
+  --space-3xl:            88px;
 
-  /* ---------- Elevation ------------------------------------------------- */
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.25);
-  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.28);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.32);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.36);
-  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.40);
-  --shadow-glow:      none;   /* removed — moving to calmer aesthetic */
-  --shadow-glow-soft: none;
+  /* ---------- 8. Precision Border Radii ----------------------------------- */
+  --radius-xs:            4px;
+  --radius-sm:            6px;
+  --radius-md:            8px;
+  --radius-lg:            10px;
+  --radius-xl:            12px;
+  --radius-2xl:           14px;
+  --radius-pill:          999px;
 
-  /* ---------- Motion ---------------------------------------------------- */
-  --ease-out:    cubic-bezier(0.22, 0.61, 0.36, 1);
-  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-spring: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --duration-fast:   120ms;
-  --duration-normal: 220ms;
-  --duration-slow:   380ms;
+  /* ---------- 9. Controlled Elevation ------------------------------------- */
+  --shadow-xs:            0 1px 2px rgba(0, 0, 0, 0.32);
+  --shadow-sm:            0 2px 8px rgba(0, 0, 0, 0.36);
+  --shadow-md:            0 8px 24px rgba(0, 0, 0, 0.42);
+  --shadow-lg:            0 16px 40px rgba(0, 0, 0, 0.52);
+  --shadow-xl:            0 24px 56px rgba(0, 0, 0, 0.62);
+  --shadow-glow:          none;
+  --shadow-glow-soft:     none;
 
-  --transition-base: all var(--duration-normal) var(--ease-out);
-  --transition-fast: all var(--duration-fast)   var(--ease-out);
+  /* ---------- 10. Motion & Layout Metrics --------------------------------- */
+  --ease-out:             cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-in-out:          cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast:        120ms;
+  --duration-normal:      180ms;
+  --duration-slow:        280ms;
 
-  /* ---------- Layout ---------------------------------------------------- */
-  --container-max:     1280px;
-  --container-padding: clamp(16px, 4vw, 32px);
-  --header-height:     64px;
-  --sidebar-width:     260px;
-  --z-header:          100;
-  --z-modal:           1000;
-  --z-toast:           1200;
+  --transition-fast:      120ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  --transition-base:      180ms cubic-bezier(0.22, 0.61, 0.36, 1);
 
-  /* Safe-area insets (notches) */
-  --sat: env(safe-area-inset-top);
-  --sab: env(safe-area-inset-bottom);
-  --sal: env(safe-area-inset-left);
-  --sar: env(safe-area-inset-right);
+  --container-max:        1280px;
+  --container-padding:    clamp(16px, 3.5vw, 32px);
+  --header-height:        64px;
+  --sidebar-width:        264px;
 
-  /* =============================================================
-     Backward-compatible aliases — keep legacy CSS working.
-     Do NOT use these in new code; prefer the tokens above.
-     ============================================================= */
-  --bmw-blue:      var(--color-primary);
-  --bmw-dark-blue: var(--color-primary-700);
-  --bmw-sky:       var(--color-accent);
-  --bg-deep:       var(--color-bg-deep);
-  --glass-bg:      var(--color-surface-glass);
-  --glass-border:  var(--color-border);
-  --glass-highlight: rgba(255, 255, 255, 0.03);
-  --text-main:     var(--color-text-primary);
-  --text-muted:    var(--color-text-muted);
-  --radius-xl-legacy: 24px;
-  --transition:    var(--transition-base);
-  --shadow-glow-legacy: var(--shadow-glow);
+  --z-header:             200;
+  --z-dropdown:           900;
+  --z-drawer:             1100;
+  --z-modal:              1300;
+  --z-toast:              1500;
+
+  --sat:                  env(safe-area-inset-top, 0px);
+  --sab:                  env(safe-area-inset-bottom, 0px);
+  --sal:                  env(safe-area-inset-left, 0px);
+  --sar:                  env(safe-area-inset-right, 0px);
+
+  /* ---------- 11. Semantic Compatibility Aliases -------------------------- */
+  --color-primary:          var(--accent);
+  --color-primary-600:      var(--accent-hover);
+  --color-primary-700:      var(--accent-active);
+  --color-primary-200:      var(--accent-light);
+  --color-primary-100:      #B8D4FF;
+  --color-primary-alpha-10: var(--accent-subtle);
+  --color-primary-alpha-20: var(--accent-muted);
+  --color-primary-alpha-30: rgba(40, 119, 238, 0.28);
+  --color-accent:           var(--accent-light);
+  --color-accent-dark:      var(--accent-active);
+
+  --color-bg-deep:          var(--bg-canvas);
+  --color-surface:          var(--surface-1);
+  --color-surface-1:        var(--surface-1);
+  --color-surface-2:        var(--surface-2);
+  --color-surface-3:        var(--surface-3);
+  --color-surface-4:        var(--surface-4);
+  --color-surface-glass:    var(--surface-1);
+  --color-surface-glass-2:  var(--surface-2);
+
+  --color-text-primary:     var(--text-primary);
+  --color-text-secondary:   var(--text-secondary);
+  --color-text-muted:       var(--text-tertiary);
+  --color-text-disabled:    var(--text-disabled);
+  --color-text-inverse:     #0A0C10;
+  --color-text-on-primary:  #FFFFFF;
+
+  --color-border:           var(--border-default);
+  --color-border-strong:    var(--border-strong);
+  --color-border-focus:     var(--accent);
+  --color-divider:          var(--border-subtle);
+
+  --color-success:          var(--status-success);
+  --color-success-bg:       var(--status-success-bg);
+  --color-warning:          var(--status-warning);
+  --color-warning-bg:       var(--status-warning-bg);
+  --color-danger:           var(--status-danger);
+  --color-danger-bg:        var(--status-danger-bg);
+  --color-info:             var(--status-info);
+  --color-info-bg:          var(--status-info-bg);
+
+  --bmw-blue:               var(--accent);
+  --bmw-blue-hover:         var(--accent-hover);
+  --bmw-dark-blue:          var(--accent-active);
+  --bmw-sky:                var(--accent-light);
+  --admin-danger:           var(--status-danger);
+  --bg-deep:                var(--bg-canvas);
+  --glass-bg:               var(--surface-1);
+  --glass-border:           var(--border-default);
+  --text-main:              var(--text-primary);
+  --text-gray:              var(--text-secondary);
+  --text-muted:             var(--text-tertiary);
+  --bc-text:                var(--text-primary);
+  --transition:             var(--transition-base);
 }

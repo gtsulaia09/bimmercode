@@ -32,7 +32,7 @@ for (const name of readdirSync(ROOT)) {
 
 // Root paths → under BASE. Only paths of this site: links, scripts, styles, data, pages. /api stays as is (the shim
 // answers it), protocol-relative "//host" and absolute URLs are untouched.
-const PAGES = 'forum|topic|admin|profile|js/|css/|data/|code|vin|assets/|index|contact|privacy|terms|all|site\\.webmanifest|\\?search';
+const PAGES = 'forum|topic|admin|profile|parts|js/|css/|data/|code|vin|assets/|index|contact|privacy|terms|all|site\\.webmanifest|\\?search|\\?code';
 // The pages also load their own styles and scripts by full production URL (https://bimmercodes.net/css/…): those, and
 // links people click (<a href>), point at the demo; canonical/hreflang/Open Graph tags keep the production address.
 const SITE = 'https://bimmercodes.net/';

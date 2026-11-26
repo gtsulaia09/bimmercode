@@ -420,12 +420,24 @@
 
     let quickLinks = `
       <a href="/" class="mobile-menu-link" onclick="${closeMobileMenuJs}">
-        <i class="fas fa-home" aria-hidden="true"></i>
-        <span>${escapeHtml(t("homeBtn", "Home"))}</span>
+        <i class="fas fa-microchip" aria-hidden="true"></i>
+        <span>${escapeHtml(t("navCodes", "Diagnostic Codes"))}</span>
+      </a>
+      <a href="/all.html" class="mobile-menu-link" onclick="${closeMobileMenuJs}">
+        <i class="fas fa-list-ul" aria-hidden="true"></i>
+        <span>${escapeHtml(t("navCodeIndex", "Code Index"))}</span>
+      </a>
+      <a href="/vin.html" class="mobile-menu-link" onclick="${closeMobileMenuJs}">
+        <i class="fas fa-barcode" aria-hidden="true"></i>
+        <span>${escapeHtml(t("vinBtn", "VIN Decoder"))}</span>
+      </a>
+      <a href="/parts.html" class="mobile-menu-link" onclick="${closeMobileMenuJs}">
+        <i class="fas fa-cogs" aria-hidden="true"></i>
+        <span>${escapeHtml(t("navParts", "Parts Finder"))}</span>
       </a>`;
     if (isTopicPage) {
       quickLinks += `
-      <a href="/forum" class="mobile-menu-link" onclick="${closeMobileMenuJs}">
+      <a href="/forum.html" class="mobile-menu-link" onclick="${closeMobileMenuJs}">
         <i class="fas fa-arrow-left" aria-hidden="true"></i>
         <span>${escapeHtml(t("backToTopics", "Back"))}</span>
       </a>`;
@@ -463,7 +475,7 @@
         </button>`;
     }
 
-    const langLabel = { en: "EN", ru: "RU", ka: "GE" }[state.lang] || "EN";
+    const langLabel = { en: "EN", ru: "RU", ka: "KA" }[state.lang] || "EN";
     const categoriesBlock = $("#categories-nav")
       ? `
         <div class="sidebar-card mobile-menu-categories">
@@ -720,12 +732,12 @@
       if (val !== undefined) el.placeholder = val;
     });
     const disp = $("#forum-lang-display");
-    if (disp) disp.textContent = { en: "EN", ru: "RU", ka: "GE" }[state.lang] || "EN";
+    if (disp) disp.textContent = { en: "EN", ru: "RU", ka: "KA" }[state.lang] || "EN";
   }
 
-  window.switchForumLanguage = async function switchForumLanguage() {
-    const order = ["en", "ru", "ka"];
-    state.lang = order[(order.indexOf(state.lang) + 1) % order.length];
+  window.setPageLanguage = async function setForumPageLang(nextLang) {
+    if (!["en", "ru", "ka"].includes(nextLang)) return;
+    state.lang = nextLang;
     localStorage.setItem("forumLanguage", state.lang);
     localStorage.setItem("language", state.lang);
     applyI18n();
@@ -735,12 +747,14 @@
     else renderMobileMenu();
     rerenderVisibleTopics();
     try {
-      document.dispatchEvent(
-        new CustomEvent("languageChanged", { detail: { lang: state.lang } }),
-      );
-    } catch (_) {
-      /* ignore */
-    }
+      window.dispatchEvent(new CustomEvent("languageChanged", { detail: { lang: state.lang } }));
+    } catch (_) {}
+  };
+
+  window.switchForumLanguage = async function switchForumLanguage() {
+    const order = ["en", "ru", "ka"];
+    const next = order[(order.indexOf(state.lang) + 1) % order.length];
+    await window.setPageLanguage(next);
   };
 
   // ============================================================ Public: filter/category/tag setters
@@ -1029,7 +1043,15 @@
     setupInfiniteScroll();
     setupScrollToTop();
 
-    if (new URLSearchParams(location.search).get("new") === "1") {
+    const urlParams = new URLSearchParams(location.search);
+    const initialSearch = (urlParams.get("q") || urlParams.get("search") || "").trim();
+    if (initialSearch) {
+      state.search = initialSearch;
+      const searchEl = $("#forum-search");
+      if (searchEl) searchEl.value = initialSearch;
+    }
+
+    if (urlParams.get("new") === "1") {
       setTimeout(() => {
         if (typeof window.openNewTopicModal === "function") {
           window.openNewTopicModal();

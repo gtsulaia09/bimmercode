@@ -1681,12 +1681,12 @@
       if (val !== undefined) el.placeholder = val;
     });
     const disp = $("#forum-lang-display");
-    if (disp) disp.textContent = { en: "EN", ru: "RU", ka: "GE" }[state.lang] || "EN";
+    if (disp) disp.textContent = { en: "EN", ru: "RU", ka: "KA" }[state.lang] || "EN";
   }
 
-  window.switchForumLanguage = async function () {
-    const order = ["en", "ru", "ka"];
-    state.lang = order[(order.indexOf(state.lang) + 1) % order.length];
+  window.setPageLanguage = async function (nextLang) {
+    if (!["en", "ru", "ka"].includes(nextLang)) return;
+    state.lang = nextLang;
     localStorage.setItem("forumLanguage", state.lang);
     localStorage.setItem("language", state.lang);
     if (typeof window.__forumSyncLang === "function") await window.__forumSyncLang();
@@ -1694,12 +1694,14 @@
     if (state.topic) renderTopic();
     applyI18n();
     try {
-      document.dispatchEvent(
-        new CustomEvent("languageChanged", { detail: { lang: state.lang } }),
-      );
-    } catch (_) {
-      /* ignore */
-    }
+      window.dispatchEvent(new CustomEvent("languageChanged", { detail: { lang: state.lang } }));
+    } catch (_) {}
+  };
+
+  window.switchForumLanguage = async function () {
+    const order = ["en", "ru", "ka"];
+    const next = order[(order.indexOf(state.lang) + 1) % order.length];
+    await window.setPageLanguage(next);
   };
 
   window.toggleAuthModal = function () {

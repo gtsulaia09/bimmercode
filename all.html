@@ -1,69 +1,147 @@
 <!doctype html>
-<html lang="en" class="index-bento-page bcx-page">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>All BMW Diagnostic Codes | BimmerCodes</title>
-  <meta name="description" content="Complete index and master list of all BMW Diagnostic Trouble Codes (DTC) in our database.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>BMW DTC Master Directory — All Diagnostic Trouble Codes | BimmerCodes</title>
+  <meta name="description" content="Complete index and searchable master directory of BMW Diagnostic Trouble Codes (DTC), manufacturer hex codes, and OBD-II P-codes.">
   <link rel="canonical" href="https://bimmercodes.net/all">
   <meta name="robots" content="index, follow">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="./css/tokens.css?v=3.0" />
-  <link rel="stylesheet" href="./css/ui-buttons.css?v=1" />
-  <link rel="stylesheet" href="./css/forum.css?v=3.14" />
-  <link rel="stylesheet" href="./css/index-bento.css?v=6" />
-  <link rel="stylesheet" href="./css/site-premium.css?v=5" />
-  <link rel="stylesheet" href="./css/responsive.css?v=4" />
-  <link rel="stylesheet" href="./css/page-premium.css?v=1" />
-  <link rel="stylesheet" href="./css/site-responsive.css?v=3" />
-  
-  <!-- Google AdSense -->
+  <meta name="theme-color" content="#0A0C10">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/ico.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Noto+Sans+Georgian:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/css/tokens.css?v=4.0" />
+  <link rel="stylesheet" href="/css/style.css?v=4.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <meta name="google-adsense-account" content="ca-pub-6807738591111613">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6807738591111613"
-   crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6807738591111613" crossorigin="anonymous"></script>
   <style>
-    body { font-family: system-ui, sans-serif; background: #0f172a; color: #e8edf5; margin: 0; padding: 0; }
-    body.bmw-pattern { background: #0f172a; }
-    h1.page-title { margin: 30px 20px 10px; font-size: 1.8rem; color: #4da8ff; }
-    p.desc { margin: 0 20px 30px; color: rgba(232,237,245,.6); }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; padding: 0 20px 40px; }
-    .card { background: #0d1b2e; border: 1px solid rgba(0,102,179,.25); border-radius: 8px; padding: 16px; transition: .2s; text-decoration: none; display: flex; flex-direction: column; }
-    .card:hover { border-color: #4da8ff; background: rgba(0,102,179,.1); transform: translateY(-2px); }
-    .code-id { color: #4da8ff; font-family: monospace; font-size: 1.2rem; font-weight: bold; margin-bottom: 6px; }
-    .code-title { color: #e8edf5; font-size: 0.9rem; line-height: 1.4; }
+    .grid {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 var(--container-padding) 64px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 10px;
+    }
+    .card {
+      background-color: var(--surface-1);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      transition: border-color var(--transition-fast), background-color var(--transition-fast);
+    }
+    .card:hover {
+      background-color: var(--surface-2);
+      border-color: var(--border-accent);
+    }
+    .code-id {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent-light);
+    }
+    .code-title {
+      font-size: var(--font-size-sm);
+      color: var(--text-primary);
+      line-height: 1.45;
+    }
   </style>
 </head>
-<body class="bmw-pattern bcx">
-  <div id="webgl-container" class="index-bento-bg" aria-hidden="true"></div>
-  <header class="forum-header index-bento">
-    <div class="logo-container index-header-brand">
-      <a class="main_logo_refr" href="/" aria-label="BimmerCodes home">
-        <div class="logo" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="48" stroke="white" stroke-width="4" fill="black" />
-            <circle cx="50" cy="50" r="35" fill="white" />
-            <path d="M 50,15 A 35,35 0 0,1 85,50 H 50 Z" fill="#1A6FB0" />
-            <path d="M 50,50 H 85 A 35,35 0 0,1 50,85 Z" fill="white" />
-            <path d="M 50,50 V 15 A 35,35 0 0,0 15,50 Z" fill="white" />
-            <path d="M 50,50 H 15 A 35,35 0 0,0 50,85 Z" fill="#1A6FB0" />
+<body>
+  <header class="bc-header" role="banner">
+    <div class="bc-header__inner">
+      <a href="/" class="bc-brand" aria-label="BimmerCodes Home">
+        <span class="bc-brand__mark" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+            <rect x="3" y="3" width="58" height="58" rx="12" fill="#0E1218" stroke="#283244" stroke-width="2" />
+            <rect x="7" y="7" width="50" height="50" rx="8.5" fill="#131923" stroke="#1E2736" stroke-width="1" />
+            <path d="M16 18H31.5C36.2 18 39.5 20.5 39.5 24.6C39.5 27.4 37.9 29.5 35.2 30.4C38.5 31.2 40.5 33.6 40.5 37C40.5 41.6 36.9 44.5 31.4 44.5H16V18ZM22.2 28.4H29.9C32.2 28.4 33.5 27.3 33.5 25.4C33.5 23.5 32.2 22.5 29.9 22.5H22.2V28.4ZM22.2 40H30.4C33 40 34.4 38.8 34.4 36.7C34.4 34.6 32.9 33.4 30.3 33.4H22.2V40Z" fill="#E8EEF6" />
+            <path d="M43.5 18H49.5L43.5 44.5H37.5L43.5 18Z" fill="#2877EE" />
+            <rect x="46.5" y="18" width="3.5" height="7" rx="1" fill="#6EA8FF" />
           </svg>
-        </div>
-        <h1 class="index-header-title">
-          BMW Diagnostic Codes <span class="index-header-title-muted">· DTC index</span>
-        </h1>
+        </span>
+        <span class="bc-brand__text">
+          <span class="bc-brand__name">BimmerCodes</span>
+          <span class="bc-brand__sub" data-i18n="brandSub">Diagnostic &amp; Engineering</span>
+        </span>
       </a>
+
+      <nav class="bc-nav" aria-label="Primary Navigation">
+        <a href="/" class="bc-nav__link"><i class="fas fa-microchip"></i> <span data-i18n="navCodes">Diagnostic Codes</span></a>
+        <a href="/all.html" class="bc-nav__link is-active" aria-current="page"><i class="fas fa-list-ul"></i> <span data-i18n="navCodeIndex">Code Index</span></a>
+        <a href="/vin.html" class="bc-nav__link"><i class="fas fa-barcode"></i> <span data-i18n="vinBtn">VIN Decoder</span></a>
+        <a href="/parts.html" class="bc-nav__link"><i class="fas fa-cogs"></i> <span data-i18n="navParts">Parts Finder</span></a>
+        <a href="/forum.html" class="bc-nav__link"><i class="fas fa-comments"></i> <span data-i18n="navForum">Forum</span></a>
+        <button type="button" class="bc-nav__link" data-open-ai-chat><i class="fas fa-sparkles"></i> <span data-i18n="navAi">AI Assistant</span></button>
+      </nav>
+
+      <div class="bc-header-tools controls">
+        <button id="language-toggle" type="button" class="bc-tool-btn bc-tool-btn--lang" title="Switch Language">
+          <i class="fas fa-globe" aria-hidden="true"></i>
+          <span>EN</span>
+        </button>
+        <button type="button" class="bc-burger" id="bc-mobile-burger" aria-label="Open menu" aria-controls="bc-mobile-drawer" aria-expanded="false">
+          <i class="fas fa-bars" aria-hidden="true"></i>
+        </button>
+      </div>
     </div>
-    <nav class="controls" aria-label="Site">
-      <a href="/" class="index-header-btn btn"><i class="fas fa-home" aria-hidden="true"></i> Home</a>
-      <a href="/vin.html" class="index-header-btn btn"><i class="fas fa-fingerprint" aria-hidden="true"></i> VIN</a>
-      <a href="/forum" class="index-header-btn btn"><i class="fas fa-comments" aria-hidden="true"></i> Forum</a>
-      <a href="/contact" class="index-header-btn btn"><i class="fas fa-envelope" aria-hidden="true"></i> Contact</a>
-    </nav>
   </header>
-  <h1 class="page-title">BMW DTC Master Index</h1>
-  <p class="desc">A complete directory of all 240 BMW diagnostic codes documented in our database. Select a code below to read its meaning, symptoms, and repair solutions.</p>
-  
-  <div class="grid">
+
+  <div class="bc-drawer" id="bc-mobile-drawer" role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="bc-drawer__panel">
+      <div class="bc-drawer__head">
+        <span class="bc-brand__name">BimmerCodes</span>
+        <button type="button" class="bc-drawer__close" aria-label="Close menu" data-drawer-close><i class="fas fa-times"></i></button>
+      </div>
+      <a href="/" class="bc-drawer__link"><i class="fas fa-magnifying-glass"></i> <span data-i18n="navCodes">Diagnostic Codes</span></a>
+      <a href="/all.html" class="bc-drawer__link is-active"><i class="fas fa-list-ul"></i> <span data-i18n="navCodeIndex">Code Index</span></a>
+      <a href="/vin.html" class="bc-drawer__link"><i class="fas fa-barcode"></i> <span data-i18n="vinBtn">VIN Decoder</span></a>
+      <a href="/parts.html" class="bc-drawer__link"><i class="fas fa-cogs"></i> <span data-i18n="navParts">Parts Finder</span></a>
+      <a href="/forum.html" class="bc-drawer__link"><i class="fas fa-comments"></i> <span data-i18n="navForum">Forum</span></a>
+      <span class="bc-drawer__section-label" data-i18n="sheetLanguage">Language</span>
+      <div class="bc-drawer__lang-row">
+        <button type="button" class="bc-drawer__lang-btn" data-set-lang="en">EN</button>
+        <button type="button" class="bc-drawer__lang-btn" data-set-lang="ru">RU</button>
+        <button type="button" class="bc-drawer__lang-btn" data-set-lang="ka">KA</button>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <section class="bc-page-hero">
+      <div class="bc-container">
+        <span class="bc-kicker" data-i18n="dirHeroKicker">Master Reference Index</span>
+        <h1 class="bc-page-hero__title" data-i18n="dirHeroTitle">BMW Diagnostic Trouble Code Directory</h1>
+        <p class="bc-page-hero__lead" data-i18n="dirHeroLead">
+          Filter curated manufacturer hex and OBD-II fault records below, or type any identifier to query the full 9,906-code database.
+        </p>
+
+        <div class="bc-directory-toolbar">
+          <div class="bc-directory-search">
+            <i class="fas fa-magnifying-glass" style="color: var(--accent-light);" aria-hidden="true"></i>
+            <input type="search" id="directory-filter-input" data-i18n-placeholder="dirFilterPlaceholder" placeholder="Filter by code (e.g. 2A82, 118001, P0171) or system…" autocomplete="off" />
+          </div>
+          <div class="bc-filter-pills" role="group" aria-label="Category Filter">
+            <button type="button" class="bc-filter-pill is-active" data-dir-group="all" data-i18n="dirFilterAll">Featured (240)</button>
+            <button type="button" class="bc-filter-pill" data-dir-group="dme">DME / Powertrain</button>
+            <button type="button" class="bc-filter-pill" data-dir-group="dsc">DSC / Chassis</button>
+            <button type="button" class="bc-filter-pill" data-dir-group="cas">CAS / FRM / Body</button>
+            <button type="button" class="bc-filter-pill" data-dir-group="obd">OBD-II (P-Codes)</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="directory-live-results" class="grid hidden" style="padding-top: 24px;"></div>
+
+  <div class="grid" id="static-directory-grid" style="padding-top: 24px;">
     <a href="/code/102001" class="card">
       <span class="code-id">102001</span>
       <span class="code-title">Air mass, plausibility: Air mass too high</span>
@@ -1025,6 +1103,122 @@
       <span class="code-title">Upgraded Turbo: Boost Solenoid Duty Cycle At Maximum</span>
     </a>
   </div>
-  <script src="./js/ai-chat-loader.js?v=1" defer data-cfasync="false"></script>
+  </main>
+
+  <footer></footer>
+
+  <script src="/js/translations.js?v=6" data-cfasync="false"></script>
+  <script src="/js/i18n-init.js?v=4.0" data-cfasync="false"></script>
+  <script src="/js/footer.js?v=4.0" data-cfasync="false"></script>
+  <script src="/js/live.js?v=4.0" data-cfasync="false"></script>
+  <script data-cfasync="false">
+    (function () {
+      "use strict";
+      const filterInput = document.getElementById("directory-filter-input");
+      const staticGrid = document.getElementById("static-directory-grid");
+      const liveGrid = document.getElementById("directory-live-results");
+      const staticCards = Array.from(staticGrid.querySelectorAll(".card"));
+      let fullDataset = null;
+      let activeGroup = "all";
+
+      function getLang() {
+        return localStorage.getItem("forumLanguage") || localStorage.getItem("language") || "en";
+      }
+
+      function esc(s) {
+        return String(s || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      async function loadFullDataset() {
+        if (fullDataset) return fullDataset;
+        try {
+          const [r1, r2] = await Promise.all([fetch("/data/codes.json"), fetch("/data/data.json")]);
+          const c1 = r1.ok ? (await r1.json()).codes || [] : [];
+          const c2 = r2.ok ? (await r2.json()).codes || [] : [];
+          const seen = new Set(c1.map((c) => String(c.code).toUpperCase()));
+          fullDataset = [...c1, ...c2.filter((c) => !seen.has(String(c.code).toUpperCase()))];
+        } catch (_) {
+          fullDataset = [];
+        }
+        return fullDataset;
+      }
+
+      function cardMatchesGroup(codeId, titleText, group) {
+        if (group === "all") return true;
+        const id = codeId.toUpperCase();
+        const txt = titleText.toLowerCase();
+        if (group === "obd") return id.startsWith("P");
+        if (group === "dsc") return txt.includes("dsc") || txt.includes("wheel speed") || txt.includes("brake") || txt.includes("steering") || txt.includes("transfer case") || id.startsWith("5D") || id.startsWith("5E") || id.startsWith("5F");
+        if (group === "cas") return txt.includes("cas") || txt.includes("frm") || txt.includes("airbag") || txt.includes("mrs") || txt.includes("srs") || txt.includes("seat") || txt.includes("headlight") || id.startsWith("9") || id.startsWith("A");
+        if (group === "dme") return txt.includes("dme") || txt.includes("vanos") || txt.includes("fuel") || txt.includes("misfire") || txt.includes("boost") || txt.includes("air mass") || txt.includes("coolant") || id.startsWith("1") || id.startsWith("2") || id.startsWith("3");
+        return true;
+      }
+
+      function applyStaticFilter() {
+        staticCards.forEach((card) => {
+          const id = card.querySelector(".code-id")?.textContent || "";
+          const title = card.querySelector(".code-title")?.textContent || "";
+          card.style.display = cardMatchesGroup(id, title, activeGroup) ? "" : "none";
+        });
+      }
+
+      document.querySelectorAll("[data-dir-group]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          activeGroup = btn.getAttribute("data-dir-group");
+          document.querySelectorAll("[data-dir-group]").forEach((b) => b.classList.toggle("is-active", b === btn));
+          if (filterInput.value.trim().length < 2) {
+            liveGrid.classList.add("hidden");
+            staticGrid.classList.remove("hidden");
+            applyStaticFilter();
+          }
+        });
+      });
+
+      filterInput.addEventListener("input", async () => {
+        const q = filterInput.value.trim().toLowerCase();
+        if (q.length < 2) {
+          liveGrid.classList.add("hidden");
+          staticGrid.classList.remove("hidden");
+          applyStaticFilter();
+          return;
+        }
+
+        const codes = await loadFullDataset();
+        const lang = getLang();
+        const matches = [];
+        for (let i = 0; i < codes.length && matches.length < 120; i++) {
+          const c = codes[i];
+          const codeStr = String(c.code || "").toLowerCase();
+          const tLang = String(c.title?.[lang] || c.title?.en || "").toLowerCase();
+          const cat = String(c.category || "").toLowerCase();
+          if (codeStr.includes(q) || tLang.includes(q) || cat.includes(q)) {
+            matches.push(c);
+          }
+        }
+
+        staticGrid.classList.add("hidden");
+        liveGrid.classList.remove("hidden");
+
+        if (!matches.length) {
+          liveGrid.innerHTML = `<div class="bc-empty-box" style="grid-column:1/-1;"><p class="message">No matching codes for "${esc(filterInput.value.trim())}"</p></div>`;
+          return;
+        }
+
+        liveGrid.innerHTML = matches
+          .map((c) => {
+            const title = c.title?.[lang] || c.title?.en || c.code;
+            return `<a href="/code/${encodeURIComponent(c.code)}?lang=${encodeURIComponent(lang)}" class="card">
+              <span class="code-id">${esc(c.code)}</span>
+              <span class="code-title">${esc(title)}</span>
+            </a>`;
+          })
+          .join("");
+      });
+    })();
+  </script>
 </body>
 </html>

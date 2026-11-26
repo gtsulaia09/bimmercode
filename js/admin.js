@@ -255,20 +255,20 @@ async function loadDashboardStats() {
                 <div class="stat-card" onclick="switchTab('users', { role: '' })">
                     <div class="stat-value">${s.users.total}</div>
                     <div>Total Users</div>
-                    <div style="font-size:0.8em; opacity:0.7;">${s.users.active} active</div>
+                    <div class="stat-sub">${s.users.active} active</div>
                 </div>
-                <div class="stat-card" style="border-left-color: #e74c3c;" onclick="switchTab('users', { role: 'banned' })">
+                <div class="stat-card stat-card--danger" onclick="switchTab('users', { role: 'banned' })">
                     <div class="stat-value">${s.users.banned}</div>
                     <div>Banned Users</div>
                 </div>
-                <div class="stat-card" style="border-left-color: #f1c40f;" onclick="switchTab('reports')">
+                <div class="stat-card stat-card--warning" onclick="switchTab('reports')">
                     <div class="stat-value">${s.moderation.pending_reports}</div>
                     <div>Pending Reports</div>
                 </div>
-                <div class="stat-card" style="border-left-color: #2ecc71;" onclick="switchTab('forum')">
+                <div class="stat-card stat-card--success" onclick="switchTab('forum')">
                     <div class="stat-value">${s.content.posts}</div>
                     <div>Total Posts</div>
-                    <div style="font-size:0.8em; opacity:0.7;">in ${s.content.topics} topics</div>
+                    <div class="stat-sub">${s.content.topics} threads</div>
                 </div>
             `;
         }
@@ -354,18 +354,27 @@ function renderTrafficChart(data) {
             datasets: [{
                 label: 'Page Views',
                 data: counts,
-                borderColor: '#3b82f6',
-                backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                tension: 0.4,
+                borderColor: '#2877EE',
+                backgroundColor: 'rgba(40, 119, 238, 0.12)',
+                borderWidth: 2,
+                pointRadius: 2,
+                tension: 0.35,
                 fill: true
             }]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: {
-                y: { grid: { color: 'rgba(255,255,255,0.05)' } },
-                x: { grid: { display: false } }
+                y: {
+                    grid: { color: 'rgba(255,255,255,0.05)' },
+                    ticks: { color: '#657084', font: { family: 'JetBrains Mono', size: 11 } }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#657084', font: { family: 'JetBrains Mono', size: 11 } }
+                }
             }
         }
     });
@@ -385,13 +394,16 @@ function renderDeviceChart(data) {
             labels: labels,
             datasets: [{
                 data: counts,
-                backgroundColor: ['#3b82f6', '#10b981', '#f59e0b'],
-                borderWidth: 0
+                backgroundColor: ['#2877EE', '#2BC48A', '#E09F3E', '#6EA8FF'],
+                borderColor: '#11151C',
+                borderWidth: 2
             }]
         },
         options: {
             responsive: true,
-            plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8' } } }
+            maintainAspectRatio: false,
+            cutout: '66%',
+            plugins: { legend: { position: 'bottom', labels: { color: '#9AA5B8', boxWidth: 12 } } }
         }
     });
 }
