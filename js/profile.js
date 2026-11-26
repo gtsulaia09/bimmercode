@@ -371,16 +371,43 @@
     const urlParams = new URLSearchParams(window.location.search);
     const profileId = urlParams.get("id");
 
-    // No id: redirect to own profile, or forum if unauthenticated
+    // No id: redirect to own profile, or prompt sign-in if unauthenticated
     if (!profileId) {
       try {
         const me = JSON.parse(localStorage.getItem("user_data") || "null");
         if (me && me.id) {
-          window.location.replace(`/profile?id=${encodeURIComponent(me.id)}`);
+          window.location.replace(`/profile.html?id=${encodeURIComponent(me.id)}`);
           return;
         }
       } catch (_) {}
-      window.location.href = "/forum";
+
+      $("#profile-skeleton")?.setAttribute("hidden", "");
+      const errBox = $("#profile-error");
+      if (errBox) {
+        errBox.removeAttribute("hidden");
+        const card = errBox.querySelector(".profile-error-card");
+        if (card) {
+          card.innerHTML = `
+            <i class="fas fa-id-badge" aria-hidden="true" style="color:var(--accent-light);"></i>
+            <h2>${escapeHtml(tr("welcomeBack", "Sign in to BimmerCodes"))}</h2>
+            <p>${escapeHtml(tr("authSubtitleLogin", "Sign in or create a specialist account to manage your Personal BMW Garage, saved codes, and forum discussions."))}</p>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px;">
+              <button type="button" class="btn btn-primary" onclick="toggleAuthModal('login')">
+                <i class="fas fa-arrow-right-to-bracket" aria-hidden="true"></i>
+                <span>${escapeHtml(tr("loginTab", "Sign In"))}</span>
+              </button>
+              <button type="button" class="btn btn-secondary" onclick="toggleAuthModal('register')">
+                <i class="fas fa-user-plus" aria-hidden="true"></i>
+                <span>${escapeHtml(tr("registerTab", "Register"))}</span>
+              </button>
+            </div>
+          `;
+        }
+      }
+      window.addEventListener("auth:changed", (ev) => {
+        const uid = ev?.detail?.user?.id;
+        if (uid) window.location.replace(`/profile.html?id=${encodeURIComponent(uid)}`);
+      });
       return;
     }
 
@@ -741,7 +768,7 @@
     host.innerHTML = recent.map((t) => topicRowHtml(t)).join("");
     $$(".topic-row", host).forEach((row) => {
       row.addEventListener("click", () => {
-        window.location.href = `/topic?id=${encodeURIComponent(row.dataset.id)}`;
+        window.location.href = `/topic.html?id=${encodeURIComponent(row.dataset.id)}`;
       });
     });
   }
@@ -782,7 +809,7 @@
       container.innerHTML = topics.map(topicRowHtml).join("");
       $$(".topic-row", container).forEach((row) => {
         row.addEventListener("click", () => {
-          window.location.href = `/topic?id=${encodeURIComponent(row.dataset.id)}`;
+          window.location.href = `/topic.html?id=${encodeURIComponent(row.dataset.id)}`;
         });
       });
 
@@ -1056,8 +1083,8 @@
       alert(tr("passwordsMustMatch", "New passwords do not match."));
       return;
     }
-    if (nw.length < 8) {
-      alert(tr("passwordTooShort", "New password should be at least 8 characters."));
+    if (nw.length < 8 || !/[A-Z]/.test(nw) || !/[a-z]/.test(nw) || !/[0-9]/.test(nw)) {
+      alert(tr("passwordHint", "Password must be 8+ characters including uppercase, lowercase, and a number."));
       return;
     }
     const btn = $("#btn-change-password");

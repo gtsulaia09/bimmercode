@@ -815,7 +815,7 @@
 
     const postId = isOriginal ? `op` : `post-${esc(p.id)}`;
     const kindClass = isOP ? " post-card--original" : " post-card--reply";
-    const profileUrl = p.user_id ? `/profile?id=${encodeURIComponent(p.user_id)}` : "";
+    const profileUrl = p.user_id ? `/profile.html?id=${encodeURIComponent(p.user_id)}` : "";
     const authorBlock = `${avatar}
           <div class="username">${esc(p.username)}</div>
           ${repBadgeHtml(rep, p.author_role)}
@@ -1560,7 +1560,7 @@
     if (res.ok) {
       // Deleting the opening post (id === topic id) removes the whole thread on the server
       if (String(postId) === String(state.topicId)) {
-        window.location.href = "/forum";
+        window.location.href = "/forum.html";
         return;
       }
       await loadTopicData();
@@ -1654,7 +1654,7 @@
       if (res.status === 403) {
         const d = await res.json().catch(() => ({}));
         const msg = d.error || t("topicBlockedAuthor", "This topic is not available to you because you have blocked the author.");
-        $("#topic-content").innerHTML = `<div class="error-state"><i class="fas fa-user-slash"></i> ${esc(msg)}<p style="margin-top:12px;"><a class="btn btn-primary" href="/forum">${esc(t("backToForum", "Back to forum"))}</a></p></div>`;
+        $("#topic-content").innerHTML = `<div class="error-state"><i class="fas fa-user-slash"></i> ${esc(msg)}<p style="margin-top:12px;"><a class="btn btn-primary" href="/forum.html">${esc(t("backToForum", "Back to forum"))}</a></p></div>`;
         return;
       }
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -1711,10 +1711,6 @@
     await window.setPageLanguage(next);
   };
 
-  window.toggleAuthModal = function () {
-    document.getElementById("auth-modal")?.classList.toggle("active");
-  };
-
   // Sync local user state when auth changes (login/logout) so the composer
   // and post-action buttons refresh without a page reload.
   window.addEventListener("auth:changed", (e) => {
@@ -1735,7 +1731,7 @@
   // ========================================================== Boot
   document.addEventListener("DOMContentLoaded", () => {
     if (!state.topicId) {
-      window.location.href = "/forum";
+      window.location.href = "/forum.html";
       return;
     }
     applyI18n();

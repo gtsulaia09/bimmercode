@@ -16,13 +16,13 @@
   if (!document.querySelector('link[href*="ai-chat.css"]')) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = asset("/css/ai-chat.css?v=6");
+    link.href = asset("/css/ai-chat.css?v=7");
     document.head.appendChild(link);
   }
 
   if (!document.querySelector('script[src*="ai-chat.js"]')) {
     const s = document.createElement("script");
-    s.src = asset("/js/ai-chat.js?v=6");
+    s.src = asset("/js/ai-chat.js?v=7");
     s.defer = true;
     s.setAttribute("data-cfasync", "false");
     document.body.appendChild(s);

@@ -629,13 +629,16 @@
       renderContextBar();
     };
 
-    window.openBcAiAssistant = (prefillPrompt = "") => {
+    window.openBcAiAssistant = (prefillPrompt = "", autoSend = false) => {
       setOpen(true);
       if (prefillPrompt) {
         ui.input.value = prefillPrompt;
         ui.input.style.height = "auto";
         ui.input.style.height = Math.min(ui.input.scrollHeight, 112) + "px";
         ui.input.focus();
+        if (autoSend) {
+          setTimeout(() => sendMessage(), 60);
+        }
       }
     };
 
@@ -652,6 +655,12 @@
     updateLimitLabel();
     refreshUsageFromServer();
     if (isDailyLimitExhausted()) setChatInputLocked(true);
+
+    if (window.__bcPendingAiOpen) {
+      const pending = window.__bcPendingAiOpen;
+      window.__bcPendingAiOpen = null;
+      window.openBcAiAssistant(pending.prompt || "", Boolean(pending.autoSend));
+    }
   }
 
   function applyChatLocale(forcedLang) {
@@ -768,6 +777,136 @@
     }
   }
 
+  let localCodeIndexPromise = null;
+
+  async function ensureLocalCodeIndex() {
+    if (Array.isArray(window.bmwCodes) && window.bmwCodes.length > 50) {
+      return window.bmwCodes;
+    }
+    if (!localCodeIndexPromise) {
+      localCodeIndexPromise = (async () => {
+        let merged = Array.isArray(window.bmwCodes) ? [...window.bmwCodes] : [];
+        const [r1, r2] = await Promise.all([
+          fetch("/data/codes.json").catch(() => null),
+          fetch("/data/data.json").catch(() => null),
+        ]);
+        if (r1 && r1.ok) {
+          const d1 = await r1.json().catch(() => ({}));
+          merged = [...merged, ...(d1.codes || [])];
+        }
+        if (r2 && r2.ok) {
+          const d2 = await r2.json().catch(() => ({}));
+          const seen = new Set(merged.map((c) => String(c.code).toUpperCase()));
+          for (const c of d2.codes || []) {
+            const key = String(c.code).toUpperCase();
+            if (!seen.has(key)) {
+              seen.add(key);
+              merged.push(c);
+            }
+          }
+        }
+        return merged;
+      })();
+    }
+    return localCodeIndexPromise;
+  }
+
+  async function buildLocalFallbackReply(rawText, ctx) {
+    let lang = getLang();
+    if (/[\u10A0-\u10FF]/.test(rawText)) lang = "ka";
+    else if (/[\u0400-\u04FF]/.test(rawText)) lang = "ru";
+
+    const codes = await ensureLocalCodeIndex().catch(() => []);
+    const byCode = new Map();
+    for (const c of codes) {
+      if (!c || !c.code) continue;
+      byCode.set(String(c.code).toUpperCase(), c);
+      for (const p of c.pCodes || []) {
+        if (p) byCode.set(String(p).toUpperCase(), c);
+      }
+    }
+
+    const tokens = String(rawText || "").toUpperCase().match(/\b[A-Z0-9]{4,6}\b/g) || [];
+    const matched = [];
+    const seenCodes = new Set();
+    for (const tok of tokens) {
+      const hit = byCode.get(tok);
+      if (hit && !seenCodes.has(hit.code)) {
+        seenCodes.add(hit.code);
+        matched.push(hit);
+      }
+    }
+
+    if (matched.length) {
+      return matched
+        .slice(0, 3)
+        .map((row) => {
+          const title = row.title?.[lang] || row.title?.en || row.code;
+          const desc = row.description?.[lang] || row.description?.en || "";
+          const steps = (row.solutions?.[lang] || row.solutions?.en || []).slice(0, 5);
+          const engines = (row.engineCodes || []).slice(0, 6).join(", ");
+          if (lang === "ru") {
+            return [
+              `**${row.code} — ${title}**`,
+              desc,
+              steps.length ? "**Рекомендуемый план проверки:**\n" + steps.map((s) => `- ${s}`).join("\n") : "",
+              engines ? `Двигатели: ${engines}. Рекомендуется сверка стоп-кадра в BMW ISTA.` : "",
+            ].filter(Boolean).join("\n\n");
+          }
+          if (lang === "ka") {
+            return [
+              `**${row.code} — ${title}**`,
+              desc,
+              steps.length ? "**შემოწმებისა და დიაგნოსტიკის გეგმა:**\n" + steps.map((s) => `- ${s}`).join("\n") : "",
+              engines ? `ძრავები: ${engines}. რეკომენდებულია Live-მონაცემების გადამოწმება BMW ISTA-ში.` : "",
+            ].filter(Boolean).join("\n\n");
+          }
+          return [
+            `**${row.code} — ${title}**`,
+            desc,
+            steps.length ? "**Recommended Diagnostic & Verification Steps:**\n" + steps.map((s) => `- ${s}`).join("\n") : "",
+            engines ? `Common engines: ${engines}. Verify live parameters and freeze-frame telemetry in BMW ISTA.` : "",
+          ].filter(Boolean).join("\n\n");
+        })
+        .join("\n\n");
+    }
+
+    const lower = String(rawText || "").toLowerCase();
+    const ctxLine = ctx && (ctx.chassis || ctx.engine || ctx.model)
+      ? ` (${[ctx.chassis, ctx.model, ctx.engine].filter(Boolean).join(" · ")})`
+      : "";
+
+    if (/misfire|rough idle|shaking|vibrat|lean|fuel trim|smoke|троит|вибрац|пропуск|бедн|подсос|ცივზე|კანკალ|პერებოი|ღარიბი/.test(lower)) {
+      return lang === "ru"
+        ? `**Диагностика пропусков зажигания и коррекций смеси${ctxLine}**\n\n- Считайте ошибки блока DME (частые коды: 118001, 140010, P0171).\n- Проверьте топливные коррекции STFT/LTFT на холостом ходу и под нагрузкой: высокие плюсовые коррекции указывают на подсос воздуха (мембрана КВКГ, чарджпайп, патрубки впуска).\n- Для локализации пропуска по цилиндру поменяйте катушку зажигания с соседним цилиндром и оцените свечи/форсунки.`
+        : lang === "ka"
+          ? `**არასტაბილური უქმე სვლისა და აალების გამოტოვების დიაგნოსტიკა${ctxLine}**\n\n- წაიკითხეთ DME ბლოკის კოდები (ხშირი კოდებია: 118001, 140010, P0171).\n- შეამოწმეთ საწვავის კორექციები (STFT/LTFT) და შემშვები ტრაქტის ჰერმეტულობა კვამლის გენერატორით (PCV მემბრანა, ჩარჯპაიპი).\n- კონკრეტული ცილინდრის გამოტოვებისას გადაანაცვლეთ ბაბინა მეზობელ ცილინდრზე და შეამოწმეთ სანთლები/ინჟექტორები.`
+          : `**BMW Rough Idle, Misfire & Fuel-Trim Diagnostic Plan${ctxLine}**\n\n- Scan DME fault memory and freeze-frame values (common identifiers: 118001, 140010, P0171).\n- Compare Short/Long-Term Fuel Trims at idle vs. 2,500 RPM: elevated positive idle trims indicate unmetered air (PCV diaphragm, chargepipe O-rings, intake tract).\n- Swap ignition coils across cylinders to isolate coil breakdown vs. spark plug wear or injector leakage.`;
+    }
+
+    if (/vanos|camshaft|valvetronic|ванос|вальветроник|ვანოს/.test(lower)) {
+      return lang === "ru"
+        ? `**Диагностика фаз газораспределения VANOS${ctxLine}**\n\n- Проверьте уровень масла и наличие центральной направляющей сетки в крышке масляного стакана.\n- Промойте и поменяйте местами впускной и выпускной соленоиды VANOS (коды 2A82, 2A87, 130108) — если код сместился, замените соленоид.`
+        : lang === "ka"
+          ? `**VANOS სისტემის დიაგნოსტიკა${ctxLine}**\n\n- შეამოწმეთ ძრავის ზეთის დონე და ზეთის ფილტრის ხუფის ცენტრალური ღერძი/ბადე.\n- გაწმინდეთ და გადაანაცვლეთ შემშვები და გამომშვები VANOS სოლენოიდები (კოდები: 2A82, 2A87, 130108).`
+          : `**BMW VANOS Camshaft Timing Diagnostic Plan${ctxLine}**\n\n- Confirm oil level and verify the oil filter cap center cage and lower O-ring are intact.\n- Clean and swap intake/exhaust VANOS solenoids (codes 2A82, 2A87, 130108); if the fault follows the solenoid, replace it.`;
+    }
+
+    if (/boost|charge\s*pipe|turbo|drivetrain|недодув|турбин|ბუსტ|ტურბინ/.test(lower)) {
+      return lang === "ru"
+        ? `**Диагностика наддува и ошибки привода${ctxLine}**\n\n- Осмотрите пластиковый чарджпайп у дроссельной заслонки на трещины (частая причина кодов 30FF и 120308).\n- Проверьте вакуумные шланги, перепускной клапан (diverter valve) и актуатор вестгейта.`
+        : lang === "ka"
+          ? `**ტურბინის წნევისა და ჩარჯპაიპის დიაგნოსტიკა${ctxLine}**\n\n- შეამოწმეთ ჩარჯპაიპი დროსელის ფლანეცთან გაბზარვაზე (ხშირია კოდებზე: 30FF, 120308).\n- გადაამოწმეთ ვესტგეითის აქტუატორი, ვაკუუმის მილები და Diverter Valve.`
+          : `**BMW Turbocharger & Charge-Air Diagnostic Plan${ctxLine}**\n\n- Inspect the chargepipe at the throttle-body flange for cracks under pressure (primary cause of 30FF and 120308).\n- Pressure-test the intake tract to 15 PSI and inspect wastegate linkage/vacuum lines and diverter valve seal.`;
+    }
+
+    return lang === "ru"
+      ? "Введите точный **код ошибки BMW или OBD-II** (например: 118001, 2A82, 30FF, P0128, A0B4) или укажите **кузов, двигатель и симптомы** — я подберу расшифровку и пошаговый план проверки по базе BimmerCodes."
+      : lang === "ka"
+        ? "შეიყვანეთ ზუსტი **BMW ან OBD-II შეცდომის კოდი** (მაგალითად: 118001, 2A82, 30FF, P0128, A0B4) ან მიუთითეთ **ძარა, ძრავა და სიმპტომები** — მოგაწვდით განმარტებას და შემოწმების გეგმას."
+        : "Enter a **BMW hex or OBD-II fault code** (e.g. 118001, 2A82, 30FF, P0128, A0B4) or describe your **chassis, engine code, and symptom** — I will cross-reference the BimmerCodes database and outline step-by-step checks.";
+  }
+
   async function sendMessage() {
     if (!ui || busy) return;
     const rawText = ui.input.value.trim();
@@ -813,9 +952,12 @@
           history.pop();
           handleDailyLimitHit();
         } else {
-          const msg = data.message || t("chatError");
-          appendBot(msg);
-          history.pop();
+          const fallbackReply = await buildLocalFallbackReply(rawText, ctx);
+          history.push({ role: "assistant", content: fallbackReply });
+          appendBot(fallbackReply);
+          bumpClientDaily();
+          updateLimitLabel(clientDailyRemaining());
+          saveHistory(history);
         }
       } else {
         history.push({ role: "assistant", content: data.reply });
@@ -835,8 +977,12 @@
       }
     } catch {
       typing.remove();
-      appendBot(t("chatError"));
-      history.pop();
+      const fallbackReply = await buildLocalFallbackReply(rawText, ctx);
+      history.push({ role: "assistant", content: fallbackReply });
+      appendBot(fallbackReply);
+      bumpClientDaily();
+      updateLimitLabel(clientDailyRemaining());
+      saveHistory(history);
     } finally {
       busy = false;
       if (!isDailyLimitExhausted()) {

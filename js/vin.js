@@ -370,11 +370,12 @@ document.addEventListener("DOMContentLoaded", () => {
     aiBtn.addEventListener("click", () => {
       const ctx = window.currentCarContext;
       const prompt = ctx
-        ? `My vehicle is a ${ctx.year} ${ctx.model} (${ctx.chassis || "BMW"}, ${ctx.engine}, VIN: ${ctx.vin}). What common fault codes and preventive maintenance items should I inspect?`
+        ? `My vehicle is a ${ctx.year !== "—" ? ctx.year : ""} ${ctx.model} (${ctx.chassis || "BMW"}, ${ctx.engine}, VIN: ${ctx.vin}). What common fault codes and preventive maintenance items should I inspect?`
         : "";
       if (typeof window.openBcAiAssistant === "function") {
-        window.openBcAiAssistant(prompt);
+        window.openBcAiAssistant(prompt, Boolean(prompt));
       } else {
+        window.__bcPendingAiOpen = { prompt, autoSend: Boolean(prompt) };
         document.getElementById("bc-ai-fab")?.click();
       }
     });
@@ -393,6 +394,47 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 });
+
+const ISO_YEAR_MAP = {
+  Y: "2000", "1": "2001", "2": "2002", "3": "2003", "4": "2004",
+  "5": "2005", "6": "2006", "7": "2007", "8": "2008", "9": "2009",
+  A: "2010", B: "2011", C: "2012", D: "2013", E: "2014",
+  F: "2015", G: "2016", H: "2017", J: "2018", K: "2019",
+  L: "2020", M: "2021", N: "2022", P: "2023", R: "2024",
+  S: "2025", T: "2026",
+};
+
+const BMW_PLANT_MAP = {
+  A: { city: "Munich", country: "Germany" },
+  F: { city: "Munich", country: "Germany" },
+  K: { city: "Munich", country: "Germany" },
+  C: { city: "Dingolfing", country: "Germany" },
+  D: { city: "Dingolfing", country: "Germany" },
+  G: { city: "Dingolfing", country: "Germany" },
+  E: { city: "Regensburg", country: "Germany" },
+  J: { city: "Regensburg", country: "Germany" },
+  P: { city: "Regensburg", country: "Germany" },
+  V: { city: "Leipzig", country: "Germany" },
+  L: { city: "Spartanburg (SC)", country: "United States" },
+  N: { city: "Spartanburg (SC)", country: "United States" },
+  W: { city: "Graz (Magna Steyr)", country: "Austria" },
+  T: { city: "Oxford", country: "United Kingdom" },
+  R: { city: "Rosslyn", country: "South Africa" },
+  "2": { city: "San Luis Potosí", country: "Mexico" },
+  "3": { city: "Born (VDL Nedcar)", country: "Netherlands" },
+};
+
+const BMW_WMI_MAP = {
+  WBA: { make: "BMW", division: "BMW AG Passenger Vehicles", country: "Germany" },
+  WBS: { make: "BMW", division: "BMW M GmbH", country: "Germany" },
+  WBY: { make: "BMW", division: "BMW i Electric / Hybrid", country: "Germany" },
+  WBX: { make: "BMW", division: "BMW SAV", country: "Germany" },
+  "4US": { make: "BMW", division: "BMW Manufacturing US", country: "United States" },
+  "5UX": { make: "BMW", division: "BMW X-Series SAV US", country: "United States" },
+  "5UM": { make: "BMW", division: "BMW M SAV US", country: "United States" },
+  "3MW": { make: "BMW", division: "BMW Plant San Luis Potosí", country: "Mexico" },
+  WMW: { make: "MINI", division: "MINI Passenger Vehicles", country: "United Kingdom / Germany" },
+};
 
 async function decodeVin() {
   const t = vinTranslations[currentLanguage] || vinTranslations.en;
@@ -423,30 +465,45 @@ async function decodeVin() {
   if (loader) loader.style.display = "flex";
 
   try {
-    const response = await fetch(
-      `https://vpic.nhtsa.dot.gov/api/vehicles/decodevin/${encodeURIComponent(vin)}?format=json`
-    );
-    const data = await response.json();
-    const results = data.Results || [];
+    let results = [];
+    try {
+      const response = await fetch(
+        `https://vpic.nhtsa.dot.gov/api/vehicles/decodevin/${encodeURIComponent(vin)}?format=json`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        results = data.Results || [];
+      }
+    } catch (_) {
+      // Offline / blocked vPIC fallback uses ISO 3779 + BMW WMI/Plant tables below
+    }
 
     const getVal = (varName) => {
       const item = results.find((r) => r.Variable === varName);
       return item && item.Value && item.Value !== "null" ? String(item.Value).trim() : "—";
     };
 
-    const make = getVal("Make");
+    const wmi = vin.slice(0, 3);
+    const wmiInfo = BMW_WMI_MAP[wmi] || null;
+    const plantInfo = BMW_PLANT_MAP[vin[10]] || null;
+    const isoYear = ISO_YEAR_MAP[vin[9]] || "—";
+
+    const rawMake = getVal("Make");
+    const make = rawMake !== "—" ? rawMake : wmiInfo ? wmiInfo.make : "—";
     if (
       make.toUpperCase().indexOf("BMW") === -1 &&
       make.toUpperCase().indexOf("MINI") === -1 &&
-      !/^(WBA|WBS|WBY|WBX|4US|5UX|5UM|WMW|3MW)/.test(vin)
+      !wmiInfo
     ) {
       setValidationStatus(t.errNotBmw.replace("{make}", make !== "—" ? make : "Unknown"), "error");
       if (loader) loader.style.display = "none";
       return;
     }
 
-    const model = getVal("Model");
-    const year = getVal("Model Year");
+    const rawModel = getVal("Model");
+    const model = rawModel !== "—" ? rawModel : wmiInfo ? wmiInfo.division : "BMW Vehicle";
+    const rawYear = getVal("Model Year");
+    const year = rawYear !== "—" ? rawYear : isoYear;
     const series = getVal("Series");
     const bodyClass = getVal("Body Class");
     const engineCyl = getVal("Engine Number of Cylinders");
@@ -457,8 +514,10 @@ async function decodeVin() {
     const fuel = getVal("Fuel Type - Primary");
     const drive = getVal("Drive Type");
     const doors = getVal("Doors");
-    const plantCity = getVal("Plant City");
-    const plantCountry = getVal("Plant Country");
+    const rawPlantCity = getVal("Plant City");
+    const plantCity = rawPlantCity !== "—" ? rawPlantCity : plantInfo ? plantInfo.city : "—";
+    const rawPlantCountry = getVal("Plant Country");
+    const plantCountry = rawPlantCountry !== "—" ? rawPlantCountry : plantInfo ? plantInfo.country : wmiInfo ? wmiInfo.country : "—";
     const weight = getVal("Gross Vehicle Weight Rating From");
 
     const brandLabel = make.toUpperCase().includes("MINI") ? "MINI" : "BMW";

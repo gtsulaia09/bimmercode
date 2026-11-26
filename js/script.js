@@ -639,14 +639,137 @@ window.hideDetail = function () {
 // AUTHENTICATION & ACCOUNT RECOVERY
 // =============================================================================
 
-function toggleAuthModal() {
+function ensureAuthModalsMounted() {
+  if (document.getElementById("auth-modal")) return;
+  const wrap = document.createElement("div");
+  wrap.innerHTML = `
+    <div id="auth-modal" class="auth-modal" role="dialog" aria-modal="true" aria-label="Authentication">
+      <div class="auth-content">
+        <button type="button" class="close-auth" onclick="toggleAuthModal()" aria-label="Close">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+        <div class="auth-tabs">
+          <button type="button" class="tab-btn active" onclick="switchAuthTab('login')" data-i18n="loginTab">Sign In</button>
+          <button type="button" class="tab-btn" onclick="switchAuthTab('register')" data-i18n="registerTab">Register</button>
+        </div>
+        <form id="login-form" class="auth-form active" autocomplete="on">
+          <h2 data-i18n="welcomeBack">Sign in to BimmerCodes</h2>
+          <div class="input-group">
+            <i class="fas fa-envelope" aria-hidden="true"></i>
+            <input type="text" id="login-email" autocomplete="username" data-i18n-placeholder="emailUsernameLabel" placeholder="Email or username" required />
+          </div>
+          <div class="input-group input-with-action">
+            <i class="fas fa-lock" aria-hidden="true"></i>
+            <input type="password" id="login-password" autocomplete="current-password" data-i18n-placeholder="passwordPlaceholder" placeholder="Password" required />
+            <button type="button" class="input-eye" data-target="login-password" aria-label="Show password" tabindex="-1">
+              <i class="fas fa-eye" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div style="text-align: right; margin-bottom: 14px;">
+            <a href="#" onclick="showRecoveryModal(); return false;" style="font-size: 12.5px;" data-i18n="forgotPasswordLink">Forgot password?</a>
+          </div>
+          <button type="submit" class="submit-btn" data-i18n="signInBtn">Sign In</button>
+          <p class="auth-msg" id="login-msg"></p>
+        </form>
+        <form id="register-form" class="auth-form" autocomplete="on">
+          <h2 data-i18n="createAccountTitle">Create Specialist Account</h2>
+          <div class="input-group">
+            <i class="fas fa-user" aria-hidden="true"></i>
+            <input type="text" id="reg-username" minlength="3" maxlength="20" autocomplete="username" data-i18n-placeholder="usernamePlaceholder" placeholder="Username (3–20 letters, digits, _)" required />
+          </div>
+          <div class="input-group">
+            <i class="fas fa-envelope" aria-hidden="true"></i>
+            <input type="email" id="reg-email" autocomplete="email" data-i18n-placeholder="emailPlaceholder" placeholder="Email address" required />
+          </div>
+          <div class="input-group input-with-action" style="margin-bottom: 6px;">
+            <i class="fas fa-lock" aria-hidden="true"></i>
+            <input type="password" id="reg-password" autocomplete="new-password" data-i18n-placeholder="passwordMinPlaceholder" placeholder="Password (min. 8 chars, A-Z, a-z, 0-9)" required minlength="8" />
+            <button type="button" class="input-eye" data-target="reg-password" aria-label="Show password" tabindex="-1">
+              <i class="fas fa-eye" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="pw-strength" data-strength="0" aria-hidden="true" style="margin-bottom: 6px;">
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <p class="auth-pw-hint" data-i18n="passwordHint" style="font-size: 11.5px; color: var(--text-tertiary); margin: 0 0 12px;">
+            8+ characters including uppercase, lowercase, and a number.
+          </p>
+          <div class="input-group">
+            <i class="fas fa-shield-alt" aria-hidden="true"></i>
+            <select id="reg-question" required>
+              <option value="" disabled selected data-i18n="selectSecurityQuestion">Select security question</option>
+              <option value="first_pet" data-i18n="secQPet">What was your first pet's name?</option>
+              <option value="mother_maiden" data-i18n="secQMaiden">What is your mother's maiden name?</option>
+              <option value="first_car" data-i18n="secQCar">What was your first car model?</option>
+              <option value="city_born" data-i18n="secQCity">In which city were you born?</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <i class="fas fa-key" aria-hidden="true"></i>
+            <input type="text" id="reg-answer" data-i18n-placeholder="securityAnswerPlaceholder" placeholder="Security answer" required />
+          </div>
+          <button type="submit" class="submit-btn" data-i18n="createAccountBtn">Create Account</button>
+          <p class="auth-msg" id="reg-msg"></p>
+        </form>
+      </div>
+    </div>
+    <div id="recovery-modal" class="auth-modal" role="dialog" aria-modal="true" aria-label="Password Recovery">
+      <div class="auth-content">
+        <button type="button" class="close-auth" onclick="closeRecoveryModal()" aria-label="Close">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+        <h2 data-i18n="resetPasswordTitle">Account Recovery</h2>
+        <form id="recovery-step-1" class="auth-form active">
+          <p style="color: var(--text-secondary); margin-bottom: 16px; font-size: 13.5px;" data-i18n="recoveryEmailPrompt">
+            Enter your account email to verify your security question.
+          </p>
+          <div class="input-group">
+            <i class="fas fa-envelope" aria-hidden="true"></i>
+            <input type="email" id="rec-email" data-i18n-placeholder="emailPlaceholder" placeholder="Email address" required />
+          </div>
+          <button type="submit" class="submit-btn" data-i18n="continueBtn">Continue</button>
+          <p class="auth-msg" id="rec-msg-1"></p>
+        </form>
+        <form id="recovery-step-2" class="auth-form">
+          <p id="rec-question-display" style="color: var(--text-primary); margin-bottom: 16px; font-weight: 600;"></p>
+          <div class="input-group">
+            <i class="fas fa-key" aria-hidden="true"></i>
+            <input type="text" id="rec-answer" data-i18n-placeholder="securityAnswerPlaceholder" placeholder="Security answer" required />
+          </div>
+          <div class="input-group input-with-action">
+            <i class="fas fa-lock" aria-hidden="true"></i>
+            <input type="password" id="rec-new-password" data-i18n-placeholder="newPasswordPlaceholder" placeholder="New password (min. 8 characters)" required minlength="8" />
+            <button type="button" class="input-eye" data-target="rec-new-password" aria-label="Show password" tabindex="-1">
+              <i class="fas fa-eye" aria-hidden="true"></i>
+            </button>
+          </div>
+          <button type="submit" class="submit-btn" data-i18n="resetPasswordBtn">Reset Password</button>
+          <p class="auth-msg" id="rec-msg-2"></p>
+        </form>
+      </div>
+    </div>
+  `;
+  while (wrap.firstElementChild) {
+    document.body.appendChild(wrap.firstElementChild);
+  }
+  setupRegisterForm();
+  setupLoginForm();
+  if (typeof updateLanguage === "function") updateLanguage();
+}
+
+function toggleAuthModal(initialTab) {
+  ensureAuthModalsMounted();
+  setupRegisterForm();
+  setupLoginForm();
   const modal = document.getElementById("auth-modal");
   if (!modal) return;
   const willOpen = !modal.classList.contains("active");
   if (willOpen) {
     document.getElementById("favorites-modal")?.classList.remove("active");
-    switchAuthTab("login");
+    switchAuthTab(initialTab === "register" ? "register" : "login");
     modal.classList.add("active");
+  } else if (initialTab === "login" || initialTab === "register") {
+    switchAuthTab(initialTab);
   } else {
     modal.classList.remove("active");
   }
@@ -654,22 +777,118 @@ function toggleAuthModal() {
 window.toggleAuthModal = toggleAuthModal;
 
 function switchAuthTab(tab) {
-  document.querySelectorAll(".tab-btn").forEach((btn) => btn.classList.remove("active"));
-  document.querySelectorAll("#auth-modal .auth-form").forEach((form) => form.classList.remove("active"));
+  const target = tab === "register" ? "register" : "login";
+  const tabBtns = document.querySelectorAll("#auth-modal .tab-btn");
+  tabBtns.forEach((btn, idx) => {
+    const isMatch = (target === "login" && idx === 0) || (target === "register" && idx === 1);
+    btn.classList.toggle("active", isMatch);
+    btn.setAttribute("aria-selected", isMatch ? "true" : "false");
+  });
 
-  const tabs = document.querySelectorAll("#auth-modal .tab-btn");
-  if (tab === "login") {
-    tabs[0]?.classList.add("active");
-    document.getElementById("login-form")?.classList.add("active");
-  } else {
-    tabs[1]?.classList.add("active");
-    document.getElementById("register-form")?.classList.add("active");
+  const tabLogin = document.getElementById("tab-login");
+  const tabReg = document.getElementById("tab-register");
+  if (tabLogin) {
+    tabLogin.classList.toggle("active", target === "login");
+    tabLogin.setAttribute("aria-selected", target === "login" ? "true" : "false");
   }
+  if (tabReg) {
+    tabReg.classList.toggle("active", target === "register");
+    tabReg.setAttribute("aria-selected", target === "register" ? "true" : "false");
+  }
+  const authTabs = document.querySelector("#auth-modal .auth-tabs");
+  if (authTabs) authTabs.setAttribute("data-active", target);
+
+  const loginForm = document.getElementById("login-form");
+  const regForm = document.getElementById("register-form");
+  if (loginForm) {
+    loginForm.classList.toggle("active", target === "login");
+    loginForm.style.display = target === "login" ? "" : "none";
+  }
+  if (regForm) {
+    regForm.classList.toggle("active", target === "register");
+    regForm.style.display = target === "register" ? "" : "none";
+  }
+
+  const loginMsg = document.getElementById("login-msg");
+  const regMsg = document.getElementById("reg-msg");
+  if (loginMsg) loginMsg.textContent = "";
+  if (regMsg) regMsg.textContent = "";
+
+  const t = (window.APP_TRANSLATIONS && (window.APP_TRANSLATIONS[currentLanguage] || window.APP_TRANSLATIONS.en)) || {};
+  const titleEl = document.getElementById("auth-title");
+  const subtitleEl = document.getElementById("auth-subtitle");
+  if (target === "register") {
+    if (titleEl) titleEl.textContent = t.createAccountTitle || "Create Specialist Account";
+    if (subtitleEl) subtitleEl.textContent = t.authSubtitleRegister || "Create your account to post threads, react, and manage your BMW garage.";
+  } else {
+    if (titleEl) titleEl.textContent = t.welcomeBack || "Sign in to BimmerCodes";
+    if (subtitleEl) subtitleEl.textContent = t.authSubtitleLogin || "Sign in to post threads, contribute solutions, and track your garage.";
+  }
+
+  setTimeout(() => {
+    (target === "register" ? regForm : loginForm)?.querySelector("input")?.focus();
+  }, 120);
 }
 window.switchAuthTab = switchAuthTab;
 
+if (!window.__bcAuthEyeBound) {
+  window.__bcAuthEyeBound = true;
+  document.addEventListener("click", (e) => {
+    const eye = e.target.closest(".input-eye");
+    if (!eye) return;
+    e.preventDefault();
+    const id = eye.getAttribute("data-target");
+    const input = id ? document.getElementById(id) : null;
+    if (!input) return;
+    const icon = eye.querySelector("i");
+    if (input.type === "password") {
+      input.type = "text";
+      icon?.classList.replace("fa-eye", "fa-eye-slash");
+      eye.setAttribute("aria-label", "Hide password");
+    } else {
+      input.type = "password";
+      icon?.classList.replace("fa-eye-slash", "fa-eye");
+      eye.setAttribute("aria-label", "Show password");
+    }
+  });
+}
+
+if (!window.__bcPwMeterBound) {
+  window.__bcPwMeterBound = true;
+  document.addEventListener("input", (e) => {
+    if (e.target?.id !== "reg-password") return;
+    const pw = e.target.value || "";
+    let score = 0;
+    if (pw.length >= 8) score++;
+    if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) score++;
+    if (/\d/.test(pw)) score++;
+    if (/[^A-Za-z0-9]/.test(pw) || pw.length >= 12) score++;
+    const meter = e.target.closest("form")?.querySelector(".pw-strength") || document.querySelector(".pw-strength");
+    if (meter) meter.setAttribute("data-strength", String(Math.min(4, score)));
+  });
+}
+
+function validatePasswordClient(pw, lang) {
+  if (!pw || pw.length < 8) {
+    return lang === "ru"
+      ? "Пароль должен содержать минимум 8 символов."
+      : lang === "ka"
+        ? "პაროლი უნდა შეიცავდეს მინიმუმ 8 სიმბოლოს."
+        : "Password must be at least 8 characters long.";
+  }
+  if (!/[A-Z]/.test(pw) || !/[a-z]/.test(pw) || !/[0-9]/.test(pw)) {
+    return lang === "ru"
+      ? "Пароль должен содержать заглавную букву (A-Z), строчную букву (a-z) и цифру (0-9)."
+      : lang === "ka"
+        ? "პაროლი უნდა შეიცავდეს დიდ ასოს (A-Z), პატარა ასოს (a-z) და ციფრს (0-9)."
+        : "Password must include at least one uppercase letter, one lowercase letter, and one number.";
+  }
+  return null;
+}
+
 window.showRecoveryModal = function () {
-  toggleAuthModal();
+  ensureAuthModalsMounted();
+  document.getElementById("auth-modal")?.classList.remove("active");
   const modal = document.getElementById("recovery-modal");
   if (modal) {
     modal.classList.add("active");
@@ -767,6 +986,15 @@ function setupRegisterForm() {
       const btn = e.target.querySelector("button");
       const origLabel = btn ? btn.textContent : "Reset Password";
 
+      const pwErr = validatePasswordClient(newPassword, currentLanguage);
+      if (pwErr) {
+        if (msg) {
+          msg.textContent = pwErr;
+          msg.style.color = "var(--status-danger)";
+        }
+        return;
+      }
+
       try {
         if (btn) btn.textContent = "...";
         if (msg) msg.textContent = "";
@@ -800,10 +1028,13 @@ function setupRegisterForm() {
           window.recoveryToken = null;
           setTimeout(() => {
             closeRecoveryModal();
-            toggleAuthModal();
-          }, 1600);
+            toggleAuthModal("login");
+          }, 1400);
         } else {
-          throw new Error(resetData.error || "Failed to reset password");
+          const detailText = Array.isArray(resetData.details) && resetData.details.length
+            ? `${resetData.error || "Invalid password"}: ${resetData.details.join(" · ")}`
+            : resetData.error || "Failed to reset password";
+          throw new Error(detailText);
         }
       } catch (err) {
         if (msg) {
@@ -843,11 +1074,52 @@ function setupRegisterForm() {
     };
 
     if (!username || !email || !password) {
-      setMsg("Please enter username, email, and password.");
+      setMsg(
+        currentLanguage === "ru"
+          ? "Заполните имя пользователя, email и пароль."
+          : currentLanguage === "ka"
+            ? "შეავსეთ მომხმარებლის სახელი, ელფოსტა და პაროლი."
+            : "Please enter username, email, and password."
+      );
       return;
     }
-    if (!question || !answer) {
-      setMsg("Please select a security question and provide an answer.");
+
+    if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+      setMsg(
+        currentLanguage === "ru"
+          ? "Имя пользователя: 3–20 символов (латинские буквы, цифры и _)."
+          : currentLanguage === "ka"
+            ? "მომხმარებლის სახელი: 3–20 სიმბოლო (ლათინური ასოები, ციფრები და _)."
+            : "Username must be 3–20 characters (letters, numbers, or underscore only)."
+      );
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setMsg(
+        currentLanguage === "ru"
+          ? "Введите корректный email адрес."
+          : currentLanguage === "ka"
+            ? "შეიყვანეთ სწორი ელფოსტის მისამართი."
+            : "Please enter a valid email address."
+      );
+      return;
+    }
+
+    const pwError = validatePasswordClient(password, currentLanguage);
+    if (pwError) {
+      setMsg(pwError);
+      return;
+    }
+
+    if (!question || !answer || answer.length < 2) {
+      setMsg(
+        currentLanguage === "ru"
+          ? "Выберите секретный вопрос и укажите ответ (мин. 2 символа)."
+          : currentLanguage === "ka"
+            ? "აირჩიეთ უსაფრთხოების კითხვა და შეიყვანეთ პასუხი (მინ. 2 სიმბოლო)."
+            : "Please select a security question and provide an answer (min. 2 characters)."
+      );
       return;
     }
     if (age !== null && (Number.isNaN(age) || age < 13 || age > 120)) {
@@ -881,10 +1153,63 @@ function setupRegisterForm() {
       const data = await res.json().catch(() => ({}));
 
       if (res.ok) {
-        setMsg("Account created. Please sign in.", true);
-        setTimeout(() => switchAuthTab("login"), 1200);
+        // Attempt seamless auto sign-in immediately after registration
+        let autoLoggedIn = false;
+        try {
+          const loginRes = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
+          const loginData = await loginRes.json().catch(() => ({}));
+          if (loginRes.ok && loginData.token && loginData.user) {
+            autoLoggedIn = true;
+            localStorage.setItem("auth_token", loginData.token);
+            localStorage.setItem("user_data", JSON.stringify(loginData.user));
+            await refreshUserData();
+            checkAuthStatus();
+            window.dispatchEvent(new CustomEvent("auth:changed", { detail: { user: loginData.user } }));
+            if (typeof updateSidebarUser === "function") updateSidebarUser();
+          }
+        } catch (_) {}
+
+        regForm.reset();
+        const meter = regForm.querySelector(".pw-strength");
+        if (meter) meter.setAttribute("data-strength", "0");
+
+        if (autoLoggedIn) {
+          setMsg(
+            currentLanguage === "ru"
+              ? "Аккаунт создан — вход выполнен!"
+              : currentLanguage === "ka"
+                ? "ანგარიში შეიქმნა — ავტორიზაცია შესრულდა!"
+                : "Account created — signed in!",
+            true
+          );
+          setTimeout(() => {
+            document.getElementById("auth-modal")?.classList.remove("active");
+            if (msg) msg.textContent = "";
+          }, 600);
+        } else {
+          setMsg(
+            currentLanguage === "ru"
+              ? "Аккаунт создан. Войдите в систему."
+              : currentLanguage === "ka"
+                ? "ანგარიში შეიქმნა. გთხოვთ გაიაროთ ავტორიზაცია."
+                : "Account created. Please sign in.",
+            true
+          );
+          setTimeout(() => {
+            switchAuthTab("login");
+            const loginEmailEl = document.getElementById("login-email");
+            if (loginEmailEl) loginEmailEl.value = email;
+          }, 900);
+        }
       } else {
-        setMsg(data.error || `Registration failed (HTTP ${res.status})`);
+        const errDetail = Array.isArray(data.details) && data.details.length
+          ? `${data.error || "Registration error"}: ${data.details.join(" · ")}`
+          : data.error || `Registration failed (HTTP ${res.status})`;
+        setMsg(errDetail);
       }
     } catch (err) {
       setMsg(err?.message || "Connection error");
@@ -1025,7 +1350,7 @@ function checkAuthStatus() {
     const dropdown = document.createElement("div");
     dropdown.className = "auth-dropdown";
     dropdown.innerHTML = `
-      <a href="/profile.html" class="auth-dropdown-item">
+      <a href="/profile.html?id=${encodeURIComponent(user.id)}" class="auth-dropdown-item">
         <i class="fas fa-id-badge" aria-hidden="true"></i> ${escHtml(profileLabel)}
       </a>
       ${
@@ -1107,9 +1432,24 @@ function showAdminDeniedBannerIfNeeded() {
 }
 
 async function init() {
+  // Bind interactive forms & listeners synchronously BEFORE network fetches
+  // so login, registration, language switching, and modals work at 0ms.
   try {
     showAdminDeniedBannerIfNeeded();
+    setupRegisterForm();
+    setupLoginForm();
+    checkAuthStatus();
+    setupEventListeners();
+    setupAvatarEditorAndProfileForm();
+    updateLanguage();
+    renderRecentCodesBar();
+  } catch (earlyErr) {
+    console.warn("Early UI bind warning:", earlyErr);
+  }
+
+  try {
     await refreshUserData();
+    checkAuthStatus();
 
     if (typeof getMockData === "function") bmwCodes = getMockData();
 
@@ -1134,11 +1474,6 @@ async function init() {
     window.__bmwCodeLookup = buildCodeLookup(bmwCodes);
     window.dispatchEvent(new CustomEvent("bmwCodes:ready", { detail: { count: bmwCodes.length } }));
 
-    setupRegisterForm();
-    setupLoginForm();
-    checkAuthStatus();
-    setupEventListeners();
-    updateLanguage();
     renderRecentCodesBar();
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -1159,13 +1494,13 @@ async function init() {
         handleSearch();
       }
       window.history.replaceState({}, document.title, window.location.pathname);
+    } else if (searchInput && searchInput.value.trim()) {
+      handleSearch();
     }
 
     if (urlParams.get("saved") === "1") {
       toggleFavoritesModal();
     }
-
-    setupAvatarEditorAndProfileForm();
 
     if (typeof window.__forumRenderMobileMenu === "function") {
       window.__forumRenderMobileMenu();
@@ -1174,6 +1509,8 @@ async function init() {
     }
   } catch (error) {
     console.warn("Init error", error);
+    setupRegisterForm();
+    setupLoginForm();
     setupEventListeners();
     updateLanguage();
   }

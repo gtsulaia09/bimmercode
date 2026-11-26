@@ -219,19 +219,28 @@
     if (aiTrigger) {
       e.preventDefault();
       const prompt = aiTrigger.getAttribute("data-ai-prompt") || "";
+      const autoSend = Boolean(prompt);
       if (typeof window.openBcAiAssistant === "function") {
-        window.openBcAiAssistant(prompt);
+        window.openBcAiAssistant(prompt, autoSend);
       } else {
+        window.__bcPendingAiOpen = { prompt, autoSend };
         const fab = document.getElementById("bc-ai-fab");
-        if (fab) fab.click();
-        if (prompt) {
-          setTimeout(() => {
-            const input = document.getElementById("bc-ai-input");
-            if (input) {
-              input.value = prompt;
-              input.focus();
-            }
-          }, 120);
+        if (fab) {
+          fab.click();
+          if (prompt) {
+            setTimeout(() => {
+              if (typeof window.openBcAiAssistant === "function") {
+                window.__bcPendingAiOpen = null;
+                window.openBcAiAssistant(prompt, autoSend);
+              }
+            }, 80);
+          }
+        } else if (!window.__bcAiChatLoader && !document.querySelector('script[src*="ai-chat-loader.js"]')) {
+          const s = document.createElement("script");
+          s.src = "/js/ai-chat-loader.js?v=7";
+          s.defer = true;
+          s.setAttribute("data-cfasync", "false");
+          document.body.appendChild(s);
         }
       }
     }
@@ -297,9 +306,9 @@
     })();
 
     // Ensure AI assistant loader is mounted on every page with a footer
-    if (!window.__bcAiChatLoader) {
+    if (!window.__bcAiChatLoader && !document.querySelector('script[src*="ai-chat-loader.js"]')) {
       const loader = document.createElement("script");
-      loader.src = "/js/ai-chat-loader.js?v=6";
+      loader.src = "/js/ai-chat-loader.js?v=7";
       loader.defer = true;
       loader.setAttribute("data-cfasync", "false");
       document.body.appendChild(loader);

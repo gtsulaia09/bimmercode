@@ -2682,6 +2682,52 @@ footer {
   min-height: 20px;
 }
 
+.input-group.input-with-action {
+  position: relative;
+}
+.input-group.input-with-action input {
+  padding-right: 40px;
+}
+.input-group .input-eye {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: var(--text-tertiary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+.input-group .input-eye:hover {
+  color: var(--text-primary);
+  background-color: var(--surface-3);
+}
+
+.pw-strength {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  height: 4px;
+}
+.pw-strength span {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background-color: var(--surface-3);
+  transition: background-color var(--transition-fast);
+}
+.pw-strength[data-strength="1"] span:nth-child(-n+1) { background-color: var(--status-danger); }
+.pw-strength[data-strength="2"] span:nth-child(-n+2) { background-color: var(--status-warning); }
+.pw-strength[data-strength="3"] span:nth-child(-n+3) { background-color: var(--accent-light); }
+.pw-strength[data-strength="4"] span:nth-child(-n+4) { background-color: var(--status-success); }
+
 /* Code Detail Modal (used on Forum / Topic / Profile) */
 #code-detail-modal .code-modal-dialog {
   width: min(920px, 100%);

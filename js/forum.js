@@ -241,7 +241,7 @@
       : `<span>${escapeHtml(timeAgo(topic.created_at))}</span>`;
 
     return `
-      <a class="${classes.join(" ")}" href="/topic?id=${encodeURIComponent(topic.id)}" data-topic-id="${escapeHtml(topic.id)}" style="--topic-accent: ${accentColor};">
+      <a class="${classes.join(" ")}" href="/topic.html?id=${encodeURIComponent(topic.id)}" data-topic-id="${escapeHtml(topic.id)}" style="--topic-accent: ${accentColor};">
         <div class="topic-icon ${iconTone}" style="${iconTone ? '' : `background: ${accentColor}22; color: ${accentColor};`}"><i class="fas ${iconClass}" aria-hidden="true"></i></div>
         <div class="topic-body">
           <h3 class="topic-title">
@@ -465,7 +465,7 @@
             <div class="mobile-menu-user__role">${escapeHtml(roleText)}</div>
           </div>
         </div>
-        <a href="/profile" class="mobile-menu-link mobile-menu-link--secondary" onclick="${closeMobileMenuJs}">
+        <a href="/profile.html?id=${encodeURIComponent(user.id)}" class="mobile-menu-link mobile-menu-link--secondary" onclick="${closeMobileMenuJs}">
           <i class="fas fa-user-circle" aria-hidden="true"></i>
           <span>${escapeHtml(t("profile", "Profile"))}</span>
         </a>
@@ -605,7 +605,7 @@
         <div class="username">${escapeHtml(user.username)}</div>
         ${repBadgeHtml(user.reputation, normalizeRoleId(user.role_id || user.role))}
         <div class="actions">
-          <a href="/profile" class="btn btn-ghost user-card-profile-link"><i class="fas fa-user-circle" aria-hidden="true"></i> ${escapeHtml(t("profile", "Profile"))}</a>
+          <a href="/profile.html?id=${encodeURIComponent(user.id)}" class="btn btn-ghost user-card-profile-link"><i class="fas fa-user-circle" aria-hidden="true"></i> ${escapeHtml(t("profile", "Profile"))}</a>
           <button class="btn btn-danger" onclick="logout && logout()"><i class="fas fa-sign-out-alt"></i> ${escapeHtml(t("logout", "Logout"))}</button>
         </div>
       </div>`;
@@ -650,7 +650,7 @@
       const dropdown = document.createElement("div");
       dropdown.className = "auth-dropdown";
       dropdown.innerHTML = `
-        <a href="/profile" class="auth-dropdown-item">
+        <a href="/profile.html?id=${encodeURIComponent(user.id)}" class="auth-dropdown-item">
           <i class="fas fa-user-circle" aria-hidden="true"></i> ${escapeHtml(t("profile", "Profile"))}
         </a>
         <button type="button" class="auth-dropdown-item auth-dropdown-logout" onclick="logout && logout()">
@@ -914,7 +914,7 @@
         if (!res.ok || !data.success) {
           throw new Error(data.error || data.reason || `HTTP ${res.status}`);
         }
-        window.location.href = `/topic?id=${data.topicId}`;
+        window.location.href = `/topic.html?id=${encodeURIComponent(data.topicId)}`;
       } catch (err) {
         $("#topic-title-error").textContent = err.message || t("publishError", "Failed to publish");
         publish.disabled = false;
@@ -924,56 +924,87 @@
   }
 
   // ============================================================ Auth modal helpers (shared w/ script.js)
-  window.toggleAuthModal = function toggleAuthModal() {
-    document.getElementById("auth-modal")?.classList.toggle("active");
+  window.toggleAuthModal = function toggleAuthModal(initialTab) {
+    if (typeof setupRegisterForm === "function") setupRegisterForm();
+    if (typeof setupLoginForm === "function") setupLoginForm();
+    const modal = document.getElementById("auth-modal");
+    if (!modal) return;
+    const willOpen = !modal.classList.contains("active");
+    if (willOpen) {
+      window.switchAuthTab(initialTab === "register" ? "register" : "login");
+      modal.classList.add("active");
+    } else if (initialTab === "login" || initialTab === "register") {
+      window.switchAuthTab(initialTab);
+    } else {
+      modal.classList.remove("active");
+    }
   };
 
   window.switchAuthTab = function switchAuthTab(tab) {
-    $("#tab-login")?.classList.toggle("active", tab === "login");
-    $("#tab-register")?.classList.toggle("active", tab === "register");
-    $("#tab-login")?.setAttribute("aria-selected", tab === "login" ? "true" : "false");
-    $("#tab-register")?.setAttribute("aria-selected", tab === "register" ? "true" : "false");
+    const target = tab === "register" ? "register" : "login";
+    $$("#auth-modal .tab-btn").forEach((btn, idx) => {
+      const match = (target === "login" && idx === 0) || (target === "register" && idx === 1);
+      btn.classList.toggle("active", match);
+      btn.setAttribute("aria-selected", match ? "true" : "false");
+    });
+    $("#tab-login")?.classList.toggle("active", target === "login");
+    $("#tab-register")?.classList.toggle("active", target === "register");
+    $("#tab-login")?.setAttribute("aria-selected", target === "login" ? "true" : "false");
+    $("#tab-register")?.setAttribute("aria-selected", target === "register" ? "true" : "false");
     const tabs = document.querySelector(".auth-tabs");
-    if (tabs) tabs.setAttribute("data-active", tab);
+    if (tabs) tabs.setAttribute("data-active", target);
     const login = $("#login-form");
     const reg = $("#register-form");
-    if (login) login.style.display = tab === "login" ? "" : "none";
-    if (reg) reg.style.display = tab === "register" ? "" : "none";
+    if (login) {
+      login.classList.toggle("active", target === "login");
+      login.style.display = target === "login" ? "" : "none";
+    }
+    if (reg) {
+      reg.classList.toggle("active", target === "register");
+      reg.style.display = target === "register" ? "" : "none";
+    }
+    const loginMsg = $("#login-msg");
+    const regMsg = $("#reg-msg");
+    if (loginMsg) loginMsg.textContent = "";
+    if (regMsg) regMsg.textContent = "";
     // Update subtitle
     const subtitle = $("#auth-subtitle");
     const title = $("#auth-title");
-    if (tab === "register") {
-      if (title) title.textContent = t("createAccountTitle", "Join the community");
+    if (target === "register") {
+      if (title) title.textContent = t("createAccountTitle", "Create Specialist Account");
       if (subtitle) subtitle.textContent = t("authSubtitleRegister", "Create your account — it takes 30 seconds.");
     } else {
-      if (title) title.textContent = t("welcomeBack", "Welcome back");
+      if (title) title.textContent = t("welcomeBack", "Sign in to BimmerCodes");
       if (subtitle) subtitle.textContent = t("authSubtitleLogin", "Sign in to post, react, and save answers.");
     }
     // Focus first input
     setTimeout(() => {
-      (tab === "register" ? reg : login)?.querySelector("input")?.focus();
-    }, 220);
+      (target === "register" ? reg : login)?.querySelector("input")?.focus();
+    }, 150);
   };
 
   // ============================================================ Password eye-toggle
-  document.addEventListener("click", (e) => {
-    const eye = e.target.closest(".input-eye");
-    if (!eye) return;
-    e.preventDefault();
-    const id = eye.dataset.target;
-    const input = document.getElementById(id);
-    if (!input) return;
-    const icon = eye.querySelector("i");
-    if (input.type === "password") {
-      input.type = "text";
-      icon?.classList.replace("fa-eye", "fa-eye-slash");
-      eye.setAttribute("aria-label", "Hide password");
-    } else {
-      input.type = "password";
-      icon?.classList.replace("fa-eye-slash", "fa-eye");
-      eye.setAttribute("aria-label", "Show password");
-    }
-  });
+  if (!window.__bcAuthEyeBound) {
+    window.__bcAuthEyeBound = true;
+    document.addEventListener("click", (e) => {
+      const eye = e.target.closest(".input-eye");
+      if (!eye) return;
+      e.preventDefault();
+      const id = eye.dataset.target;
+      const input = document.getElementById(id);
+      if (!input) return;
+      const icon = eye.querySelector("i");
+      if (input.type === "password") {
+        input.type = "text";
+        icon?.classList.replace("fa-eye", "fa-eye-slash");
+        eye.setAttribute("aria-label", "Hide password");
+      } else {
+        input.type = "password";
+        icon?.classList.replace("fa-eye-slash", "fa-eye");
+        eye.setAttribute("aria-label", "Show password");
+      }
+    });
+  }
 
   // ============================================================ Password strength meter
   function passwordScore(pw) {
@@ -985,11 +1016,14 @@
     if (/[^A-Za-z0-9]/.test(pw) || pw.length >= 12) score++;
     return Math.min(4, score);
   }
-  document.addEventListener("input", (e) => {
-    if (e.target?.id !== "reg-password") return;
-    const meter = document.querySelector(".pw-strength");
-    if (meter) meter.setAttribute("data-strength", String(passwordScore(e.target.value)));
-  });
+  if (!window.__bcPwMeterBound) {
+    window.__bcPwMeterBound = true;
+    document.addEventListener("input", (e) => {
+      if (e.target?.id !== "reg-password") return;
+      const meter = document.querySelector(".pw-strength");
+      if (meter) meter.setAttribute("data-strength", String(passwordScore(e.target.value)));
+    });
+  }
 
   // ============================================================ Recovery step indicator
   // When recovery-step-2 becomes active, update step indicator visuals

@@ -1,4 +1,4 @@
-const CACHE_NAME = "bimmercodes-v38-engineering-2026";
+const CACHE_NAME = "bimmercodes-v39-engineering-2026";
 const ASSETS_TO_CACHE = [
   "/",
   "/index.html",

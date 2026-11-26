@@ -14,7 +14,7 @@ export async function onRequestPost(context) {
       });
     }
 
-    // ─── Gmail via EmailJS REST API ───────────────────────────────────────────
+    // ─── Gmail via EmailJS REST API (falls back to Admin DB Inbox if unconfigured) ───
     if (type === 'gmail') {
       const serviceId   = env.EMAILJS_SERVICE_ID;
       const templateId  = env.EMAILJS_TEMPLATE_ID;
@@ -22,42 +22,32 @@ export async function onRequestPost(context) {
       const privateKey  = env.EMAILJS_PRIVATE_KEY;
       const recipient   = env.RECIPIENT_EMAIL || 'codesbimmer@gmail.com';
 
-      if (!serviceId || !templateId || !publicKey) {
-        return new Response(JSON.stringify({ error: "EmailJS not configured on server" }), {
-          status: 500,
-          headers: { "Content-Type": "application/json" }
+      if (serviceId && templateId && publicKey) {
+        const ejsRes = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            service_id:   serviceId,
+            template_id:  templateId,
+            user_id:      publicKey,
+            ...(privateKey ? { accessToken: privateKey } : {}),
+            template_params: {
+              from_name:  name,
+              from_email: email,
+              subject:    subject || 'No Subject',
+              message:    message,
+              to_email:   recipient,
+            }
+          })
         });
-      }
 
-      const ejsRes = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          service_id:   serviceId,
-          template_id:  templateId,
-          user_id:      publicKey,
-          ...(privateKey ? { accessToken: privateKey } : {}),
-          template_params: {
-            from_name:  name,
-            from_email: email,
-            subject:    subject || 'No Subject',
-            message:    message,
-            to_email:   recipient,
-          }
-        })
-      });
-
-      if (ejsRes.ok) {
-        return new Response(JSON.stringify({ success: true }), {
-          headers: { "Content-Type": "application/json" }
-        });
-      } else {
-        const errText = await ejsRes.text();
-        return new Response(JSON.stringify({ error: "EmailJS error: " + errText }), {
-          status: 502,
-          headers: { "Content-Type": "application/json" }
-        });
+        if (ejsRes.ok) {
+          return new Response(JSON.stringify({ success: true }), {
+            headers: { "Content-Type": "application/json" }
+          });
+        }
       }
+      // If EmailJS is not configured or failed, store cleanly in D1 contact_messages below
     }
 
     // ─── Admin DB Inbox ───────────────────────────────────────────────────────

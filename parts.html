@@ -19,9 +19,9 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Noto+Sans+Georgian:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="/css/tokens.css?v=4.3" />
-    <link rel="stylesheet" href="/css/style.css?v=4.3" />
-    <link rel="stylesheet" href="/css/parts-finder.css?v=4.3" />
+    <link rel="stylesheet" href="/css/tokens.css?v=4.4" />
+    <link rel="stylesheet" href="/css/style.css?v=4.4" />
+    <link rel="stylesheet" href="/css/parts-finder.css?v=4.4" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="icon" type="image/svg+xml" href="/assets/icons/ico.svg" />
   </head>
@@ -232,11 +232,11 @@
     <footer></footer>
 
     <script src="/js/translations.js?v=6" data-cfasync="false"></script>
-    <script src="/js/i18n-init.js?v=4.3" data-cfasync="false"></script>
+    <script src="/js/i18n-init.js?v=4.4" data-cfasync="false"></script>
     <script src="/js/parts-finder.js?v=6" data-cfasync="false"></script>
-    <script src="/js/footer.js?v=4.3" data-cfasync="false"></script>
-    <script src="/js/live.js?v=4.3" data-cfasync="false"></script>
-    <script src="/js/modal-escape.js?v=4.3" data-cfasync="false"></script>
+    <script src="/js/footer.js?v=4.4" data-cfasync="false"></script>
+    <script src="/js/live.js?v=4.4" data-cfasync="false"></script>
+    <script src="/js/modal-escape.js?v=4.4" data-cfasync="false"></script>
     <script data-cfasync="false">
       (function () {
         "use strict";
@@ -350,6 +350,43 @@
           if (!q) return;
 
           const lang = getLang();
+          const digitsOnly = q.replace(/[\s.-]/g, "");
+          const isElevenDigitOem = /^\d{11}$/.test(digitsOnly);
+
+          if (isElevenDigitOem) {
+            const formattedOem = `${digitsOnly.slice(0, 2)} ${digitsOnly.slice(2, 4)} ${digitsOnly.slice(4, 5)} ${digitsOnly.slice(5, 8)} ${digitsOnly.slice(8, 11)}`;
+            summaryEl.classList.remove("hidden");
+            summaryEl.innerHTML = `
+              <div class="bc-datasheet">
+                <div class="bc-datasheet__topbar">
+                  <span class="bc-kicker">BMW ETK 11-Digit OEM Part Number</span>
+                  <button type="button" class="btn btn-ghost btn-sm" id="copy-oem-number-btn" data-oem="${esc(digitsOnly)}">
+                    <i class="far fa-copy" aria-hidden="true"></i>
+                    <span>${esc(digitsOnly)}</span>
+                  </button>
+                </div>
+                <div class="bc-datasheet__hero" style="border-bottom:none;">
+                  <div class="bc-datasheet__id-row">
+                    <span class="bc-datasheet__code">${esc(formattedOem)}</span>
+                    <span class="bc-badge">OEM / ETK</span>
+                  </div>
+                  <div class="bc-datasheet__title">Direct OEM Part Cross-Reference (${esc(digitsOnly)})</div>
+                </div>
+              </div>
+            `;
+            document.getElementById("copy-oem-number-btn")?.addEventListener("click", async (ev) => {
+              const btn = ev.currentTarget;
+              try {
+                await navigator.clipboard.writeText(digitsOnly);
+                const icon = btn.querySelector("i");
+                if (icon) icon.className = "fas fa-check";
+                setTimeout(() => { if (icon) icon.className = "far fa-copy"; }, 1400);
+              } catch (_) {}
+            });
+            renderCatalogFallback(digitsOnly, null);
+            return;
+          }
+
           const codes = await ensureCodesLoaded();
           const upper = q.toUpperCase();
           const matchedCode = codes.find(
@@ -369,7 +406,7 @@
               <div class="bc-datasheet">
                 <div class="bc-datasheet__topbar">
                   <span class="bc-kicker">Matched Diagnostic Fault Context</span>
-                  <a href="/code/${encodeURIComponent(matchedCode.code)}?lang=${encodeURIComponent(lang)}" class="bc-datasheet__back">
+                  <a href="/?code=${encodeURIComponent(matchedCode.code)}&lang=${encodeURIComponent(lang)}" class="bc-datasheet__back">
                     <span>Full Code Datasheet</span>
                     <i class="fas fa-arrow-right" aria-hidden="true"></i>
                   </a>
