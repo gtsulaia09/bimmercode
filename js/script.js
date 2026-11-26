@@ -496,17 +496,25 @@ window.toggleFavorite = function (event, codeId) {
     window.updateSavedCountBadge();
   }
 
-  handleSearch();
+  if (!document.body.classList.contains("viewing-detail")) {
+    handleSearch();
+  }
   renderFavoritesList();
 };
 
 window.toggleFavoritesModal = function () {
   const modal = document.getElementById("favorites-modal");
   if (!modal) return;
-  modal.classList.toggle("active");
-
-  if (modal.classList.contains("active")) {
+  const willOpen = !modal.classList.contains("active");
+  if (willOpen) {
+    document.getElementById("auth-modal")?.classList.remove("active");
+    modal.classList.add("active");
     renderFavoritesList();
+  } else {
+    modal.classList.remove("active");
+    if (document.activeElement && typeof document.activeElement.blur === "function") {
+      document.activeElement.blur();
+    }
   }
 };
 
@@ -632,7 +640,16 @@ window.hideDetail = function () {
 // =============================================================================
 
 function toggleAuthModal() {
-  document.getElementById("auth-modal")?.classList.toggle("active");
+  const modal = document.getElementById("auth-modal");
+  if (!modal) return;
+  const willOpen = !modal.classList.contains("active");
+  if (willOpen) {
+    document.getElementById("favorites-modal")?.classList.remove("active");
+    switchAuthTab("login");
+    modal.classList.add("active");
+  } else {
+    modal.classList.remove("active");
+  }
 }
 window.toggleAuthModal = toggleAuthModal;
 
@@ -1002,7 +1019,7 @@ function checkAuthStatus() {
     const profileLabel = t.profile || "Profile & Garage";
     const logoutLabel = t.logout || "Logout";
     const isAdmin = ["super_admin_role", "admin_role", "senior_moderator_role", "moderator_role", "admin", "super_admin"].includes(
-      String(user.role || "")
+      String(user.role_id || user.role || "")
     );
 
     const dropdown = document.createElement("div");
@@ -1469,6 +1486,7 @@ function handleSearch() {
 
   const doSearch = () => {
     if (runId !== searchRunId) return;
+    if (document.body.classList.contains("viewing-detail")) return;
     const { items, truncated } = searchCodes(term, currentLanguage);
 
     if (items.length === 0) {

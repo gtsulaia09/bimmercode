@@ -207,7 +207,14 @@
     if (topic.lang) {
       badges.push(`<span class="badge badge-lang" title="${escapeHtml(topic.lang)}">${escapeHtml(topic.lang.toUpperCase())}</span>`);
     }
-    (topic.tags || []).slice(0, 3).forEach((tag) => {
+    const normTags = Array.isArray(topic.tags)
+      ? topic.tags
+      : typeof topic.tags === "string" && topic.tags.trim()
+      ? topic.tags.split(",").map((s) => ({ name: s.trim() })).filter((x) => x.name)
+      : [];
+    normTags.slice(0, 3).forEach((rawTag) => {
+      const tag = typeof rawTag === "string" ? { name: rawTag } : rawTag;
+      if (!tag || !tag.name) return;
       const color = tag.color ? `style="--color-primary-alpha-10: ${tag.color}22; color: ${tag.color}; border-color: ${tag.color}55;"` : "";
       badges.push(`<span class="badge badge-tag" ${color}>#${escapeHtml(tag.name)}</span>`);
     });

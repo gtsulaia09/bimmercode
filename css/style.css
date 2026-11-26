@@ -339,16 +339,17 @@ header.forum-header:not(:has(.bc-header__inner)) {
   align-items: center;
   gap: 2px;
   height: 100%;
+  min-width: 0;
 }
 
 .bc-nav__link {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 6px;
   height: 100%;
-  padding: 0 13px;
-  font-size: var(--font-size-sm);
+  padding: 0 9px;
+  font-size: 13px;
   font-weight: var(--font-weight-medium);
   color: var(--text-secondary);
   background: transparent;
@@ -357,6 +358,15 @@ header.forum-header:not(:has(.bc-header__inner)) {
   white-space: nowrap;
   transition: color var(--transition-fast);
   text-decoration: none;
+}
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
 }
 
 .bc-nav__link i {
@@ -2183,7 +2193,7 @@ footer {
 .bc-footer {
   max-width: var(--container-max);
   margin: 0 auto;
-  padding: 48px var(--container-padding) 28px;
+  padding: 48px var(--container-padding) 88px;
 }
 
 .bc-footer__grid {
@@ -2250,8 +2260,15 @@ footer {
   justify-content: space-between;
   gap: 12px;
   padding-top: 20px;
+  padding-right: 152px;
   font-size: var(--font-size-xs);
   color: var(--text-tertiary);
+}
+
+@media (max-width: 640px) {
+  .bc-footer__bottom {
+    padding-right: 0;
+  }
 }
 
 .bc-footer__langs {
@@ -3008,7 +3025,7 @@ footer {
 /* --------------------------------------------------------------------------
    13. Dedicated Responsive Breakpoints
    -------------------------------------------------------------------------- */
-@media (max-width: 1080px) {
+@media (max-width: 1200px) {
   .bc-nav {
     display: none;
   }
@@ -3016,6 +3033,9 @@ footer {
   .mobile-menu-btn {
     display: inline-flex;
   }
+}
+
+@media (max-width: 1080px) {
   .bc-ecu-matrix {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -3063,6 +3083,18 @@ footer {
   .bc-metrics-strip {
     grid-template-columns: repeat(2, 1fr);
   }
+  .bc-metric-cell__val {
+    white-space: nowrap;
+    font-size: clamp(0.95rem, 3.8vw, 1.25rem);
+  }
+  .auth-btn--logged {
+    max-width: 112px;
+  }
+  .auth-btn--logged span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   .bc-metric-cell:nth-child(2) {
     border-right: none;
   }
@@ -3098,6 +3130,26 @@ footer {
 }
 
 @media (max-width: 520px) {
+  .bc-metric-cell__val {
+    white-space: nowrap;
+    font-size: clamp(0.92rem, 3.8vw, 1.2rem);
+  }
+  .auth-btn--logged {
+    padding: 0 9px;
+    min-width: 36px;
+    max-width: none;
+  }
+  .auth-btn--logged span {
+    display: none;
+  }
+  .bc-header__inner {
+    gap: 8px;
+    padding: 0 12px;
+  }
+  .bc-header-tools,
+  header .controls {
+    gap: 6px;
+  }
   .bc-brand__sub,
   .index-header-title span {
     display: none;

@@ -112,6 +112,27 @@
   color: #F87171;
 }
 
+@media (max-width: 560px) {
+  .vin-instrument-card {
+    padding: 16px 14px;
+  }
+  .vin-input-wrap {
+    gap: 8px;
+    padding: 0 10px;
+  }
+  .vin-input-icon {
+    display: none;
+  }
+  #vin-input {
+    font-size: 0.84rem;
+    letter-spacing: 0.02em;
+  }
+  .vin-char-counter {
+    padding: 2px 6px;
+    font-size: 11px;
+  }
+}
+
 .vin-submit-btn {
   height: 52px;
   padding: 0 24px;

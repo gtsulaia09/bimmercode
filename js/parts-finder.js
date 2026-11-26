@@ -49,6 +49,10 @@ class PartsFinderUI {
         return { hasParts: false };
       }
 
+      if (Array.isArray(data.parts)) {
+        data.parts = { primary: data.parts, secondary: [], optional: [] };
+      }
+
       const hasParts =
         (data.parts?.primary?.length || 0) +
         (data.parts?.secondary?.length || 0) +
@@ -135,8 +139,8 @@ class PartsFinderUI {
   }
 
   renderPart(part) {
-    const partName = part[`part_name_${this.currentLang}`] || part.part_name_en || "BMW Replacement Component";
-    const isOriginal = Boolean(part.is_original);
+    const partName = part[`part_name_${this.currentLang}`] || part.part_name_en || part.part_name || "BMW Replacement Component";
+    const isOriginal = Boolean(part.is_original ?? part.is_oem);
     const oemBadge = isOriginal
       ? `<span class="badge-oem"><i class="fas fa-shield-alt" aria-hidden="true"></i> ${this.esc(this.t("genuine_oem"))}</span>`
       : `<span class="badge-aftermarket"><i class="fas fa-cog" aria-hidden="true"></i> ${this.esc(this.t("aftermarket"))}</span>`;
@@ -145,7 +149,7 @@ class PartsFinderUI {
       ? `<div class="part-rating">${this.renderStars(Number(part.avg_rating))} (${Number(part.review_count || 0)})</div>`
       : "";
 
-    const diffKey = String(part.installation_difficulty || "").toLowerCase();
+    const diffKey = String(part.installation_difficulty || part.difficulty || "").toLowerCase();
     const difficulty = diffKey
       ? `<span class="difficulty-badge difficulty-${this.esc(diffKey)}">
            <i class="fas fa-screwdriver-wrench" aria-hidden="true"></i> ${this.esc(this.t("difficulty_" + diffKey))}
@@ -167,6 +171,8 @@ class PartsFinderUI {
 
     const buyLinks = part.buy_links || part.links || [];
     const oemNum = part.oem_number || "—";
+    const mfg = part.manufacturer || part.brand || "";
+    const laborVal = part.estimated_labor_hours ? `${part.estimated_labor_hours}h` : (part.install_time || "");
     const priceMin = part.price_min != null ? Number(part.price_min) : null;
     const priceMax = part.price_max != null ? Number(part.price_max) : null;
 
@@ -190,10 +196,10 @@ class PartsFinderUI {
             </span>
           </div>
 
-          ${part.manufacturer ? `
+          ${mfg ? `
           <div class="part-spec-cell">
             <span class="part-spec-cell__label">${this.esc(this.t("manufacturer"))}</span>
-            <span class="part-spec-cell__value">${this.esc(part.manufacturer)}</span>
+            <span class="part-spec-cell__value">${this.esc(mfg)}</span>
           </div>` : ""}
 
           ${priceMin != null && priceMax != null ? `
@@ -202,10 +208,10 @@ class PartsFinderUI {
             <span class="part-spec-cell__value">$${priceMin.toFixed(0)} – $${priceMax.toFixed(0)}</span>
           </div>` : ""}
 
-          ${part.estimated_labor_hours ? `
+          ${laborVal ? `
           <div class="part-spec-cell">
             <span class="part-spec-cell__label">${this.esc(this.t("labor"))}</span>
-            <span class="part-spec-cell__value">${this.esc(part.estimated_labor_hours)}h</span>
+            <span class="part-spec-cell__value">${this.esc(laborVal)}</span>
           </div>` : ""}
         </div>
 
@@ -259,11 +265,12 @@ class PartsFinderUI {
 
     return sortedLinks
       .map((link) => {
-        const mp = String(link.marketplace || "supplier").toLowerCase();
+        const mp = String(link.marketplace || link.store || "supplier").toLowerCase();
         const icon = marketplaceIcons[mp] || "fas fa-external-link-alt";
         const inStock = link.in_stock !== 0 && link.in_stock !== false;
-        const priceVal = Number(link.current_price || 0);
+        const priceVal = Number(link.current_price ?? link.price ?? 0);
         const shipVal = Number(link.shipping_cost || 0);
+        const targetUrl = link.affiliate_url || link.product_url || link.url || "#";
         const shipping = !inStock
           ? `<span class="out-of-stock">${this.esc(this.t("out_of_stock"))}</span>`
           : shipVal > 0
@@ -271,7 +278,7 @@ class PartsFinderUI {
             : `<span class="free-shipping">${this.esc(this.t("free_shipping"))}</span>`;
 
         return `
-          <a href="${this.esc(link.affiliate_url)}"
+          <a href="${this.esc(targetUrl)}"
              target="_blank"
              rel="noopener noreferrer nofollow"
              class="marketplace-link ${!inStock ? "disabled" : ""}"

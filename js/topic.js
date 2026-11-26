@@ -472,8 +472,15 @@
     state.composerImageUrls = [];
     const { topic, posts } = state;
 
-    const tags = (topic.tags || []).map((tg) => {
-      const color = tg.color || "#1C69D4";
+    const normTopicTags = Array.isArray(topic.tags)
+      ? topic.tags
+      : typeof topic.tags === "string" && topic.tags.trim()
+      ? topic.tags.split(",").map((s) => ({ name: s.trim() })).filter((x) => x.name)
+      : [];
+    const tags = normTopicTags.map((rawTg) => {
+      const tg = typeof rawTg === "string" ? { name: rawTg } : rawTg;
+      if (!tg || !tg.name) return "";
+      const color = tg.color || "#2877EE";
       return `<span class="badge badge-tag" style="color:${color};border-color:${color}55;background:${color}14;">#${esc(tg.name)}</span>`;
     }).join("");
 
