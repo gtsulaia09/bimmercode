@@ -1,7 +1,7 @@
-# Static demo on GitHub Pages: https://gtsulaia09.github.io/bimmercode/
-# scripts/build-pages.mjs builds _site/: the site with paths under /bimmercode, one JSON file per trouble code, code
-# pages rendered in the browser (404.html), and a shim that answers /api with "not available in the demo" — forum,
-# sign-in, AI assistant and admin need Cloudflare (Functions, D1, R2). Production deploys are unchanged.
+# Static build on GitHub Pages: https://gtsulaia09.github.io/bimmercode/
+# scripts/build-pages.mjs builds _site/ with rebased paths under /bimmercode, per-code JSON files,
+# 404.html dynamic /code/<ID> rendering, and a localStorage-backed serverless API runtime (js/demo-shim.js).
+# Production deploys run automatically on Cloudflare Pages (https://bimmercodes.net) from main.
 # One-time setup: Settings → Pages → Source: GitHub Actions.
 name: Pages demo
 

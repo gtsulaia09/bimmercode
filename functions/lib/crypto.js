@@ -100,6 +100,11 @@ export async function verifyPassword(password, storedHash) {
     }
   }
 
+  if (/^[0-9a-f]{64}$/i.test(hashStr)) {
+    const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(String(password)));
+    return timingSafeEqualHex(bytesToHex(new Uint8Array(digest)), hashStr.toLowerCase());
+  }
+
   return false;
 }
 

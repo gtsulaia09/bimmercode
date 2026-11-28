@@ -101,6 +101,19 @@ export async function onRequestPost(context) {
         headers: { 'Content-Type': 'application/json' }
       });
     }
+
+    // Transparently upgrade legacy bcrypt / SHA-256 hashes to Web Crypto PBKDF2
+    if (user.password_hash && !String(user.password_hash).startsWith("pbkdf2$")) {
+      try {
+        const { hashPassword } = await import("../../lib/crypto.js");
+        const upgradedHash = await hashPassword(password);
+        await env.DB.prepare("UPDATE users SET password_hash = ? WHERE id = ?")
+          .bind(upgradedHash, user.id)
+          .run();
+      } catch (upgErr) {
+        console.warn("Legacy hash upgrade skipped:", upgErr?.message || upgErr);
+      }
+    }
     
     // 5. Check if active
     if (!user.is_active) {
