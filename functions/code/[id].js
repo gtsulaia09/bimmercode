@@ -191,9 +191,9 @@ function renderPage(code, lang) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Noto+Sans+Georgian:wght@400;500;600;700&display=swap">
-  <link rel="stylesheet" href="/css/tokens.css?v=4.0">
-  <link rel="stylesheet" href="/css/style.css?v=4.0">
-  <link rel="stylesheet" href="/css/parts-finder.css?v=4.0">
+  <link rel="stylesheet" href="/css/tokens.css?v=4.5">
+  <link rel="stylesheet" href="/css/style.css?v=4.5">
+  <link rel="stylesheet" href="/css/parts-finder.css?v=4.5">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script type="application/ld+json">${jsonLd}</script>
 </head>
@@ -305,7 +305,7 @@ function renderPage(code, lang) {
   <footer></footer>
 
   <script src="/js/parts-finder.js?v=6" data-cfasync="false"></script>
-  <script src="/js/footer.js?v=4.0" data-cfasync="false"></script>
+  <script src="/js/footer.js?v=4.5" data-cfasync="false"></script>
   <script>
     (function () {
       const urlLang = new URLSearchParams(location.search).get('lang');
@@ -315,6 +315,12 @@ function renderPage(code, lang) {
           localStorage.setItem('forumLanguage', urlLang);
         } catch (_) {}
       }
+      window.setPageLanguage = function (nextLang) {
+        if (!['en', 'ru', 'ka'].includes(nextLang)) return;
+        const u = new URL(location.href);
+        u.searchParams.set('lang', nextLang);
+        location.href = u.pathname + u.search;
+      };
       const copyBtn = document.getElementById('ssr-copy-code');
       if (copyBtn) {
         copyBtn.addEventListener('click', async function () {
@@ -346,8 +352,8 @@ function renderNotFound(codeId, lang) {
   <meta name="robots" content="noindex">
   <link rel="icon" type="image/svg+xml" href="/assets/icons/ico.svg">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700&family=Noto+Sans+Georgian:wght@400;500;600;700&display=swap">
-  <link rel="stylesheet" href="/css/tokens.css?v=4.0">
-  <link rel="stylesheet" href="/css/style.css?v=4.0">
+  <link rel="stylesheet" href="/css/tokens.css?v=4.5">
+  <link rel="stylesheet" href="/css/style.css?v=4.5">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -373,7 +379,7 @@ function renderNotFound(codeId, lang) {
     </div>
   </main>
   <footer></footer>
-  <script src="/js/footer.js?v=4.0" data-cfasync="false"></script>
+  <script src="/js/footer.js?v=4.5" data-cfasync="false"></script>
 </body>
 </html>`;
 }

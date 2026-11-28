@@ -91,6 +91,29 @@ function buildCodeLookup(codes) {
   return { byCode, byPCode };
 }
 
+const CHASSIS_ALIAS_TERMS = {
+  e36: ["e36", "e46", "m54", "s54"],
+  e39: ["e39", "e60", "m54", "m57"],
+  e46: ["e46", "m54", "s54"],
+  e53: ["e53", "x5", "m54", "n62"],
+  e87: ["e87", "e82", "e88", "n52"],
+  e92: ["e92", "e90", "n52", "n54", "n55", "s65"],
+  f01: ["f01", "n55", "n63"],
+  f15: ["f15", "x5", "n55", "n57", "n63"],
+  f20: ["f20", "f30", "b47", "b48"],
+  f22: ["f22", "f30", "n55", "b48", "b58"],
+  f25: ["f25", "x3", "n55", "n57"],
+  f32: ["f32", "f30", "n55", "b48", "b58"],
+  f80: ["f80", "f30", "s55"],
+  g01: ["g01", "x3", "b47", "b48", "b58"],
+  g05: ["g05", "x5", "b58", "n63"],
+  g07: ["g07", "x5", "b58", "n63"],
+  g11: ["g11", "b58", "n63"],
+  g22: ["g22", "g20", "b48", "b58"],
+  g42: ["g42", "g20", "b48", "b58"],
+  g80: ["g80", "g20", "s58"],
+};
+
 function scoreCodeMatch(code, q, lang) {
   const codeStr = String(code.code || "").toLowerCase();
   if (codeStr === q) return 100;
@@ -110,6 +133,12 @@ function scoreCodeMatch(code, q, lang) {
 
     if (code.engineCodes?.some((e) => String(e).toLowerCase().includes(q))) return 40;
     if (code.applicableModels?.some((m) => String(m).toLowerCase().includes(q))) return 35;
+
+    const aliasTerms = CHASSIS_ALIAS_TERMS[q];
+    if (aliasTerms) {
+      if (code.applicableModels?.some((m) => aliasTerms.some((at) => String(m).toLowerCase().includes(at)))) return 34;
+      if (code.engineCodes?.some((e) => aliasTerms.some((at) => String(e).toLowerCase() === at))) return 32;
+    }
   }
   return 0;
 }
@@ -599,7 +628,7 @@ window.openCodeModal = function openCodeModal(codeStr) {
     const c = tryFind();
     window.removeEventListener("bmwCodes:ready", once);
     if (c) return window.displayCodeDetail(c);
-    window.location.href = `/code/${encodeURIComponent(codeStr)}?lang=${encodeURIComponent(currentLanguage)}`;
+    window.location.href = `/index.html?code=${encodeURIComponent(codeStr)}&lang=${encodeURIComponent(currentLanguage)}`;
   };
   window.addEventListener("bmwCodes:ready", once);
   setTimeout(once, 1500);
@@ -1475,11 +1504,18 @@ async function init() {
     window.dispatchEvent(new CustomEvent("bmwCodes:ready", { detail: { count: bmwCodes.length } }));
 
     renderRecentCodesBar();
+    if (document.getElementById("favorites-modal")?.classList.contains("active")) {
+      renderFavoritesList();
+    }
 
     const urlParams = new URLSearchParams(window.location.search);
     const urlLang = urlParams.get("lang");
     if (urlLang && ["en", "ru", "ka"].includes(urlLang)) {
       window.setPageLanguage(urlLang);
+    }
+
+    if (urlParams.get("need_login") === "1" && !localStorage.getItem("auth_token")) {
+      toggleAuthModal("login");
     }
 
     const codeFromUrl = urlParams.get("code") || urlParams.get("search");

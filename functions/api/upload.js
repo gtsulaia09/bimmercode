@@ -96,8 +96,15 @@ export async function onRequest(context) {
       return json({ error: check.reason || 'File rejected' }, 400);
     }
 
-    // 5. Store in R2 under a UUID with the validated content type
+    // 5. Store in R2 under a UUID with the validated content type (or inline data-URL fallback for small images if R2 is unbound)
     if (!env.BUCKET) {
+      if (file.size <= 262144) {
+        const buf = new Uint8Array(await file.arrayBuffer());
+        let bin = "";
+        for (let i = 0; i < buf.length; i++) bin += String.fromCharCode(buf[i]);
+        const b64 = btoa(bin);
+        return json({ url: `data:${file.type};base64,${b64}`, name: file.name || "image.webp", size: file.size, type: file.type });
+      }
       return json({ error: 'Storage not configured' }, 500);
     }
     const filename = `${crypto.randomUUID()}.${extFor(file.type)}`;

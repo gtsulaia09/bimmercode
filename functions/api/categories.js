@@ -38,17 +38,38 @@ export async function onRequestGet(context) {
     const countsBySlug = {};
     for (const c of counts.results || []) countsBySlug[c.category] = c;
 
-    const categories = (results || []).map((row) => ({
+    let categories = (results || []).map((row) => ({
       id: row.id,
       slug: row.slug,
       title: pickTitle(row),
       description: pickDesc(row),
       icon: row.icon || "fas fa-folder",
-      color: row.color || "#1C69D4",
+      color: row.color || "#2877EE",
       sort_order: row.sort_order,
       topics_count: countsBySlug[row.slug]?.topics_count || 0,
       last_activity: countsBySlug[row.slug]?.last_activity || null,
     }));
+
+    if (!categories.length) {
+      const defaults = [
+        { slug: "diagnostics", icon: "fas fa-microchip", color: "#2877EE", en: "Fault Codes & ISTA", ru: "Коды ошибок и ISTA", ka: "კოდები და ISTA" },
+        { slug: "engine-drivetrain", icon: "fas fa-gears", color: "#38BDF8", en: "Engine & Transmission", ru: "Двигатель и КПП", ka: "ძრავა და ტრანსმისია" },
+        { slug: "electronics", icon: "fas fa-bolt", color: "#F59E0B", en: "ECU & Body Electronics", ru: "ЭБУ и электроника", ka: "ელექტრონიკა და ბლოკები" },
+        { slug: "coding-retrofits", icon: "fas fa-terminal", color: "#10B981", en: "Coding & Retrofits", ru: "Кодирование и дооснащение", ka: "კოდირება და რეტროფიტი" },
+        { slug: "suspension-brakes", icon: "fas fa-car-side", color: "#94A3B8", en: "Chassis, DSC & Brakes", ru: "Шасси, DSC и тормоза", ka: "სავალი ნაწილი და DSC" },
+      ];
+      categories = defaults.map((d, idx) => ({
+        id: d.slug,
+        slug: d.slug,
+        title: d[lang] || d.en,
+        description: "",
+        icon: d.icon,
+        color: d.color,
+        sort_order: idx + 1,
+        topics_count: countsBySlug[d.slug]?.topics_count || 0,
+        last_activity: countsBySlug[d.slug]?.last_activity || null,
+      }));
+    }
 
     return new Response(JSON.stringify({ success: true, categories }), {
       headers: {

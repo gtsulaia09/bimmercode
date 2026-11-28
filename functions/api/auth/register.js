@@ -101,10 +101,12 @@ export async function onRequestPost(context) {
       });
     }
 
-    // 7. Check for existing user
+    // 7. Check for existing user (case-insensitive)
+    const emailClean = String(email).trim().toLowerCase();
+    const usernameClean = String(username).trim();
     const existing = await env.DB.prepare(
-      "SELECT id FROM users WHERE email = ? OR username = ?"
-    ).bind(email, username).first();
+      "SELECT id FROM users WHERE LOWER(email) = ? OR LOWER(username) = ?"
+    ).bind(emailClean, usernameClean.toLowerCase()).first();
 
     if (existing) {
       return new Response(JSON.stringify({ 
@@ -115,37 +117,69 @@ export async function onRequestPost(context) {
       });
     }
 
-    // 8. Hash password and security answer
+    // 8. Hash password and security answer (Web Crypto PBKDF2)
     const userId = generateId();
     const passwordHash = await hashPassword(password);
     const answerHash = await hashSecurityAnswer(security_answer);
 
-    // 9. Create user with default role
-    await env.DB.prepare(`
-      INSERT INTO users (
-        id, email, username, password_hash, 
-        role_id, preferred_lang,
-        security_question, security_answer_hash,
-        first_name, last_name, age,
-        reputation, is_active, email_verified,
-        created_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
-    `).bind(
-      userId, 
-      email, 
-      username, 
-      passwordHash,
-      'user_role', // Default role
-      language || 'en',
-      security_question,
-      answerHash,
-      first_name || null,
-      last_name || null,
-      age || null,
-      0, // Initial reputation
-      1, // Active
-      0  // Email not verified
-    ).run();
+    // 9. Create user with progressive D1 column fallback (handles older remote DB schemas)
+    try {
+      await env.DB.prepare(`
+        INSERT INTO users (
+          id, email, username, password_hash,
+          role_id, preferred_lang,
+          security_question, security_answer_hash,
+          first_name, last_name, age,
+          reputation, is_active, email_verified,
+          created_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+      `).bind(
+        userId,
+        emailClean,
+        usernameClean,
+        passwordHash,
+        'user_role',
+        language || 'en',
+        security_question,
+        answerHash,
+        first_name || null,
+        last_name || null,
+        age || null,
+        0,
+        1,
+        0
+      ).run();
+    } catch (insertErr) {
+      const errMsg = String(insertErr?.message || insertErr);
+      if (!errMsg.includes("no such column")) throw insertErr;
+      try {
+        await env.DB.prepare(`
+          INSERT INTO users (
+            id, email, username, password_hash,
+            role_id, preferred_lang,
+            security_question, security_answer_hash,
+            reputation, is_active,
+            created_at
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+        `).bind(
+          userId,
+          emailClean,
+          usernameClean,
+          passwordHash,
+          'user_role',
+          language || 'en',
+          security_question,
+          answerHash,
+          0,
+          1
+        ).run();
+      } catch (_) {
+        await env.DB.prepare(`
+          INSERT INTO users (id, email, username, password_hash, created_at)
+          VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+        `).bind(userId, emailClean, usernameClean, passwordHash).run();
+      }
+    }
 
     // 10. Log registration in audit log
     await logAudit(env, {

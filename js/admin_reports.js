@@ -104,7 +104,7 @@
   function reportRow(r) {
     const entityLink =
       r.entity_type === "topic" || r.entity_type === "post"
-        ? `<a href="/topic?id=${encodeURIComponent(r.entity_type === "post" ? "" : r.entity_id)}" target="_blank" style="color:#60a5fa">view</a>`
+        ? `<a href="/topic.html?id=${encodeURIComponent(r.entity_type === "post" ? "" : r.entity_id)}" target="_blank" style="color:#60a5fa">view</a>`
         : "";
     return `
       <tr>
@@ -140,7 +140,7 @@
         <td>${escapeHtml(r.source || "")}</td>
         <td>${new Date(r.created_at).toLocaleDateString()}</td>
         <td>
-          <button class="action-btn" onclick="window.open('/topic?id=${encodeURIComponent(r.entity_id)}','_blank')"><i class="fas fa-external-link-alt"></i></button>
+          <button class="action-btn" onclick="window.open('/topic.html?id=${encodeURIComponent(r.entity_id)}','_blank')"><i class="fas fa-external-link-alt"></i></button>
         </td>
       </tr>`;
   }
@@ -187,6 +187,9 @@
     fetchQueue();
   };
   window.resolveReport = (id, action) => resolve(id, action);
+  window.closeReportDetailsModal = function () {
+    document.getElementById("report-details-modal")?.classList.remove("active");
+  };
 
   syncModTabs();
 })();

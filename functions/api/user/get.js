@@ -95,11 +95,15 @@ export async function onRequestGet(context) {
       avatar_url: user.avatar_url,
       reputation: user.reputation,
       level: level,
-      // joined: user.created_at, // Use created_at directly if frontend expects it
-      created_at: user.created_at, 
-      role: user.role, // Alias role_id
+      created_at: user.created_at,
+      role: user.role,
+      role_id: user.role,
       bio: user.bio,
       car_model: user.car_model,
+      bmw_year: user.bmw_year != null ? user.bmw_year : null,
+      bmw_body: user.bmw_body || null,
+      bmw_engine: user.bmw_engine || null,
+      preferred_lang: user.preferred_lang || "en",
       city: user.city,
       country: user.country,
       first_name: user.first_name || null,

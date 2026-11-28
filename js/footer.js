@@ -237,7 +237,7 @@
           }
         } else if (!window.__bcAiChatLoader && !document.querySelector('script[src*="ai-chat-loader.js"]')) {
           const s = document.createElement("script");
-          s.src = "/js/ai-chat-loader.js?v=7";
+          s.src = "/js/ai-chat-loader.js?v=8";
           s.defer = true;
           s.setAttribute("data-cfasync", "false");
           document.body.appendChild(s);
@@ -255,10 +255,326 @@
     if (e.key === "bmwFavorites") updateSavedCountBadge();
   });
 
+  function escAttr(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  // Universal lightweight Auth & Modal controller for secondary pages without script.js (all, parts, vin, contact, privacy, terms)
+  function initStandaloneHeaderAuth() {
+    if (document.querySelector('script[src*="/js/script.js"]') || document.querySelector('script[src*="/js/forum.js"]') || document.body.classList.contains("admin-page")) {
+      return;
+    }
+
+    if (typeof window.logout !== "function") {
+      window.logout = function () {
+        localStorage.removeItem("auth_token");
+        localStorage.removeItem("user_data");
+        location.reload();
+      };
+    }
+
+    function ensureStandaloneAuthModal() {
+      if (document.getElementById("auth-modal")) return;
+      const host = document.createElement("div");
+      host.innerHTML = `
+        <div id="auth-modal" class="auth-modal" role="dialog" aria-modal="true" aria-label="Authentication">
+          <div class="auth-content">
+            <button type="button" class="close-auth" onclick="toggleAuthModal()" aria-label="Close">
+              <i class="fas fa-times" aria-hidden="true"></i>
+            </button>
+            <div class="auth-tabs">
+              <button type="button" class="tab-btn active" onclick="switchAuthTab('login')">Sign In</button>
+              <button type="button" class="tab-btn" onclick="switchAuthTab('register')">Register</button>
+            </div>
+            <form id="login-form" class="auth-form active" autocomplete="on">
+              <h2>Sign in to BimmerCodes</h2>
+              <div class="input-group">
+                <i class="fas fa-envelope" aria-hidden="true"></i>
+                <input type="text" id="login-email" autocomplete="username" placeholder="Email or username" required />
+              </div>
+              <div class="input-group input-with-action">
+                <i class="fas fa-lock" aria-hidden="true"></i>
+                <input type="password" id="login-password" autocomplete="current-password" placeholder="Password" required />
+                <button type="button" class="input-eye" data-target="login-password" aria-label="Show password" tabindex="-1">
+                  <i class="fas fa-eye" aria-hidden="true"></i>
+                </button>
+              </div>
+              <button type="submit" class="submit-btn">Sign In</button>
+              <p class="auth-msg" id="login-msg"></p>
+            </form>
+            <form id="register-form" class="auth-form" autocomplete="on">
+              <h2>Create Specialist Account</h2>
+              <div class="input-group">
+                <i class="fas fa-user" aria-hidden="true"></i>
+                <input type="text" id="reg-username" minlength="3" maxlength="20" autocomplete="username" placeholder="Username (3–20 letters, digits, _)" required />
+              </div>
+              <div class="input-group">
+                <i class="fas fa-envelope" aria-hidden="true"></i>
+                <input type="email" id="reg-email" autocomplete="email" placeholder="Email address" required />
+              </div>
+              <div class="input-group input-with-action" style="margin-bottom:6px;">
+                <i class="fas fa-lock" aria-hidden="true"></i>
+                <input type="password" id="reg-password" minlength="8" autocomplete="new-password" placeholder="Password (min. 8 chars, A-Z, a-z, 0-9)" required />
+                <button type="button" class="input-eye" data-target="reg-password" aria-label="Show password" tabindex="-1">
+                  <i class="fas fa-eye" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="pw-strength" data-strength="0" aria-hidden="true" style="margin-bottom:6px;">
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <p style="font-size:11.5px;color:var(--text-tertiary);margin:0 0 12px;">8+ characters including uppercase, lowercase, and a number.</p>
+              <div class="input-group">
+                <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                <select id="reg-question" required>
+                  <option value="" disabled selected>Select security question</option>
+                  <option value="first_pet">What was your first pet's name?</option>
+                  <option value="mother_maiden">What is your mother's maiden name?</option>
+                  <option value="first_car">What was your first car model?</option>
+                  <option value="city_born">In which city were you born?</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <i class="fas fa-key" aria-hidden="true"></i>
+                <input type="text" id="reg-answer" placeholder="Security answer" required />
+              </div>
+              <button type="submit" class="submit-btn">Create Account</button>
+              <p class="auth-msg" id="reg-msg"></p>
+            </form>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(host.firstElementChild);
+
+      document.getElementById("login-form")?.addEventListener("submit", async (ev) => {
+        ev.preventDefault();
+        const email = document.getElementById("login-email")?.value?.trim() || "";
+        const password = document.getElementById("login-password")?.value || "";
+        const msg = document.getElementById("login-msg");
+        if (!email || !password) return;
+        try {
+          const res = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (res.ok && data.token) {
+            localStorage.setItem("auth_token", data.token);
+            localStorage.setItem("user_data", JSON.stringify(data.user));
+            renderStandaloneHeaderBtn();
+            window.dispatchEvent(new CustomEvent("auth:changed", { detail: { user: data.user } }));
+            document.getElementById("auth-modal")?.classList.remove("active");
+          } else if (msg) {
+            msg.textContent = data.error || "Invalid credentials";
+            msg.style.color = "var(--status-danger)";
+          }
+        } catch (_) {
+          if (msg) {
+            msg.textContent = "Connection error";
+            msg.style.color = "var(--status-danger)";
+          }
+        }
+      });
+
+      document.getElementById("register-form")?.addEventListener("submit", async (ev) => {
+        ev.preventDefault();
+        const username = document.getElementById("reg-username")?.value?.trim() || "";
+        const email = document.getElementById("reg-email")?.value?.trim() || "";
+        const password = document.getElementById("reg-password")?.value || "";
+        const security_question = document.getElementById("reg-question")?.value || "";
+        const security_answer = document.getElementById("reg-answer")?.value?.trim() || "";
+        const msg = document.getElementById("reg-msg");
+        const setMsg = (txt, ok) => {
+          if (!msg) return;
+          msg.textContent = txt;
+          msg.style.color = ok ? "var(--status-success)" : "var(--status-danger)";
+        };
+        if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+          return setMsg("Username must be 3–20 characters (letters, numbers, or _).");
+        }
+        if (password.length < 8 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password)) {
+          return setMsg("Password must be 8+ chars with uppercase, lowercase, and a number.");
+        }
+        try {
+          const res = await fetch("/api/auth/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, email, password, language: getLang(), security_question, security_answer }),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (res.ok) {
+            const lr = await fetch("/api/auth/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, password }),
+            }).catch(() => null);
+            const ld = lr ? await lr.json().catch(() => ({})) : {};
+            if (lr && lr.ok && ld.token) {
+              localStorage.setItem("auth_token", ld.token);
+              localStorage.setItem("user_data", JSON.stringify(ld.user));
+              renderStandaloneHeaderBtn();
+              window.dispatchEvent(new CustomEvent("auth:changed", { detail: { user: ld.user } }));
+              setMsg("Account created — signed in!", true);
+              setTimeout(() => document.getElementById("auth-modal")?.classList.remove("active"), 500);
+            } else {
+              setMsg("Account created. Please sign in.", true);
+              setTimeout(() => window.switchAuthTab("login"), 700);
+            }
+          } else {
+            const detail = Array.isArray(data.details) && data.details.length ? `${data.error}: ${data.details.join(" · ")}` : (data.error || "Registration failed");
+            setMsg(detail);
+          }
+        } catch (_) {
+          setMsg("Connection error");
+        }
+      });
+    }
+
+    if (!window.__bcAuthEyeBound) {
+      window.__bcAuthEyeBound = true;
+      document.addEventListener("click", (e) => {
+        const eye = e.target.closest(".input-eye");
+        if (!eye) return;
+        e.preventDefault();
+        const inp = document.getElementById(eye.getAttribute("data-target") || "");
+        if (!inp) return;
+        const ic = eye.querySelector("i");
+        if (inp.type === "password") {
+          inp.type = "text";
+          ic?.classList.replace("fa-eye", "fa-eye-slash");
+        } else {
+          inp.type = "password";
+          ic?.classList.replace("fa-eye-slash", "fa-eye");
+        }
+      });
+    }
+
+    if (!window.__bcPwMeterBound) {
+      window.__bcPwMeterBound = true;
+      document.addEventListener("input", (e) => {
+        if (e.target?.id !== "reg-password") return;
+        const pw = e.target.value || "";
+        let s = 0;
+        if (pw.length >= 8) s++;
+        if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) s++;
+        if (/\d/.test(pw)) s++;
+        if (/[^A-Za-z0-9]/.test(pw) || pw.length >= 12) s++;
+        document.querySelector(".pw-strength")?.setAttribute("data-strength", String(s));
+      });
+    }
+
+    window.switchAuthTab = function (tab) {
+      const target = tab === "register" ? "register" : "login";
+      document.querySelectorAll("#auth-modal .tab-btn").forEach((b, idx) => {
+        b.classList.toggle("active", (target === "login" && idx === 0) || (target === "register" && idx === 1));
+      });
+      const lf = document.getElementById("login-form");
+      const rf = document.getElementById("register-form");
+      if (lf) { lf.classList.toggle("active", target === "login"); lf.style.display = target === "login" ? "" : "none"; }
+      if (rf) { rf.classList.toggle("active", target === "register"); rf.style.display = target === "register" ? "" : "none"; }
+    };
+
+    window.toggleAuthModal = function (initialTab) {
+      ensureStandaloneAuthModal();
+      const modal = document.getElementById("auth-modal");
+      if (!modal) return;
+      const willOpen = !modal.classList.contains("active");
+      if (willOpen) {
+        window.switchAuthTab(initialTab === "register" ? "register" : "login");
+        modal.classList.add("active");
+      } else {
+        modal.classList.remove("active");
+      }
+    };
+
+    function renderStandaloneHeaderBtn() {
+      const tools = document.querySelector(".bc-header-tools");
+      if (!tools) return;
+      let btn = document.getElementById("auth-btn") || document.getElementById("parts-account-link") || tools.querySelector('a[href*="/profile"]');
+      if (!btn) {
+        btn = document.createElement("a");
+        btn.href = "#";
+        btn.id = "auth-btn";
+        btn.className = "bc-tool-btn bc-tool-btn--primary";
+        const burger = tools.querySelector(".bc-burger");
+        if (burger) tools.insertBefore(btn, burger);
+        else tools.appendChild(btn);
+      }
+      btn.id = "auth-btn";
+
+      let user = null;
+      const token = localStorage.getItem("auth_token");
+      try { user = JSON.parse(localStorage.getItem("user_data") || "null"); } catch (_) {}
+      const lang = getLang();
+      const T = (window.APP_TRANSLATIONS && (window.APP_TRANSLATIONS[lang] || window.APP_TRANSLATIONS.en)) || {};
+
+      if (token && user && user.username) {
+        btn.classList.add("auth-btn--logged");
+        btn.classList.remove("bc-tool-btn--primary", "bc-tool-btn--hide-mobile");
+        btn.href = "#";
+        btn.innerHTML = `<i class="fas fa-user-circle" aria-hidden="true"></i> <span>${escAttr(user.username)}</span>`;
+        let wrap = btn.closest(".auth-dropdown-wrap");
+        if (!wrap) {
+          wrap = document.createElement("div");
+          wrap.className = "auth-dropdown-wrap";
+          btn.parentNode.insertBefore(wrap, btn);
+          wrap.appendChild(btn);
+        }
+        wrap.querySelector(".auth-dropdown")?.remove();
+        const isAdmin = ["super_admin_role", "admin_role", "senior_moderator_role", "moderator_role", "admin", "super_admin"].includes(String(user.role_id || user.role || ""));
+        const dd = document.createElement("div");
+        dd.className = "auth-dropdown";
+        dd.innerHTML = `
+          <a href="/profile.html?id=${encodeURIComponent(user.id)}" class="auth-dropdown-item">
+            <i class="fas fa-id-badge" aria-hidden="true"></i> ${escAttr(T.profile || "Profile & Garage")}
+          </a>
+          ${isAdmin ? `<a href="/admin.html" class="auth-dropdown-item"><i class="fas fa-sliders" aria-hidden="true"></i> Admin Console</a>` : ""}
+          <button type="button" class="auth-dropdown-item auth-dropdown-logout" onclick="logout()">
+            <i class="fas fa-sign-out-alt" aria-hidden="true"></i> ${escAttr(T.logout || "Logout")}
+          </button>
+        `;
+        wrap.appendChild(dd);
+        btn.onclick = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          wrap.classList.toggle("open");
+        };
+      } else {
+        const wrap = btn.closest(".auth-dropdown-wrap");
+        if (wrap) {
+          wrap.parentNode.insertBefore(btn, wrap);
+          wrap.remove();
+        }
+        btn.classList.remove("auth-btn--logged", "bc-tool-btn--hide-mobile");
+        btn.classList.add("bc-tool-btn--primary");
+        btn.href = "#";
+        btn.innerHTML = `<i class="fas fa-user-circle" aria-hidden="true"></i> <span>${escAttr(T.loginBtn || "Sign In")}</span>`;
+        btn.onclick = (e) => {
+          e.preventDefault();
+          window.toggleAuthModal("login");
+        };
+      }
+    }
+
+    document.addEventListener("click", (e) => {
+      document.querySelectorAll(".auth-dropdown-wrap.open").forEach((w) => {
+        if (!w.contains(e.target)) w.classList.remove("open");
+      });
+    });
+    window.addEventListener("languageChanged", renderStandaloneHeaderBtn);
+    window.addEventListener("auth:changed", renderStandaloneHeaderBtn);
+    renderStandaloneHeaderBtn();
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     renderFooter();
     syncLangButtons();
     updateSavedCountBadge();
+    initStandaloneHeaderAuth();
 
     // Shared mobile drawer bindings (for pages without index-premium.js)
     const burger = document.getElementById("bc-mobile-burger") || document.getElementById("bc3-burger");
@@ -308,7 +624,7 @@
     // Ensure AI assistant loader is mounted on every page with a footer
     if (!window.__bcAiChatLoader && !document.querySelector('script[src*="ai-chat-loader.js"]')) {
       const loader = document.createElement("script");
-      loader.src = "/js/ai-chat-loader.js?v=7";
+      loader.src = "/js/ai-chat-loader.js?v=8";
       loader.defer = true;
       loader.setAttribute("data-cfasync", "false");
       document.body.appendChild(loader);

@@ -169,10 +169,8 @@
         .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
         .replace(/`([^`]+)`/g, '<code class="bc-ai-inline-code">$1</code>')
         .replace(
-          /\b(P[0-3][0-9A-F]{3}|[1-9A-F][0-9A-F]{3}(?:[0-9A-F]{2})?)\b/g,
+          /\b([PBCU][0-9A-F]{4}|[0-9A-F]{6}|(?=[0-9A-F]*[A-F])[1-9A-F][0-9A-F]{3})\b/g,
           (match) => {
-            // Avoid turning 4-digit model years (1985-2029) into DTC badges
-            if (/^(19[89]\d|20[0-2]\d)$/.test(match)) return match;
             return `<button type="button" class="badge-code-link bc-ai-dtc-ref" data-code="${match}">${match}</button>`;
           }
         );
@@ -594,12 +592,15 @@
 
       const codeBtn = e.target.closest(".bc-ai-dtc-ref");
       if (codeBtn) {
+        e.preventDefault();
+        e.stopPropagation();
         const code = codeBtn.getAttribute("data-code");
         if (code) {
-          if (typeof window.openCodeModal === "function") {
+          if (typeof window.openCodeModal === "function" && document.getElementById("code-detail")) {
+            if (window.innerWidth < 960) setOpen(false);
             window.openCodeModal(code);
           } else {
-            window.location.href = `/?code=${encodeURIComponent(code)}`;
+            window.location.href = `/index.html?code=${encodeURIComponent(code)}`;
           }
         }
       }

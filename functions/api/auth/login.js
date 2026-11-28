@@ -33,8 +33,9 @@ export async function onRequestPost(context) {
       });
     }
 
-    const { email, password, remember_me } = await request.json(); // 'email' field can contain email OR username
-    const identifier = String(email || "").trim();
+    const reqBody = await request.json();
+    const { password, remember_me } = reqBody;
+    const identifier = String(reqBody.email || reqBody.identifier || reqBody.username || "").trim();
     const identifierLower = identifier.toLowerCase();
 
     if (!identifier || !password) {
@@ -178,11 +179,17 @@ export async function onRequestPost(context) {
           age: user.age,
           avatar_url: user.avatar_url,
           lang: user.preferred_lang,
+          preferred_lang: user.preferred_lang,
           role: role?.name || 'user',
           role_id: role?.id || user.role_id || 'user_role',
           role_display: role?.display_name || 'User',
           bio: user.bio,
           car_model: user.car_model,
+          bmw_year: user.bmw_year || null,
+          bmw_body: user.bmw_body || '',
+          bmw_engine: user.bmw_engine || '',
+          city: user.city || '',
+          country: user.country || '',
           reputation: user.reputation || 0,
           level: level,
           permissions: permissions

@@ -257,7 +257,7 @@ function escapeAdminHtml(s) {
 function adminTopicPostUrl(post) {
     const tid = post.topic_id;
     const isOp = String(post.id) === String(tid);
-    const base = `/topic?id=${encodeURIComponent(tid)}`;
+    const base = `/topic.html?id=${encodeURIComponent(tid)}`;
     return isOp ? `${base}#op` : `${base}#post-${encodeURIComponent(post.id)}`;
 }
 
